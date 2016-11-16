@@ -28,7 +28,8 @@ class Auth {
 
     // get token and timestamp
     $token = $req->getParam( 'token' );
-    $stamp = $req->getParam( 'stamp' );
+    $stamp = hexdec( substr( $token, 32 ) ) );
+    $token = substr( $token, 0, 32 );
 
     // calculate age of token
     $time = self::stamp();
@@ -48,7 +49,7 @@ class Auth {
              ->status( 403 );
 
     else if ( $stamp > $time )
-      $output->add([ 'message' => 'Timestamp can not be from the future!' ])
+      $output->add([ 'message' => 'Token can not be from the future!' ])
              ->status( 403 );
 
     // verify token
@@ -68,7 +69,7 @@ class Auth {
 
   // Build authentication token
   public static function token( $stamp, $uri ) {
-    return md5( implode( '---', [ Config::get( 'secret' ), $stamp, $uri ] ) );
+    return md5( implode( '---', [ Config::get( 'secret' ), $stamp, $uri ] ) ) . dechex( $stamp );
   }
 
   // Get current timestamp

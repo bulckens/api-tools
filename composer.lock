@@ -13,7 +13,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:bulckens/helpers.git",
-                "reference": "52f415caa5e07b246d9159f7845ac4d51d377432"
+                "reference": "582937c11170d62f1f2aaba14164c32339dd540b"
             },
             "dist": {
                 "type": "git",
@@ -40,7 +40,7 @@
                 }
             ],
             "description": "A collection of core helpers useful for any PHP app",
-            "time": "2016-11-16 13:10:42"
+            "time": "2016-11-16 14:48:41"
         },
         {
             "name": "doctrine/inflector",
