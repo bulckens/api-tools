@@ -43,6 +43,11 @@ class Auth {
       $output->add([ 'message' => 'Missing secret!' ])
              ->status( 500 );
 
+    // verify token
+    else if ( empty( $token ) || $token != $verification )
+      $output->add([ 'message' => 'Invalid token!' ])
+             ->status( 401 );
+
     // verify age of token
     else if ( $age > $this->lifespan )
       $output->add([ 'message' => 'Token has expired!' ])
@@ -51,11 +56,6 @@ class Auth {
     else if ( $stamp > $time )
       $output->add([ 'message' => 'Token can not be from the future!' ])
              ->status( 403 );
-
-    // verify token
-    else if ( $token != $verification )
-      $output->add([ 'message' => 'Invalid token!' ])
-             ->status( 401 );
 
     // passes
     else if ( $output->ok() )
