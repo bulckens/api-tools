@@ -27,6 +27,11 @@ class Config {
       return self::$config[$key];
   }
 
+  // Test existance of config
+  public static function exists() {
+    return !! self::$config;
+  }
+
   // Get host project root
   public static function root( $path = '' ) {
     if ( ! self::$root ) {

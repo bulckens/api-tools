@@ -37,22 +37,27 @@ class Auth {
     // build verification
     $verification = self::token( $stamp, $uri );
 
+    // verify existance of local config file
+    if ( ! Config::exists() )
+      $output->add([ 'message' => 'Missing secret!' ])
+             ->status( 500 );
+
     // verify age of token
-    if ( $age > $this->lifespan )
+    else if ( $age > $this->lifespan )
       $output->add([ 'message' => 'Token has expired!' ])
              ->status( 403 );
 
-    if ( $stamp > $time )
+    else if ( $stamp > $time )
       $output->add([ 'message' => 'Timestamp can not be from the future!' ])
              ->status( 403 );
 
     // verify token
-    if ( $token != $verification )
+    else if ( $token != $verification )
       $output->add([ 'message' => 'Invalid token!' ])
              ->status( 401 );
 
     // passes
-    if ( $output->ok() )
+    else if ( $output->ok() )
       return $next( $req, $res );
 
     // error
