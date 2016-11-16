@@ -24,9 +24,8 @@ class Auth {
     $output = new Output( $format, [ 'root' => 'error' ]);
 
     // get token and timestamp
-    $params = $req->getQueryParams();
-    $token  = $params['token'];
-    $stamp  = $params['stamp'] * 1;
+    $token = $req->getParam( 'token' );
+    $stamp = $req->getParam( 'stamp' );
 
     // calculate age of token
     $time = self::stamp();
