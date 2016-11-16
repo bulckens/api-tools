@@ -19,10 +19,6 @@ class Config {
     // load config
     if ( file_exists( $file ) )
       self::$config = Yaml::parse( file_get_contents( $file ) );
-
-    // fail if none found
-    else
-      throw new MissingConfigException( "Missing config in $file" );
   }
 
   // Get key/value
@@ -46,6 +42,3 @@ class Config {
   }
 
 }
-
-// Exceptions
-class MissingConfigException extends Exception {}

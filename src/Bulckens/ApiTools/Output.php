@@ -53,6 +53,11 @@ class Output {
     return $this;
   }
 
+  // Check of status code is ok
+  public function ok() {
+    return $this->status == 200;
+  }
+
   // Render output to desired format
   public function render() {
     switch ( $this->format ) {
