@@ -12,6 +12,9 @@ class Auth {
   // Initialize api middleware
   public function __construct( $lifespan = 30 ) {
     $this->lifespan = $lifespan;
+
+    // initialize new config
+    new Config();
   }
 
   // Magic middleware method
