@@ -2,8 +2,17 @@
 
 namespace Bulckens\ApiTools;
 
+use Exception;
+use Bulckens\Helpers\ArrayHelper;
+
 class Output {
-  
+
+  protected $output;
+  protected $format;
+  protected $status;
+  protected $options;
+  protected $map;
+
   public function __construct( $format, $options = [] ) {
     $this->output  = [];
     $this->format  = $format;
@@ -13,48 +22,64 @@ class Output {
     // build map
     $this->map = [
       'json' => 'application/json'
+    , 'yaml' => 'application/x-yaml'
     , 'xml'  => 'application/xml'
     , 'dump' => 'text/plain'
     ];
   }
 
-  // Render an error
-  public static function error( $message, $format, $code = 500 ) {
-    switch ( $format ) {
-      case 'cli':
-      case 'xml':
-        return Twig::render( 'cli/error.xml', [
-          'message' => $message
-        ]);
-      break;
-      case 'json':
-        return json_encode( [ 'error' => $message ] );
-      break;
-      case 'html':
-        $env = Environment::where( 'name', Session::chili( 'env' ) )->first();
+  // Add output status
+  public function add( $output ) {
+    $this->output = array_replace_recursive( $this->output, $output );
 
-        return Twig::render( 'error.html', [
-          'code'  => $code
-        , 'image' => $env->error_file_name
-        ]);
-      break;
-    }
+    return $this;
   }
 
-  // Convert key to mime type
-  public static function mime( $format ) {
-    switch ( $format ) {
-      case 'xml':
-        return 'application/xml';
-      break;
+  // Return mime type
+  public function mime() {
+    if ( isset( $this->map[$this->format] ) )
+      return $this->map[$this->format];
+  }
+
+  // Return status code
+  public function status( $status = null ) {
+    // act as getter
+    if ( is_null( $status ) )
+      return $this->status;
+
+    // act as setter
+    $this->status = $status;
+
+    return $this;
+  }
+
+  // Render output to desired format
+  public function render() {
+    switch ( $this->format ) {
       case 'json':
-        return 'application/json';
+        return ArrayHelper::toJson( $this->output, $this->options );
       break;
+      
+      case 'yaml':
+        return ArrayHelper::toYaml( $this->output, $this->options );
+      break;
+
+      case 'xml':
+        return ArrayHelper::toXml( $this->output, $this->options );
+      break;
+      
+      case 'dump':
+        return print_r( $this->output );
+      break;
+
       default:
-        return 'text/html';
+        throw new UnknownFormatException( "Unknown format {$this->format}" );
       break;
     }
   }
 
 }
 
+
+// Exceptions
+class UnknownFormatException extends Exception {}

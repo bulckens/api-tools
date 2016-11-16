@@ -4,9 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9420202438f42e0b492d0ed6c4511576",
-    "content-hash": "c7399952154ca2be0f77fd999064ec35",
+    "hash": "6a6a17c014e58b857b73445e10185579",
+    "content-hash": "e268eed293930e2c31ffcfebdadab842",
     "packages": [
+        {
+            "name": "bulckens/helpers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:bulckens/helpers.git",
+                "reference": "52f415caa5e07b246d9159f7845ac4d51d377432"
+            },
+            "dist": {
+                "type": "git",
+                "url": "git@github.com:bulckens/helpers.git",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "symfony/yaml": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Bulckens": "src/"
+                }
+            },
+            "license": [
+                "Proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "wout",
+                    "email": "wout@mick-wout.com"
+                }
+            ],
+            "description": "A collection of core helpers useful for any PHP app",
+            "time": "2016-11-16 13:10:42"
+        },
         {
             "name": "doctrine/inflector",
             "version": "v1.1.0",
@@ -274,7 +309,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "bulckens/helpers": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

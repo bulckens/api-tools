@@ -4,7 +4,6 @@ namespace Bulckens\ApiTools;
 
 use DateTime;
 use DateTimeZone;
-use Illuminate\Support\Str;
 
 class Auth {
 
@@ -17,32 +16,47 @@ class Auth {
 
   // Magic middleware method
   public function __invoke( $req, $res, $next ) {
+    // get current uri and format
+    $uri    = $req->getUri()->getPath();
+    $format = pathinfo( $uri, PATHINFO_EXTENSION );
+
+    // initialize output container
+    $output = new Output( $format, [ 'root' => 'error' ]);
+
     // get token and timestamp
     $params = $req->getQueryParams();
     $token  = $params['token'];
     $stamp  = $params['stamp'] * 1;
 
-    // get current uri and format
-    $uri = $req->getUri()->getPath()
-
     // calculate age of token
     $time = self::stamp();
     $age  = $time - $stamp;
     
-    // verify age of token
-    if ( $age > $this->lifespan )
-      return $this->error( $res, 'Token has expired!', 403 );
-    else if ( $stamp > $time )
-      return $this->error( $res, 'Timestamp can not be from the future!', 403 );
-
     // build verification
     $verification = self::token( $stamp, $uri );
-    
+
+    // verify age of token
+    if ( $age > $this->lifespan )
+      $output->add([ 'message' => 'Token has expired!' ])
+             ->status( 403 );
+
+    if ( $stamp > $time )
+      $output->add([ 'message' => 'Timestamp can not be from the future!' ])
+             ->status( 403 );
+
     // verify token
     if ( $token != $verification )
-      return $this->error( $res, 'Invalid token!' );
+      $output->add([ 'message' => 'Invalid token!' ])
+             ->status( 401 );
 
-    return $next( $req, $res );
+    // passes
+    if ( $output->ok() )
+      return $next( $req, $res );
+
+    // error
+    return $res->withHeader( 'Content-type', $output->mime() )
+               ->withStatus( $output->status() )
+               ->write( $output->render() );
   }
 
   // Build authentication token
@@ -55,13 +69,6 @@ class Auth {
     $date = new DateTime();
     $date->setTimezone( new DateTimeZone( 'GMT' ) );
     return $date->getTimestamp();
-  }
-
-  // Render an error
-  protected function error( $res, $message, $code = 401 ) {
-    return $res->withStatus( $code )
-               ->withHeader( 'Content-type', Output::mime( $this->format ) )
-               ->write( Output::error( $message, $this->format, $code ) );
   }
 
 }

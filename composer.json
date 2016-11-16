@@ -9,9 +9,16 @@
             "email": "wout@mick-wout.com"
         }
     ],
+    "repositories": [
+        {   "type": "vcs",
+            "url": "git@github.com:bulckens/helpers.git",
+            "no-api": true
+        }
+    ],
     "require": {
         "symfony/yaml": "^3.1",
-        "illuminate/support": "^5.3"
+        "illuminate/support": "^5.3",
+        "bulckens/helpers": "dev-master"
     },
     "dist": {
         "url": "git@github.com:bulckens/api-tools.git",

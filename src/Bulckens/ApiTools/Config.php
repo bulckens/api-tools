@@ -2,6 +2,10 @@
 
 namespace Bulckens\ApiTools;
 
+use Exception;
+use Illuminate\Support\Str;
+use Symfony\Component\Yaml\Yaml;
+
 class Config {
 
   protected static $root;
@@ -9,7 +13,16 @@ class Config {
 
   // Load configuration
   public function __construct() {
-    self::$config = Yaml::parse( file_get_contents( self::root( 'config/api_auth.yml' ) ) );
+    // get config file name
+    $file = self::root( 'config/api_auth.yml' );
+
+    // load config
+    if ( file_exists( $file ) )
+      self::$config = Yaml::parse( file_get_contents( $file ) );
+
+    // fail if none found
+    else
+      throw new MissingConfigException( "Missing config in $file" );
   }
 
   // Get key/value
@@ -33,3 +46,6 @@ class Config {
   }
 
 }
+
+// Exceptions
+class MissingConfigException extends Exception {}
