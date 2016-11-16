@@ -14,7 +14,7 @@ class Config {
   // Load configuration
   public function __construct() {
     // get config file name
-    $file = self::root( 'config/api_auth.yml' );
+    $file = self::root( 'config/api_tools.yml' );
 
     // load config
     if ( file_exists( $file ) )
