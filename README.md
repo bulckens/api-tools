@@ -1,2 +1,2 @@
 # api-auth
-Generic API authentication library
+Api authentication and output tools

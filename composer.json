@@ -1,0 +1,25 @@
+{
+    "name": "bulckens/api-tools",
+    "description": "Api authentication and output tools",
+    "type": "library",
+    "license": "Proprietary",
+    "authors": [
+        {
+            "name": "wout",
+            "email": "wout@mick-wout.com"
+        }
+    ],
+    "require": {
+        "symfony/yaml": "^3.1",
+        "illuminate/support": "^5.3"
+    },
+    "dist": {
+        "url": "git@github.com:bulckens/api-tools.git",
+        "type": "git"
+    },
+    "autoload": {
+        "psr-0": {
+            "Bulckens": "src/"
+        }
+    }
+}
