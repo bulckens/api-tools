@@ -47,12 +47,13 @@ class Auth {
       $output->add([ 'message' => 'Invalid token!' ])
              ->status( 401 );
 
-    // verify age of token
+    // verify of token is not too old
     else if ( $age > $this->lifespan )
       $output->add([ 'message' => 'Token has expired!' ])
              ->status( 403 );
 
-    else if ( $stamp > $time )
+    // verify if token is not too young (with a 5 second buffer to make up for minor differences)
+    else if ( $stamp > $time + 5 )
       $output->add([ 'message' => 'Token can not be from the future!' ])
              ->status( 403 );
 
