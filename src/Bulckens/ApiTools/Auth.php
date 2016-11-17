@@ -28,7 +28,7 @@ class Auth {
 
     // get token and timestamp
     $token = $req->getParam( 'token' );
-    $stamp = hexdec( substr( $token, 32 ) );
+    $stamp = hexdec( substr( $token, 64 ) );
 
     // calculate age of token
     $time = self::stamp();
