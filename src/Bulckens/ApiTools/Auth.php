@@ -69,7 +69,7 @@ class Auth {
 
   // Build authentication token
   public static function token( $stamp, $uri ) {
-    return md5( implode( '---', [ Config::get( 'secret' ), $stamp, $uri ] ) ) . dechex( $stamp );
+    return hash( 'sha256', implode( '---', [ Config::get( 'secret' ), $stamp, $uri ] ) ) . dechex( $stamp );
   }
 
   // Get current timestamp
