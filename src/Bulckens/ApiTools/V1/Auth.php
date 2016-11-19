@@ -1,6 +1,6 @@
 <?php
 
-namespace Bulckens\ApiTools;
+namespace Bulckens\ApiTools\V1;
 
 use DateTime;
 use DateTimeZone;
