@@ -2,6 +2,8 @@
 
 namespace Bulckens\ApiTools\V1;
 
+use Exception;
+
 abstract class Model {
 
   protected $uri    = '';
