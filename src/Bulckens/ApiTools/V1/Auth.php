@@ -2,6 +2,8 @@
 
 namespace Bulckens\ApiTools\V1;
 
+use Exception;
+
 class Auth {
 
   protected $lifespan;
@@ -66,11 +68,13 @@ class Auth {
 
   // Build authentication token
   public static function token( $uri, $stamp = null ) {
-    // get secret and stamp
-    $secret = Config::get( 'secret' );
-    $stamp  = $stamp ?: self::stamp();
+    if ( $secret = Config::get( 'secret' ) ) {
+      $stamp  = $stamp ?: self::stamp();
+      return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
 
-    return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
+    } else {
+      throw new MissingSecretException( 'Missing API secret!' );
+    }
   }
 
   // Get current timestamp
@@ -79,3 +83,6 @@ class Auth {
   }
 
 }
+
+// Exceptions
+class MissingSecretException extends Exception {}
