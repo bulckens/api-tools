@@ -18,8 +18,21 @@ class Config {
     $file = self::root( 'config/api_tools.yml' );
     
     // load config
-    if ( file_exists( $file ) )
-      self::$config = Yaml::parse( file_get_contents( $file ) );
+    if ( file_exists( $file ) ) {
+      $config = Yaml::parse( file_get_contents( $file ) );
+
+      // get environment
+      if ( isset( $config['generic']['method'] ) )
+        $env = call_user_func( $config['generic']['method'] );
+      else
+        throw new MissingEnvMethodException( 'Environment method not defined' );
+
+      // get environment config
+      if ( isset( $config[$env] ) )
+        self::$config = $config[$env];
+      else
+        throw new MissingEnvConfigException( 'Environment config not defined' );
+    }
 
     // define mime map
     self::$map = [
@@ -68,3 +81,7 @@ class Config {
   }
 
 }
+
+// Exceptions
+class MissingEnvMethodException extends Exception {}
+class MissingEnvConfigException extends Exception {}
