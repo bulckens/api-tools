@@ -18,14 +18,6 @@ class Output {
     $this->format  = $format;
     $this->status  = 200;
     $this->options = $options;
-
-    // build map
-    $this->map = [
-      'json' => 'application/json'
-    , 'yaml' => 'application/x-yaml'
-    , 'xml'  => 'application/xml'
-    , 'dump' => 'text/plain'
-    ];
   }
 
   // Add output status
@@ -37,8 +29,7 @@ class Output {
 
   // Return mime type
   public function mime() {
-    if ( isset( $this->map[$this->format] ) )
-      return $this->map[$this->format];
+    return Config::map( $this->format );
   }
 
   // Return status code

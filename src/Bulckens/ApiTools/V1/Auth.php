@@ -68,8 +68,12 @@ class Auth {
   }
 
   // Build authentication token
-  public static function token( $stamp, $uri ) {
-    return hash( 'sha256', implode( '---', [ Config::get( 'secret' ), $stamp, $uri ] ) ) . dechex( $stamp );
+  public static function token( $uri, $stamp = null ) {
+    // get secret and stamp
+    $secret = Config::get( 'secret' );
+    $stamp  = $stamp ?: self::stamp();
+
+    return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
   }
 
   // Get current timestamp

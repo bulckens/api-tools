@@ -8,6 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class Config {
 
+  protected static $map;
   protected static $root;
   protected static $config;
 
@@ -19,6 +20,14 @@ class Config {
     // load config
     if ( file_exists( $file ) )
       self::$config = Yaml::parse( file_get_contents( $file ) );
+
+    // define mime map
+    self::$map = [
+      'json' => 'application/json'
+    , 'yaml' => 'application/x-yaml'
+    , 'xml'  => 'application/xml'
+    , 'dump' => 'text/plain'
+    ];
   }
 
   // Get key/value
@@ -30,6 +39,15 @@ class Config {
   // Test existance of config
   public static function exists() {
     return !! self::$config;
+  }
+
+  // Get output map
+  public static function map( $key = null ) {
+    if ( is_null( $key ) )
+      return self::$map;
+
+    if ( isset( self::$map[$key] ) )
+      return self::$map[$key];
   }
 
   // Get host project root
