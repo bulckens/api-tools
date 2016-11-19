@@ -16,7 +16,7 @@ class Config {
   public function __construct() {
     // get config file name
     $file = self::root( 'config/api_tools.yml' );
-
+    
     // load config
     if ( file_exists( $file ) )
       self::$config = Yaml::parse( file_get_contents( $file ) );
@@ -32,6 +32,9 @@ class Config {
 
   // Get key/value
   public static function get( $key ) {
+    if ( empty( self::$config ) )
+      new self();
+
     if ( isset( self::$config[$key] ) )
       return self::$config[$key];
   }
