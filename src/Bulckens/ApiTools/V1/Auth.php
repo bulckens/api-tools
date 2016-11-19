@@ -75,7 +75,7 @@ class Auth {
 
   // Get current timestamp
   public static function stamp() {
-    return round( microtime( 1 ) * 1000 )
+    return round( microtime( 1 ) * 1000 );
   }
 
 }
