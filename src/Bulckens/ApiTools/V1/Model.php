@@ -14,7 +14,7 @@ abstract class Model {
 
   // Perform request
   public function get( $format = 'json' ) {
-    return file_get_contents( $this->uri( $format ) );
+    return file_get_contents( $this->server( $this->uri( $format ) ) );
   }
 
   // Add level
@@ -40,6 +40,14 @@ abstract class Model {
     return "$uri?token=$token";
   }
 
+  // Get server with optional path
+  public function server( $path = '' ) {
+    if ( $server = Config::get( 'server' ) )
+      return str_replace( '//', '/', "$server/$path" );
+    else
+      throw new MissingServerException( 'API server not defined' );
+  }
+
   // Get resources as XML
   public function xml() {
     return $this->get( 'xml' );
@@ -61,3 +69,6 @@ abstract class Model {
   }
 
 }
+
+// Exceptions
+class MissingServerException extends Exception {}
