@@ -6,8 +6,8 @@ use Exception;
 
 abstract class Model {
 
-  protected $uri    = '';
-  protected $params = [];
+  protected $uri   = '';
+  protected $query = [];
 
   // Register new uri part
   public function register( $part ) {
@@ -25,8 +25,8 @@ abstract class Model {
   }
 
   // Add parameter
-  public function param( $key, $value ) {
-    $this->params[$key] = $value;
+  public function query( $key, $value ) {
+    $this->query[$key] = $value;
 
     return $this;
   }
@@ -35,11 +35,11 @@ abstract class Model {
   public function uri( $format = 'json' ) {
     // build uri
     $uri = "{$this->uri}.$format";
+    
+    // add token
+    $this->query['token'] = Auth::token( $uri );
 
-    // get token
-    $token = Auth::token( $uri );
-
-    return "$uri?token=$token";
+    return "$uri?" . http_build_query( $this->query );
   }
 
   // Get server with optional path
