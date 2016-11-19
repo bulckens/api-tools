@@ -8,7 +8,7 @@ class Auth {
 
   // Initialize api middleware
   public function __construct( $lifespan = 30 ) {
-    $this->lifespan = $lifespan;
+    $this->lifespan = $lifespan * 1000;
 
     // initialize new config
     new Config();
@@ -32,7 +32,7 @@ class Auth {
     $age  = $time - $stamp;
     
     // build verification
-    $verification = self::token( $stamp, $uri );
+    $verification = self::token( $uri, $stamp );
 
     // verify existance of local config file
     if ( ! Config::exists() )
