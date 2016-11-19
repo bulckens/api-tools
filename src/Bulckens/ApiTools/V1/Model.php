@@ -44,10 +44,13 @@ abstract class Model {
 
   // Get server with optional path
   public function server( $path = '' ) {
-    if ( $server = Config::get( 'server' ) )
-      return str_replace( '//', '/', "$server/$path" );
-    else
+    if ( $server = Config::get( 'server' ) ) {
+      $server = preg_replace( '/\/$/', '', $server );
+
+      return "$server$path";
+    } else {
       throw new MissingServerException( 'API server not defined' );
+    }
   }
 
   // Get resources as XML
