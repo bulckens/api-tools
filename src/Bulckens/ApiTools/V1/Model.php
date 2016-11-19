@@ -35,7 +35,7 @@ abstract class Model {
   public function uri( $format = 'json' ) {
     // build uri
     $uri = "{$this->uri}.$format";
-    
+
     // add token
     $this->query['token'] = Auth::token( $uri );
 
@@ -71,6 +71,11 @@ abstract class Model {
   // Get resources as PHP dump
   public function dump() {
     return $this->get( 'dump' );
+  }
+
+  // Get resources as Array
+  public function toArray() {
+    return json_decode( $this->get( 'json' ), true );
   }
 
 }
