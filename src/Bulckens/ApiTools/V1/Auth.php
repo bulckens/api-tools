@@ -2,9 +2,6 @@
 
 namespace Bulckens\ApiTools\V1;
 
-use DateTime;
-use DateTimeZone;
-
 class Auth {
 
   protected $lifespan;
@@ -78,9 +75,7 @@ class Auth {
 
   // Get current timestamp
   public static function stamp() {
-    $date = new DateTime();
-    $date->setTimezone( new DateTimeZone( 'GMT' ) );
-    return $date->getTimestamp();
+    return round( microtime( 1 ) * 1000 )
   }
 
 }
