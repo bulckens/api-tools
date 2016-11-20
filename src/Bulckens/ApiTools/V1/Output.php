@@ -29,7 +29,7 @@ class Output {
 
   // Return mime type
   public function mime() {
-    return Config::map( $this->format );
+    return Config::mime( $this->format );
   }
 
   // Return status code

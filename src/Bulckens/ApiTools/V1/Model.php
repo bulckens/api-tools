@@ -14,21 +14,14 @@ abstract class Model {
     $this->uri .= $part;
   }
 
-  // Perform request
-  public function get( $format = 'json' ) {
-    return file_get_contents( $this->server( $this->uri( $format ) ) );
+  // Add resource
+  public function resource( $resource, $id = null ) {
+    return new Resource( $this->add( $resource, $id ) );
   }
 
   // Add level
   public function add( $part, $id = null ) {
-    // add part
-    $uri = "$this->uri/$part";
-
-    // add id if given
-    if ( ! is_null( $id ) )
-      $uri = "$this->uri/$part";
-
-    return $uri;
+    return implode( '/', array_filter( [ $this->uri, $part, $id ] ) );
   }
 
   // Add parameter
@@ -60,29 +53,32 @@ abstract class Model {
     }
   }
 
-  // Get resources as XML
-  public function xml() {
-    return $this->get( 'xml' );
+  // Perform GET request
+  public function get( $format = 'json' ) {
+    return $this->perform( 'get', $format );
   }
 
-  // Get resources as JSON
-  public function json() {
-    return $this->get( 'json' );
+  // Perform POST request
+  public function post( $format = 'json' ) {
+    return $this->perform( 'post', $format );
   }
 
-  // Get resources as YAML
-  public function yaml() {
-    return $this->get( 'yaml' );
+  // Perform PUT request
+  public function put( $format = 'json' ) {
+    return $this->perform( 'put', $format );
   }
 
-  // Get resources as PHP dump
-  public function dump() {
-    return $this->get( 'dump' );
+  // Perform DELETE request
+  public function delete( $format = 'json' ) {
+    return $this->perform( 'delete', $format );
   }
 
-  // Get resources as Array
-  public function toArray() {
-    return json_decode( $this->get( 'json' ), true );
+  // Perform request
+  public function perform( $method, $format = 'json' ) {
+    return call_user_func( "Requests::$method", [
+      $this->server( $this->uri( $format ) )
+    , [ 'Accept' => Config::mime( $format ) ]
+    ]);
   }
 
 }

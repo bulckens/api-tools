@@ -18,7 +18,8 @@
     "require": {
         "symfony/yaml": "^3.1",
         "illuminate/support": "^5.3",
-        "bulckens/helpers": "dev-master"
+        "bulckens/helpers": "dev-master",
+        "rmccue/requests": "^1.7"
     },
     "dist": {
         "url": "git@github.com:bulckens/api-tools.git",

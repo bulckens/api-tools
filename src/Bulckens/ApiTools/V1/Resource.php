@@ -9,9 +9,4 @@ class Resource extends Model {
     $this->register( $part );
   }
 
-  // Add resource
-  public function resource( $resource, $id = null ) {
-    return new Resource( $this->add( $resource, $id ) );
-  }
-
 }

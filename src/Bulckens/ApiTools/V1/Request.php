@@ -9,9 +9,4 @@ class Request extends Model {
     $this->uri = '/api/v1';
   }
 
-  // Initialize entity
-  public function entity( $entity ) {
-    return new Entity( $this->add( $entity ) );
-  }
-
 }
