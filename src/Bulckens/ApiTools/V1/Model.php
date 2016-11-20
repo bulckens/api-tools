@@ -7,6 +7,7 @@ use Exception;
 abstract class Model {
 
   protected $uri   = '';
+  protected $data  = [];
   protected $query = [];
 
   // Register new uri part
@@ -24,16 +25,28 @@ abstract class Model {
     return implode( '/', array_filter( [ $this->uri, $part, $id ] ) );
   }
 
-  // Add parameter
-  public function query( $key, $value ) {
-    $this->query[$key] = $value;
+  // Add get parameter
+  public function query( $key, $value = null ) {
+    if ( is_array( $key ) )
+      foreach ( $key as $k => $v ) $this->query[$k] = $v;
+    else
+      $this->query[$key] = $value;
 
     return $this;
   }
 
-  // Get uri
+  // Add post data
+  public function data( $key, $value = null ) {
+    if ( is_array( $key ) )
+      foreach ( $key as $k => $v ) $this->data[$k] = $v;
+    else
+      $this->data[$key] = $value;
+
+    return $this;
+  }
+
+  // Build uri
   public function uri( $format = 'json' ) {
-    // build uri
     $uri = "{$this->uri}.$format";
 
     // add token
@@ -79,6 +92,7 @@ abstract class Model {
       "Requests::$method"
     , $this->server( $this->uri( $format ) )
     , [ 'Accept' => Config::mime( $format ) ]
+    , $this->data
     );
   }
 
