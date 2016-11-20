@@ -20,8 +20,15 @@ abstract class Model {
   }
 
   // Add level
-  public function add( $part ) {
-    return "$this->uri/$part";
+  public function add( $part, $id = null ) {
+    // add part
+    $uri = "$this->uri/$part";
+
+    // add id if given
+    if ( ! is_null( $id ) )
+      $uri = "$this->uri/$part";
+
+    return $uri;
   }
 
   // Add parameter
