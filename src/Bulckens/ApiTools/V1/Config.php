@@ -57,8 +57,8 @@ class Config {
     return !! self::$config;
   }
 
-  // Get output map
-  public static function map( $key = null ) {
+  // Get mime output map
+  public static function mime( $key = null ) {
     if ( is_null( $key ) )
       return self::$map;
 
