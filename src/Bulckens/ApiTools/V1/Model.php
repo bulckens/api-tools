@@ -75,10 +75,11 @@ abstract class Model {
 
   // Perform request
   public function perform( $method, $format = 'json' ) {
-    return call_user_func( "Requests::$method", [
-      $this->server( $this->uri( $format ) )
+    return call_user_func(
+      "Requests::$method"
+    , $this->server( $this->uri( $format ) )
     , [ 'Accept' => Config::mime( $format ) ]
-    ]);
+    );
   }
 
 }
