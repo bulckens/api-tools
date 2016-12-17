@@ -80,7 +80,7 @@ class Output {
 
   // Data type tester
   public function is( $format ) {
-    return $this->format == $format
+    return $this->format == $format;
   }
 
   // Format getter
