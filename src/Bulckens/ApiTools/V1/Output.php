@@ -63,6 +63,10 @@ class Output {
       case 'xml':
         return ArrayHelper::toXml( $this->output, $this->options );
       break;
+
+      case 'html':
+        return $this->output;
+      break;
       
       case 'dump':
         return print_r( $this->output );
@@ -74,6 +78,15 @@ class Output {
     }
   }
 
+  // Data type tester
+  public function is( $format ) {
+    return $this->format == $format
+  }
+
+  // Format getter
+  public function format() {
+    return $this->format;
+  }
 }
 
 
