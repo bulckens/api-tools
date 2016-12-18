@@ -25,7 +25,7 @@ class Auth {
     $format = pathinfo( $uri, PATHINFO_EXTENSION );
 
     // initialize output container
-    $output = new Output( $format, [ 'root' => 'error' ]);
+    $output = new Output( $format );
 
     // get token and timestamp
     $token = $req->getParam( 'token' );
