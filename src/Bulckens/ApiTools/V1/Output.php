@@ -69,7 +69,7 @@ class Output {
       break;
       
       case 'dump':
-        return print_r( $this->output );
+        return print_r( $this->output, true );
       break;
 
       default:
