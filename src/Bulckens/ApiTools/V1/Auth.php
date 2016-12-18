@@ -42,6 +42,10 @@ class Auth {
 
       $this->secret = "secrets.{$param}";
     }
+
+    // Get token lifespan from config, if defined
+    if ( $lifespan = Config::get( 'lifespan' ) )
+      $this->lifespan = $lifespan;
     
     // build verification
     $verification = self::token( $uri, $stamp, $this->secret );
