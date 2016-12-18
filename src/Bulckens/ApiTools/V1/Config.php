@@ -48,8 +48,18 @@ class Config {
     if ( empty( self::$config ) )
       new self();
 
-    if ( isset( self::$config[$key] ) )
-      return self::$config[$key];
+    // prepare path iteration
+    $parts = explode( '.', $key );
+    $value = self::$config;
+
+    // find value for path
+    foreach ( $parts as $part ) {
+      if ( isset( $value[$part] ) )
+        $value = $value[$part];
+      else return null;
+    }
+    
+    return $value;
   }
 
   // Test existance of config

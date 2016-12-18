@@ -7,10 +7,15 @@ use Exception;
 class Auth {
 
   protected $lifespan;
+  protected $secret;
 
   // Initialize api middleware
-  public function __construct( $lifespan = 30 ) {
-    $this->lifespan = $lifespan * 1000;
+  public function __construct( $options = [] ) {
+    $defaults = [ 'lifespan' => 30, 'secret' => 'secrets.generic' ];
+    $options  = array_replace( $defaults, $options );
+
+    $this->lifespan = $options['lifespan'] * 1000;
+    $this->secret   = $options['secret'];
   }
 
   // Magic middleware method
@@ -29,12 +34,20 @@ class Auth {
     // calculate age of token
     $time = self::stamp();
     $age  = $time - $stamp;
+
+    // get token key from uri value
+    if ( preg_match( '/^uri\.([a-z0-9\_\-]+)/', $this->secret, $match ) ) {
+      $route = $req->getAttribute( 'route' );
+      $param = $route->getArgument( $match[1] );
+
+      $this->secret = "secrets.{$param}";
+    }
     
     // build verification
-    $verification = self::token( $uri, $stamp );
+    $verification = self::token( $uri, $stamp, $this->secret );
 
     // verify existance of local config file
-    if ( ! Config::exists() )
+    if ( ! Config::exists() || ! Config::get( $this->secret ) )
       $output->add([ 'error' => 'secret.missing' ])
              ->status( 500 );
 
@@ -64,9 +77,9 @@ class Auth {
   }
 
   // Build authentication token
-  public static function token( $uri, $stamp = null ) {
-    if ( $secret = Config::get( 'secret' ) ) {
-      $stamp  = $stamp ?: self::stamp();
+  public static function token( $uri, $stamp = null, $secret = 'secrets.generic' ) {
+    if ( $secret = Config::get( $secret ) ) {
+      $stamp = $stamp ?: self::stamp();
       return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
 
     } else {

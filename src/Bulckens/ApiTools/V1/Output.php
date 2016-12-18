@@ -53,13 +53,13 @@ class Output {
   public function render() {
     switch ( $this->format ) {
       case 'json':
-        return ArrayHelper::toJson( $this->output, $this->options );
+        return ArrayHelper::toJson( $this->output );
       break;
       
       case 'yaml':
-        return ArrayHelper::toYaml( $this->output, $this->options );
+        return ArrayHelper::toYaml( $this->output );
       break;
-
+      
       case 'xml':
         return ArrayHelper::toXml( $this->output, $this->options );
       break;
