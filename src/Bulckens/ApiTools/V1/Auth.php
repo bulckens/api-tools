@@ -11,7 +11,7 @@ class Auth {
 
   // Initialize api middleware
   public function __construct( $options = [] ) {
-    $defaults = [ 'lifespan' => 30, 'secret' => 'secrets.generic' ];
+    $defaults = [ 'lifespan' => 30, 'secret' => 'generic' ];
     $options  = array_replace( $defaults, $options );
 
     $this->lifespan = $options['lifespan'] * 1000;
@@ -40,7 +40,7 @@ class Auth {
       $route = $req->getAttribute( 'route' );
       $param = $route->getArgument( $match[1] );
 
-      $this->secret = "secrets.{$param}";
+      $this->secret = $param;
     }
 
     // Get token lifespan from config, if defined
@@ -81,7 +81,7 @@ class Auth {
   }
 
   // Build authentication token
-  public static function token( $uri, $stamp = null, $secret = 'secrets.generic' ) {
+  public static function token( $uri, $stamp = null, $secret = 'generic' ) {
     if ( $secret = Config::get( $secret ) ) {
       $stamp = $stamp ?: self::stamp();
       return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
