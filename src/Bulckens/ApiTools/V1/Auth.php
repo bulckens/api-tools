@@ -35,22 +35,22 @@ class Auth {
 
     // verify existance of local config file
     if ( ! Config::exists() )
-      $output->add([ 'message' => 'Missing secret!' ])
+      $output->add([ 'error' => 'secret.missing' ])
              ->status( 500 );
 
     // verify token
     else if ( empty( $token ) || $token != $verification )
-      $output->add([ 'message' => 'Invalid token!' ])
+      $output->add([ 'error' => 'token.invalid' ])
              ->status( 401 );
 
     // verify of token is not too old
     else if ( $age > $this->lifespan )
-      $output->add([ 'message' => 'Token has expired!' ])
+      $output->add([ 'error' => 'token.expired' ])
              ->status( 403 );
 
     // verify if token is not too young (with a 5 second buffer to make up for minor differences)
     else if ( $stamp > $time + 5 )
-      $output->add([ 'message' => 'Token can not be from the future!' ])
+      $output->add([ 'error' => 'token.futuristic' ])
              ->status( 403 );
 
     // passes
