@@ -22,8 +22,8 @@ class Config {
       $config = Yaml::parse( file_get_contents( $file ) );
 
       // get environment
-      if ( isset( $config['generic']['method'] ) )
-        $env = call_user_func( $config['generic']['method'] );
+      if ( isset( $config['generic']['methods']['env'] ) )
+        $env = call_user_func( $config['generic']['methods']['env'] );
       else
         throw new MissingEnvMethodException( 'Environment method not defined' );
 
@@ -33,7 +33,7 @@ class Config {
       else
         throw new MissingEnvConfigException( 'Environment config not defined' );
     }
-
+    
     // define mime map
     self::$map = [
       'json' => 'application/json'
