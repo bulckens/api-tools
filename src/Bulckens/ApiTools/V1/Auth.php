@@ -51,7 +51,7 @@ class Auth {
     $verification = self::token( $uri, $stamp, $this->secret );
 
     // verify existance of local config file
-    if ( ! Config::exists() || ! Config::get( $this->secret ) )
+    if ( ! Config::exists() || ! Config::get( "secrets.$this->secret" ) )
       $output->add([ 'error' => 'secret.missing' ])
              ->status( 500 );
 
@@ -82,7 +82,7 @@ class Auth {
 
   // Build authentication token
   public static function token( $uri, $stamp = null, $secret = 'generic' ) {
-    if ( $secret = Config::get( $secret ) ) {
+    if ( $secret = Config::get( "secrets.$secret" ) ) {
       $stamp = $stamp ?: self::stamp();
       return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
 
