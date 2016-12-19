@@ -50,7 +50,7 @@ class Auth {
 
     } else {
       // verify existance of secret
-      if ( Config::secret( $this->secret_key ) ) {
+      if ( $secret = Config::secret( $this->secret_key ) ) {
         // get token lifespan from config, if defined
         if ( $lifespan = Config::get( 'lifespan' ) )
           $this->lifespan = $lifespan * 1000;

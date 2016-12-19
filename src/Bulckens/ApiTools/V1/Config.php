@@ -90,9 +90,9 @@ class Config {
   // Get config file path
   public static function file( $file = null ) {
     if ( is_null( $file ) )
-      self::$file = $file;
+      return self::root( 'config/' . self::$file );
 
-    return self::root( "config/{self::$file}" );
+    self::$file = $file;
   }
 
   // Get host project root
