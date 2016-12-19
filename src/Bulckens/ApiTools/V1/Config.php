@@ -11,15 +11,13 @@ class Config {
   protected static $map;
   protected static $root;
   protected static $config;
+  protected static $file = 'api_tools.yml';
 
   // Load configuration
   public function __construct() {
-    // get config file name
-    $file = self::root( 'config/api_tools.yml' );
-    
     // load config
-    if ( file_exists( $file ) ) {
-      $config = Yaml::parse( file_get_contents( $file ) );
+    if ( file_exists( self::file() ) ) {
+      $config = Yaml::parse( file_get_contents( self::file() ) );
 
       // get environment
       if ( isset( $config['generic']['methods']['env'] ) )
@@ -70,9 +68,14 @@ class Config {
     return self::get( "secrets.$key" );
   }
 
-  // Test existance of config
+  // Get source
+  public static function source( $key ) {
+    return self::get( "sources.$key" );
+  }
+
+  // Test existence of config
   public static function exists() {
-    return !! self::$config;
+    return file_exists( self::file() );
   }
 
   // Get mime output map
@@ -82,6 +85,14 @@ class Config {
 
     if ( isset( self::$map[$key] ) )
       return self::$map[$key];
+  }
+
+  // Get config file path
+  public static function file( $file = null ) {
+    if ( is_null( $file ) )
+      self::$file = $file;
+
+    return self::root( "config/{self::$file}" );
   }
 
   // Get host project root
