@@ -14,8 +14,8 @@ class Auth {
     $defaults = [ 'lifespan' => 30, 'secret' => 'generic' ];
     $options  = array_replace( $defaults, $options );
 
-    $this->lifespan = $options['lifespan'] * 1000;
-    $this->secret   = $options['secret'];
+    $this->lifespan   = $options['lifespan'] * 1000;
+    $this->secret_key = $options['secret'];
   }
 
   // Magic middleware method
@@ -36,43 +36,52 @@ class Auth {
     $age  = $time - $stamp;
 
     // get token key from uri value
-    if ( preg_match( '/^uri\.([a-z0-9\_\-]+)/', $this->secret, $match ) ) {
+    if ( preg_match( '/^uri\.([a-z0-9\_\-]+)/', $this->secret_key, $match ) ) {
       $route = $req->getAttribute( 'route' );
       $param = $route->getArgument( $match[1] );
 
-      $this->secret = $param;
+      $this->secret_key = $param;
     }
 
-    // Get token lifespan from config, if defined
-    if ( $lifespan = Config::get( 'lifespan' ) )
-      $this->lifespan = $lifespan * 1000;
-    
-    // build verification
-    $verification = self::token( $uri, $stamp, $this->secret );
-
     // verify existance of local config file
-    if ( ! Config::exists() || ! Config::get( "secrets.$this->secret" ) )
-      $output->add([ 'error' => 'secret.missing' ])
+    if ( ! Config::exists() ) {
+      $output->add([ 'error' => 'config.missing' ])
              ->status( 500 );
 
-    // verify token
-    else if ( empty( $token ) || $token != $verification )
-      $output->add([ 'error' => 'token.invalid' ])
-             ->status( 401 );
+    } else {
+      // verify existance of secret
+      if ( Config::secret( $this->secret_key ) ) {
+        // get token lifespan from config, if defined
+        if ( $lifespan = Config::get( 'lifespan' ) )
+          $this->lifespan = $lifespan * 1000;
 
-    // verify of token is not too old
-    else if ( $age > $this->lifespan )
-      $output->add([ 'error' => 'token.expired' ])
-             ->status( 403 );
+        // build verification
+        $verification = self::token( $uri, $stamp, $secret );
 
-    // verify if token is not too young (with a 5 second buffer to make up for minor differences)
-    else if ( $stamp > $time + 5 )
-      $output->add([ 'error' => 'token.futuristic' ])
-             ->status( 403 );
+        // verify token
+        if ( empty( $token ) || $token != $verification )
+          $output->add([ 'error' => 'token.invalid' ])
+                 ->status( 401 );
 
-    // passes
-    else if ( $output->ok() )
-      return $next( $req, $res );
+        // verify of token is not too old
+        else if ( $age > $this->lifespan )
+          $output->add([ 'error' => 'token.expired' ])
+                 ->status( 403 );
+
+        // verify if token is not too young (with a 5 second buffer to make up for minor differences)
+        else if ( $stamp > $time + 5 )
+          $output->add([ 'error' => 'token.futuristic' ])
+                 ->status( 403 );
+
+        // passes
+        else if ( $output->ok() )
+          return $next( $req, $res );
+
+      } else {
+        $output->add([ 'error' => 'secret.missing' ])
+               ->status( 500 );
+      }     
+    }
 
     // error
     return $res->withHeader( 'Content-type', $output->mime() )
@@ -81,8 +90,8 @@ class Auth {
   }
 
   // Build authentication token
-  public static function token( $uri, $stamp = null, $secret = 'generic' ) {
-    if ( $secret = Config::get( "secrets.$secret" ) ) {
+  public static function token( $uri, $stamp = null, $secret_key = 'generic' ) {
+    if ( $secret = Config::secret( $secret_key ) ) {
       $stamp = $stamp ?: self::stamp();
       return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
 

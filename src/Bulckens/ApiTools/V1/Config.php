@@ -62,6 +62,14 @@ class Config {
     return $value;
   }
 
+  // Get secret
+  public static function secret( $key ) {
+    if ( $method = self::get( 'methods.secret' ) )
+      return call_user_func( $method, $key );
+
+    return self::get( "secrets.$key" );
+  }
+
   // Test existance of config
   public static function exists() {
     return !! self::$config;
