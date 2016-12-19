@@ -50,13 +50,13 @@ class Auth {
 
     } else {
       // verify existance of secret
-      if ( $secret = Config::secret( $this->secret_key ) ) {
+      if ( Config::secret( $this->secret_key ) ) {
         // get token lifespan from config, if defined
         if ( $lifespan = Config::get( 'lifespan' ) )
           $this->lifespan = $lifespan * 1000;
 
         // build verification
-        $verification = self::token( $uri, $stamp, $secret );
+        $verification = self::token( $uri, $stamp, $this->secret_key );
 
         // verify token
         if ( empty( $token ) || $token != $verification )
