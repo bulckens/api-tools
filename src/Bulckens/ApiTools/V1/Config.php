@@ -61,17 +61,32 @@ class Config {
     return $value;
   }
 
-  // Get secret
-  public static function secret( $key ) {
-    if ( $method = self::get( 'methods.secret' ) )
-      return call_user_func( $method, $key );
-
-    return self::get( "secrets.$key" );
-  }
-
   // Get source
   public static function source( $key ) {
     return self::get( "sources.$key" );
+  }
+
+  // Get secret
+  public static function secret( $key ) {
+    // retreive secret using user defined method
+    if ( $method = self::get( 'methods.secret' ) )
+      return call_user_func( $method, $key );
+
+    // retreive secret from config
+    return self::get( "secrets.$key" );
+  }
+
+  // Test existence of secret
+  public static function secretExists( $key ) {
+    // test an array with keys
+    if ( is_array( $key ) ) {
+      $secrets = array_map( function( $secret ) { return self::secret( $secret ) }, $key );
+
+      return count( $key ) === count( array_filter( $secret ) );
+    }
+
+    // test a single secret
+    return !! self::secret( $key );
   }
 
   // Test existence of config
