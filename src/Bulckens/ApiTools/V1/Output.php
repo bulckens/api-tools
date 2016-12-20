@@ -55,21 +55,20 @@ class Output {
       case 'json':
         return ArrayHelper::toJson( $this->output );
       break;
-      
       case 'yaml':
         return ArrayHelper::toYaml( $this->output );
       break;
-      
       case 'xml':
         return ArrayHelper::toXml( $this->output, $this->options );
       break;
-
-      case 'html':
-        return $this->output;
-      break;
-      
       case 'dump':
         return print_r( $this->output, true );
+      break;
+      case 'html':
+      case 'txt':
+      case 'css':
+      case 'js':
+        return $this->output;
       break;
 
       default:

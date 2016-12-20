@@ -8,10 +8,19 @@ use Symfony\Component\Yaml\Yaml;
 
 class Config {
 
-  protected static $map;
   protected static $root;
   protected static $config;
   protected static $file = 'api_tools.yml';
+  protected static $map  = [
+    'css'  => 'text/css'
+  , 'dump' => 'text/plain'
+  , 'js'   => 'application/javascript'
+  , 'json' => 'application/json'
+  , 'html' => 'text/html'
+  , 'txt'  => 'text/plain'
+  , 'xml'  => 'application/xml'
+  , 'yaml' => 'application/x-yaml'
+  ];
 
   // Load configuration
   public function __construct() {
@@ -31,14 +40,6 @@ class Config {
       else
         throw new MissingEnvConfigException( 'Environment config not defined' );
     }
-    
-    // define mime map
-    self::$map = [
-      'json' => 'application/json'
-    , 'yaml' => 'application/x-yaml'
-    , 'xml'  => 'application/xml'
-    , 'dump' => 'text/plain'
-    ];
   }
 
   // Get key/value
