@@ -70,7 +70,6 @@ class Output {
       case 'js':
         return $this->output;
       break;
-
       default:
         throw new UnknownFormatException( "Unknown format {$this->format}" );
       break;
