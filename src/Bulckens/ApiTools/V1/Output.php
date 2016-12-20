@@ -29,7 +29,7 @@ class Output {
 
   // Return mime type
   public function mime() {
-    return Config::mime( $this->format );
+    return Mime::type( $this->format );
   }
 
   // Return status code
@@ -44,9 +44,9 @@ class Output {
     return $this;
   }
 
-  // Check of status code is ok
+  // Check of status code is ok (everything within the 200 and 300 codes)
   public function ok() {
-    return $this->status == 200;
+    return $this->status < 400;
   }
 
   // Render output to desired format

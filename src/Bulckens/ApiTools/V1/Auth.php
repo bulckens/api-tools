@@ -36,7 +36,7 @@ class Auth {
     $age  = $time - $stamp;
 
     // get token key from uri value
-    if ( preg_match( '/^uri\.([a-z0-9\_\-]+)/', $this->secret_key, $match ) ) {
+    if ( is_string( $this->secret_key ) && preg_match( '/^uri\.([a-z0-9\_\-]+)/', $this->secret_key, $match ) ) {
       $route = $req->getAttribute( 'route' );
       $param = $route->getArgument( $match[1] );
 
@@ -50,7 +50,7 @@ class Auth {
 
     } else {
       // verify existance of secret
-      if ( Config::secretExists( $this->secret_key ) ) {
+      if ( Secret::exists( $this->secret_key ) ) {
         // get token lifespan from config, if defined
         if ( $lifespan = Config::get( 'lifespan' ) )
           $this->lifespan = $lifespan * 1000;
@@ -66,7 +66,7 @@ class Auth {
         // verify token
         if ( empty( $token ) || ! in_array( $token, $verifications ) )
           $output->add([ 'error' => 'token.invalid' ])->status( 401 );
-        
+
         // verify of token is not too old
         else if ( $age > $this->lifespan )
           $output->add([ 'error' => 'token.expired' ])->status( 403 );
@@ -92,7 +92,7 @@ class Auth {
 
   // Build authentication token
   public static function token( $uri, $stamp = null, $secret_key = 'generic' ) {
-    if ( $secret = Config::secret( $secret_key ) ) {
+    if ( $secret = Secret::get( $secret_key ) ) {
       $stamp = $stamp ?: self::stamp();
       return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
 

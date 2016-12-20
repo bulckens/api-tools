@@ -11,16 +11,6 @@ class Config {
   protected static $root;
   protected static $config;
   protected static $file = 'api_tools.yml';
-  protected static $map  = [
-    'css'  => 'text/css'
-  , 'dump' => 'text/plain'
-  , 'js'   => 'application/javascript'
-  , 'json' => 'application/json'
-  , 'html' => 'text/html'
-  , 'txt'  => 'text/plain'
-  , 'xml'  => 'application/xml'
-  , 'yaml' => 'application/x-yaml'
-  ];
 
   // Load configuration
   public function __construct() {
@@ -61,48 +51,9 @@ class Config {
     return $value;
   }
 
-  // Get source
-  public static function source( $key ) {
-    return self::get( "sources.$key" );
-  }
-
-  // Get secret
-  public static function secret( $key ) {
-    // retreive secret using user defined method
-    if ( $method = self::get( 'methods.secret' ) )
-      return call_user_func( $method, $key );
-
-    // retreive secret from config
-    return self::get( "secrets.$key" );
-  }
-
-  // Test existence of secret
-  public static function secretExists( $key ) {
-    // test an array with keys
-    if ( is_array( $key ) ) {
-      $secrets = array_map( function( $secret ) {
-        return self::secret( $secret );
-      }, $key );
-
-      return count( $key ) === count( array_filter( $secret ) );
-    }
-
-    // test a single secret
-    return !! self::secret( $key );
-  }
-
   // Test existence of config
   public static function exists() {
     return file_exists( self::file() );
-  }
-
-  // Get mime output map
-  public static function mime( $key = null ) {
-    if ( is_null( $key ) )
-      return self::$map;
-
-    if ( isset( self::$map[$key] ) )
-      return self::$map[$key];
   }
 
   // Get config file path

@@ -58,7 +58,7 @@ abstract class Model {
 
   // Get server with optional path
   public function source( $path = '' ) {
-    if ( $source = Config::source( $this->source ) ) {
+    if ( $source = Source::get( $this->source ) ) {
       $source = preg_replace( '/\/$/', '', $source );
 
       return "$source$path";
@@ -92,7 +92,7 @@ abstract class Model {
     return call_user_func(
       "Requests::$method"
     , $this->source( $this->uri( $format ) )
-    , [ 'Accept' => Config::mime( $format ) ]
+    , [ 'Accept' => Mime::type( $format ) ]
     , $this->data
     );
   }
