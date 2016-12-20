@@ -80,7 +80,9 @@ class Config {
   public static function secretExists( $key ) {
     // test an array with keys
     if ( is_array( $key ) ) {
-      $secrets = array_map( function( $secret ) { return self::secret( $secret ) }, $key );
+      $secrets = array_map( function( $secret ) {
+        return self::secret( $secret );
+      }, $key );
 
       return count( $key ) === count( array_filter( $secret ) );
     }
