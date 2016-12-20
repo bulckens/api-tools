@@ -22,7 +22,7 @@ abstract class Secret {
         return self::get( $secret );
       }, $key );
 
-      return count( $key ) === count( array_filter( $secret ) );
+      return count( $key ) === count( array_filter( $secrets ) );
     }
 
     // test a single secret
