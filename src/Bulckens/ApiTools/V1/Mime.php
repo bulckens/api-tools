@@ -16,12 +16,28 @@ abstract class Mime {
   ];
 
   // Get mime output map
-  public static function type( $key = null ) {
-    if ( is_null( $key ) )
+  public static function type( $format = null ) {
+    if ( is_null( $format ) )
       return self::$map;
 
-    if ( isset( self::$map[$key] ) )
-      return self::$map[$key];
+    if ( isset( self::$map[$format] ) )
+      return self::$map[$format];
+  }
+
+  // Comment text string based on format
+  public static function comment( $format, $string ) {
+    switch ( $format ) {
+      case 'js':
+      case 'css':
+        return "/*\n$string\n*/";
+      break;
+      case 'html':
+        return "<!--\n$string\n-->";
+      break;
+      default:
+        return $string;
+      break;
+    }
   }
 
 }

@@ -8,6 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class Config {
 
+  protected static $env;
   protected static $root;
   protected static $config;
   protected static $file = 'api_tools.yml';
@@ -20,13 +21,13 @@ class Config {
 
       // get environment
       if ( isset( $config['generic']['methods']['env'] ) )
-        $env = call_user_func( $config['generic']['methods']['env'] );
+        self::$env = call_user_func( $config['generic']['methods']['env'] );
       else
         throw new MissingEnvMethodException( 'Environment method not defined' );
 
       // get environment config
-      if ( isset( $config[$env] ) )
-        self::$config = $config[$env];
+      if ( isset( $config[self::$env] ) )
+        self::$config = $config[self::$env];
       else
         throw new MissingEnvConfigException( 'Environment config not defined' );
     }
@@ -76,6 +77,14 @@ class Config {
     }
 
     return Str::finish( self::$root, '/' ) . $path;
+  }
+
+  // Test current environment
+  public static function env( $test = null ) {
+    if ( is_null( $test ) )
+      return self::$env;
+
+    return $test == self::$env;
   }
 
 }

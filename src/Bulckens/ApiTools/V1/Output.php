@@ -76,12 +76,21 @@ class Output {
       case 'txt':
       case 'css':
       case 'js':
+        // return error if error is given
         if ( isset( $this->output['error'] ))
-          return "/* --- error: {$this->output['error']} --- */";
+          return Mime::comment( $this->format, "error: {$this->output['error']}" );
 
         if ( isset( $this->output[$this->format] ) ) {
+          // stringify output
           $output = $this->output[$this->format];
-          return is_array( $output ) ? implode( "\n", $output ) : $output;
+          unset( $this->output[$this->format] );
+          $output = is_array( $output ) ? implode( "\n", $output ) : $output;
+
+          // add output status if verbose is set to true
+          if ( Config::get( 'verbose' ) )
+            $output .= Mime::comment( $this->format, ArrayHelper::toYaml( $this->output ) );
+
+          return $output;
         }
       break;
       default:
