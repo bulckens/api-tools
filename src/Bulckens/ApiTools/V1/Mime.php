@@ -7,6 +7,7 @@ abstract class Mime {
   protected static $map  = [
     'css'  => 'text/css'
   , 'dump' => 'text/plain'
+  , 'html' => 'text/html'
   , 'js'   => 'application/javascript'
   , 'json' => 'application/json'
   , 'txt'  => 'text/plain'

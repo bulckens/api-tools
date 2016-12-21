@@ -87,6 +87,7 @@ class Output {
       case 'dump':
         return print_r( $this->output, true );
       break;
+      case 'html':
       case 'txt':
       case 'css':
       case 'js':
