@@ -76,10 +76,12 @@ class Output {
       case 'txt':
       case 'css':
       case 'js':
-        if ( is_array( $this->output[$this->format] ) )
-          return implode( "\n", $this->output[$this->format] );
-        else
-          return $this->output[$this->format];
+        if ( isset( $this->output[$this->format] ) ) {
+          if ( is_array( $this->output[$this->format] ) )
+            return implode( "\n", $this->output[$this->format] );
+          else
+            return $this->output[$this->format];
+        }
       break;
       default:
         throw new UnknownFormatException( "Unknown format {$this->format}" );
