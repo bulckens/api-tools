@@ -77,7 +77,7 @@ class Output {
       case 'css':
       case 'js':
         if ( isset( $this->output['error'] ))
-          return $this->output['error'];
+          return "/* --- error: {$this->output['error']} --- */";
 
         if ( isset( $this->output[$this->format] ) ) {
           $output = $this->output[$this->format];
