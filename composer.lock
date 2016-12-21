@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "790202787f7560dbc794e8220abb8820",
-    "content-hash": "27f07f8a09e2561aca5ed17a7194306a",
+    "hash": "01d689bf6c10d2a8a93f5f3fe03e6cff",
+    "content-hash": "42e59c9b778c2326a6f7599dfb60cf3c",
     "packages": [
         {
             "name": "bulckens/helpers",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:bulckens/helpers.git",
-                "reference": "582937c11170d62f1f2aaba14164c32339dd540b"
+                "reference": "a456ce93ab276802bfbc4784b95c5d98d0ebec98"
             },
             "dist": {
                 "type": "git",
                 "url": "git@github.com:bulckens/helpers.git",
-                "reference": "582937c11170d62f1f2aaba14164c32339dd540b",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -40,7 +40,39 @@
                 }
             ],
             "description": "A collection of core helpers useful for any PHP app",
-            "time": "2016-11-16 14:48:41"
+            "time": "2016-12-18 13:57:18"
+        },
+        {
+            "name": "bulckens/statistics",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:bulckens/statistics.git",
+                "reference": "6db309450437036ef8f13465cc2bac3dffd9d28a"
+            },
+            "dist": {
+                "type": "git",
+                "url": "git@github.com:bulckens/statistics.git",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Bulckens": "src/"
+                }
+            },
+            "license": [
+                "Proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "wout",
+                    "email": "wout@mick-wout.com"
+                }
+            ],
+            "description": "Loading time and memory statistics for PHP apps",
+            "time": "2016-11-15 18:16:54"
         },
         {
             "name": "doctrine/inflector",
@@ -307,25 +339,31 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.1.6",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "7ff51b06c6c3d5cc6686df69004a42c69df09e27"
+                "reference": "a7095af4b97a0955f85c8989106c249fa649011f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/7ff51b06c6c3d5cc6686df69004a42c69df09e27",
-                "reference": "7ff51b06c6c3d5cc6686df69004a42c69df09e27",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/a7095af4b97a0955f85c8989106c249fa649011f",
+                "reference": "a7095af4b97a0955f85c8989106c249fa649011f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9"
             },
+            "require-dev": {
+                "symfony/console": "~2.8|~3.0"
+            },
+            "suggest": {
+                "symfony/console": "For validating YAML files using the lint command"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev"
+                    "dev-master": "3.2-dev"
                 }
             },
             "autoload": {
@@ -352,14 +390,15 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-24 18:41:13"
+            "time": "2016-12-10 10:07:06"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bulckens/helpers": 20
+        "bulckens/helpers": 20,
+        "bulckens/statistics": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

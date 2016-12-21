@@ -14,15 +14,23 @@ class Output {
   protected $map;
 
   public function __construct( $format, $options = [] ) {
-    $this->output  = [];
     $this->format  = $format;
     $this->status  = 200;
     $this->options = $options;
+
+    $this->clear();
   }
 
-  // Add output status
+  // Add output
   public function add( $output ) {
     $this->output = array_replace_recursive( $this->output, $output );
+
+    return $this;
+  }
+
+  // Clear all output
+  public function clear() {
+    $this->output = [];
 
     return $this;
   }
@@ -68,7 +76,10 @@ class Output {
       case 'txt':
       case 'css':
       case 'js':
-        return $this->output;
+        if ( is_array( $this->output[$this->format] ) )
+          return implode( "\n", $this->output[$this->format] );
+        else
+          return $this->output[$this->format];
       break;
       default:
         throw new UnknownFormatException( "Unknown format {$this->format}" );
