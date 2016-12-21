@@ -31,6 +31,9 @@ abstract class Mime {
       case 'css':
         return "/*\n$string\n*/";
       break;
+      case 'html':
+        return "<!--\n$string\n-->";
+      break;
       default:
         return $string;
       break;
