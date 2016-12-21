@@ -57,6 +57,21 @@ class Output {
     return $this->status < 400;
   }
 
+  // Get current output array
+  public function toArray() {
+    return $this->output;
+  }
+
+  // Data type tester
+  public function is( $format ) {
+    return $this->format == $format;
+  }
+
+  // Format getter
+  public function format() {
+    return $this->format;
+  }
+
   // Render output to desired format
   public function render() {
     switch ( $this->format ) {
@@ -72,7 +87,6 @@ class Output {
       case 'dump':
         return print_r( $this->output, true );
       break;
-      case 'html':
       case 'txt':
       case 'css':
       case 'js':
@@ -80,33 +94,26 @@ class Output {
         if ( isset( $this->output['error'] ))
           return Mime::comment( $this->format, "error: {$this->output['error']}" );
 
-        if ( isset( $this->output[$this->format] ) ) {
-          // stringify output
-          $output = $this->output[$this->format];
-          unset( $this->output[$this->format] );
-          $output = is_array( $output ) ? implode( "\n", $output ) : $output;
+        if ( isset( $this->output['body'] ) ) {
+          $body = $this->output['body'];
+          unset( $this->output['body'] );
+
+          // stringify body
+          if ( is_array( $body ) ) $body = implode( "\n", $body );
 
           // add output status if verbose is set to true
           if ( Config::get( 'verbose' ) )
-            $output .= Mime::comment( $this->format, ArrayHelper::toYaml( $this->output ) );
+            $body .= Mime::comment( $this->format, print_r( $this->output, true ) );
 
-          return $output;
+          return $body;
         }
+
+        return Mime::comment( $this->format, print_r( $this->output, true ) );
       break;
       default:
         throw new UnknownFormatException( "Unknown format {$this->format}" );
       break;
     }
-  }
-
-  // Data type tester
-  public function is( $format ) {
-    return $this->format == $format;
-  }
-
-  // Format getter
-  public function format() {
-    return $this->format;
   }
 }
 

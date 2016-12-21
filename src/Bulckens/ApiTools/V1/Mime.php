@@ -9,7 +9,6 @@ abstract class Mime {
   , 'dump' => 'text/plain'
   , 'js'   => 'application/javascript'
   , 'json' => 'application/json'
-  , 'html' => 'text/html'
   , 'txt'  => 'text/plain'
   , 'xml'  => 'application/xml'
   , 'yaml' => 'application/x-yaml'
@@ -30,9 +29,6 @@ abstract class Mime {
       case 'js':
       case 'css':
         return "/*\n$string\n*/";
-      break;
-      case 'html':
-        return "<!--\n$string\n-->";
       break;
       default:
         return $string;
