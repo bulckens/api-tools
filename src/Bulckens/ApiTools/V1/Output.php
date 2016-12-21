@@ -76,11 +76,12 @@ class Output {
       case 'txt':
       case 'css':
       case 'js':
+        if ( isset( $this->output['error'] ))
+          return $this->output['error'];
+
         if ( isset( $this->output[$this->format] ) ) {
-          if ( is_array( $this->output[$this->format] ) )
-            return implode( "\n", $this->output[$this->format] );
-          else
-            return $this->output[$this->format];
+          $output = $this->output[$this->format];
+          return is_array( $output ) ? implode( "\n", $output ) : $output;
         }
       break;
       default:
