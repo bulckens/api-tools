@@ -3,7 +3,6 @@
 namespace Bulckens\ApiTools\V1;
 
 use Exception;
-use Illuminate\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 
 class Config {
@@ -70,13 +69,18 @@ class Config {
     if ( ! self::$root ) {
       $dir = __DIR__;
       
+      // find vendor dir
       while ( ! preg_match( '/\/vendor$/', $dir ) )
         $dir = dirname( $dir );
 
-      self::$root = dirname( $dir ); 
+      // detect capistrano installation
+      if ( basename( dirname( $dir ) ) == 'shared' )
+        self::$root = dirname( dirname( $dir ) ) . '/current';
+      else
+        self::$root = dirname( $dir ); 
     }
 
-    return Str::finish( self::$root, '/' ) . $path;
+    return str_replace( '//', '/', self::$root . "/$path" );
   }
 
   // Test current environment
