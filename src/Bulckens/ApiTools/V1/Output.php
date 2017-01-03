@@ -10,6 +10,7 @@ class Output {
   protected $output;
   protected $format;
   protected $status;
+  protected $headers;
   protected $options;
   protected $map;
 
@@ -30,9 +31,22 @@ class Output {
 
   // Clear all output
   public function clear() {
-    $this->output = [];
+    $this->output  = [];
+    $this->headers = [];
 
     return $this;
+  }
+
+  // Add header
+  public function header( $key, $value ) {
+    array_push( $this->header, [ $key, $value ]);
+
+    return $this;
+  }
+
+  // Get headers
+  public function headers() {
+    return $this->headers;
   }
 
   // Return mime type
