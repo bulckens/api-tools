@@ -49,6 +49,13 @@ class Output {
     return $this->headers;
   }
 
+  // Set expires header
+  public function expires( $lifetime = 3600 ) {
+    return $this->header( 'Pragma', 'public' )
+                ->header( 'Cache-Control', "maxage=$lifetime" )
+                ->header( 'Expires', gmdate( 'D, d M Y H:i:s', time() + $lifetime ) . ' GMT' );
+  }
+
   // Return mime type
   public function mime() {
     return Mime::type( $this->format );
