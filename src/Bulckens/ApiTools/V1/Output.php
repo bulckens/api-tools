@@ -39,7 +39,7 @@ class Output {
 
   // Add header
   public function header( $key, $value ) {
-    array_push( $this->header, [ $key, $value ]);
+    array_push( $this->headers, [ $key, $value ]);
 
     return $this;
   }
