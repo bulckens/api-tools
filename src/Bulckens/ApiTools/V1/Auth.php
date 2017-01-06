@@ -39,12 +39,8 @@ class Auth {
     $age  = $time - $stamp;
 
     // get token key from uri value
-    if ( is_string( $this->secret_key ) && preg_match( '/^uri\.([a-z0-9\_\-]+)/', $this->secret_key, $match ) ) {
-      $route = $req->getAttribute( 'route' );
-      $param = $route->getArgument( $match[1] );
-
-      $this->secret_key = $param;
-    }
+    if ( is_string( $this->secret_key ) && preg_match( '/^uri\.([a-z0-9\_\-]+)/', $this->secret_key, $match ))
+      $this->secret_key = $req->getAttribute( 'route' )->getArgument( $match[1] );
 
     // verify existance of local config file
     if ( ! Config::exists() ) {
