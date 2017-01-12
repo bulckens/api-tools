@@ -114,7 +114,7 @@ class Output {
       case 'js':
         // return error if error is given
         if ( isset( $this->output['error'] ))
-          return Mime::comment( $this->format, "error: {$this->output['error']}" );
+          return Mime::comment( "error: {$this->output['error']}", $this->format );
 
         if ( isset( $this->output['body'] ) ) {
           $body = $this->output['body'];
@@ -125,12 +125,12 @@ class Output {
 
           // add output status if verbose is set to true
           if ( Config::get( 'verbose' ) )
-            $body .= Mime::comment( $this->format, print_r( $this->output, true ) );
+            $body .= Mime::comment( print_r( $this->output, true ), $this->format );
 
           return $body;
         }
 
-        return Mime::comment( $this->format, print_r( $this->output, true ) );
+        return Mime::comment( print_r( $this->output, true ), $this->format );
       break;
       default:
         throw new UnknownFormatException( "Unknown format {$this->format}" );

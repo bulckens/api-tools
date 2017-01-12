@@ -25,7 +25,7 @@ abstract class Mime {
   }
 
   // Comment text string based on format
-  public static function comment( $format, $string ) {
+  public static function comment( $string, $format ) {
     switch ( $format ) {
       case 'js':
       case 'css':

@@ -45,8 +45,8 @@ abstract class Model {
     return $this;
   }
 
-  // Build uri
-  public function uri( $format = 'json' ) {
+  // Build path with format
+  public function path( $format = 'json' ) {
     $uri = "{$this->path()}.$format";
 
     // add token
@@ -57,7 +57,7 @@ abstract class Model {
 
   // Get server with optional path
   public function source( $path = '' ) {
-    if ( $source = Source::get( $this->key() ) ) {
+    if ( $source = Source::get( $this->uri( 'source' ) ) ) {
       $source = preg_replace( '/\/$/', '', $source );
 
       return "$source$path";
@@ -66,14 +66,10 @@ abstract class Model {
     }
   }
 
-  // Get path from uri
-  public function path() {
-    return explode( ':', $this->uri )[1];
-  }
-
-  // Get key from uri
-  public function key() {
-    return explode( ':', $this->uri )[0];
+  // Get part from uri
+  public function uri( $key ) {
+    $parts = explode( ':', $this->uri );
+    return $parts[$key == 'source' ? 0 : 1];
   }
 
   // Perform GET request
@@ -100,7 +96,7 @@ abstract class Model {
   public function perform( $method, $format = 'json' ) {
     return call_user_func(
       "Requests::$method"
-    , $this->source( $this->uri( $format ) )
+    , $this->source( $this->path( $format ) )
     , [ 'Accept' => Mime::type( $format ) ]
     , $this->data
     );
