@@ -9,7 +9,6 @@ abstract class Model {
   protected $uri   = '';
   protected $data  = [];
   protected $query = [];
-  protected $source;
 
   // Register new uri part
   public function register( $part ) {
@@ -48,7 +47,7 @@ abstract class Model {
 
   // Build uri
   public function uri( $format = 'json' ) {
-    $uri = "{$this->uri}.$format";
+    $uri = "{$this->path()}.$format";
 
     // add token
     $this->query['token'] = Auth::token( $uri );
@@ -58,13 +57,23 @@ abstract class Model {
 
   // Get server with optional path
   public function source( $path = '' ) {
-    if ( $source = Source::get( $this->source ) ) {
+    if ( $source = Source::get( $this->key() ) ) {
       $source = preg_replace( '/\/$/', '', $source );
 
       return "$source$path";
     } else {
       throw new MissingServerException( 'API source not defined' );
     }
+  }
+
+  // Get path from uri
+  public function path() {
+    return explode( ':', $this->uri )[1];
+  }
+
+  // Get key from uri
+  public function key() {
+    return explode( ':', $this->uri )[0];
   }
 
   // Perform GET request
