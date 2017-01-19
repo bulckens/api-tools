@@ -58,4 +58,65 @@ class ConfigSpec extends ObjectBehavior {
     self::file( 'api_tools.yml' );
   }
 
+
+  // File method
+  function it_gets_the_config_file_path() {
+    $this::file()->shouldEndWith( 'config/api_tools.yml' );
+  }
+
+  function it_sets_the_config_file_path() {
+    $this::file( 'api_tools.render.yml' )->shouldBe( null );
+    $this::file()->shouldEndWith( 'config/api_tools.render.yml' );
+    self::file( 'api_tools.yml' );
+  }
+
+
+  // Root method
+  function it_gets_the_root_path() {
+    $this::root()->shouldEndWith( 'api-tools/' );
+  }
+
+  function it_gets_the_root_path_adding_the_given_path() {
+    $this::root( '/falama/sinoka/male.fsg' )->shouldEndWith( 'api-tools/falama/sinoka/male.fsg' );
+  }
+
+
+  // Env method
+  function it_gets_the_current_environment() {
+    $this::env()->shouldBe( 'test' );
+  }
+
+  function it_tests_positive_with_the_given_environment_against_the_current_environment() {
+    $this::env( 'test' )->shouldBe( true );
+  }
+
+  function it_tests_negative_with_the_given_environment_against_the_current_environment() {
+    $this::env( 'falalalalala' )->shouldBe( false );
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
