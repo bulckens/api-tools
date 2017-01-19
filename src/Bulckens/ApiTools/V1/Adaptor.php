@@ -23,6 +23,9 @@ abstract class Adaptor {
       if ( $adaptor->args( 'format' ) ) {
         // prepare output
         $adaptor->output = new Output( $adaptor->args( 'format' ) );
+
+        // add current route
+        $adaptor->output->path( $req->getUri()->getPath() );
         
         // call before
         if ( method_exists( $adaptor, 'before' ) )

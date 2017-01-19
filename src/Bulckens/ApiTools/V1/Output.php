@@ -12,7 +12,7 @@ class Output {
   protected $status;
   protected $headers;
   protected $options;
-  protected $map;
+  protected $path;
 
   public function __construct( $format, $options = [] ) {
     $this->format  = $format;
@@ -24,6 +24,9 @@ class Output {
 
   // Add output
   public function add( $output ) {
+    if ( ! is_array( $output ))
+      throw new InvalidArgumentException( 'Only an array is accepted' );
+
     $this->output = array_replace_recursive( $this->output, $output );
 
     return $this;
@@ -93,8 +96,29 @@ class Output {
     return $this->format;
   }
 
+  // Path getter/setter
+  public function path( $path = null ) {
+    if( is_null( $path ))
+      return $this->path;
+
+    $this->path = $path;
+
+    return $this;
+  }
+
   // Render output to desired format
   public function render() {
+    // render output using user defined method
+    if ( $method = Config::get( 'methods.render' ) ) {
+      if ( is_callable( $method ) ) {
+        if ( $view = call_user_func( $method, $this ) )
+          return $view;
+      } else {
+        throw new RenderMethodNotCallableException( "Render method $method could not be found" );
+      }
+    }
+
+    // render default output
     switch ( $this->format ) {
       case 'json':
         return ArrayHelper::toJson( $this->output );
@@ -107,6 +131,9 @@ class Output {
       break;
       case 'dump':
         return print_r( $this->output, true );
+      break;
+      case 'array':
+        return $this->output;
       break;
       case 'html':
       case 'txt':
@@ -141,4 +168,6 @@ class Output {
 
 
 // Exceptions
-class UnknownFormatException extends Exception {}
+class UnknownFormatException            extends Exception {}
+class RenderMethodNotCallableException  extends Exception {}
+class InvalidArgumentException          extends Exception {}
