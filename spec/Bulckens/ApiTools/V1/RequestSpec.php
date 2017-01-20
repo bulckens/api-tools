@@ -9,11 +9,15 @@ use Prophecy\Argument;
 class RequestSpec extends ObjectBehavior {
 
   function let() {
-    $this->beConstructedWith( 'test' );
+    $this->beConstructedWith( 'location' );
   }
 
   function it_stores_the_given_source_key() {
-    $this->uri( 'source' )->shouldBe( 'test' );
+    $this->part( 'source' )->shouldBe( 'location' );
+  }
+
+  function it_stores_the_given_path_key() {
+    $this->part( 'path' )->shouldBe( 'api/v1' );
   }
 
 }

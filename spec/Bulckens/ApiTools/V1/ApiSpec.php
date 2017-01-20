@@ -12,4 +12,8 @@ class ApiSpec extends ObjectBehavior {
     $this->request( 'test' )->shouldHaveType( 'Bulckens\\ApiTools\\V1\\Request' );
   }
 
+  function it_creates_a_new_request_with_the_given_source() {
+    $this->request( 'test' )->part( 'source' )->shouldBe( 'test' );
+  }
+
 }

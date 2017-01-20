@@ -8,6 +8,7 @@ use Prophecy\Argument;
 
 class MimeTestSpec extends ObjectBehavior {
 
+  // Type method
   function it_returns_the_corresponding_mime_type_for_given_format() {
     $this::type( 'json' )->shouldBe( 'application/json' );
   }
@@ -16,6 +17,8 @@ class MimeTestSpec extends ObjectBehavior {
     $this::type()->shouldBeArray();
   }
 
+
+  // Comment method
   function it_creates_a_comment_from_a_string_for_js_format() {
     $this::comment( 'a string', 'js' )->shouldBe( "/*\na string\n*/" );
   }

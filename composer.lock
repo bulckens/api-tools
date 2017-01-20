@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e04dbf79553bb5034bf05a3ac703ba8",
+    "content-hash": "d18d5f9cdebcda0220531cda0e9a82fa",
     "packages": [
         {
             "name": "bulckens/helpers",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:bulckens/helpers.git",
-                "reference": "305c405b0d1da2961be17b9e667628e8b0c0396f"
+                "reference": "03cf44c44f94ab93ac737a285c36f08d69145431"
             },
             "dist": {
                 "type": "git",
@@ -22,6 +22,9 @@
             },
             "require": {
                 "symfony/yaml": "^3.1"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^3.2"
             },
             "type": "library",
             "autoload": {
@@ -39,7 +42,7 @@
                 }
             ],
             "description": "A collection of core helpers useful for any PHP app",
-            "time": "2017-01-19 11:14:46"
+            "time": "2017-01-20 20:45:51"
         },
         {
             "name": "bulckens/statistics",

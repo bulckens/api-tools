@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "symfony/yaml": "^3.1",
+        "symfony/yaml": "^3.2",
         "illuminate/support": "^5.3",
         "bulckens/helpers": "dev-master",
         "bulckens/statistics": "dev-master",

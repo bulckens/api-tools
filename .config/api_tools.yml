@@ -14,6 +14,8 @@ development:
 
 test:
   <<: *generic
+  sources:
+    test: "http://fake.zwartopwit.be/api-tools"
 
 labs:
   <<: *generic
