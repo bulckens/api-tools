@@ -110,13 +110,17 @@ class Output {
   public function purify() {
     if ( $this->ok() ) {
       unset( $this->output['error'] );
+
+      if ( ! isset( $this->output['success'] ) )
+        $this->output['success'] = "http_codes.{$this->status()}";
+
     } else {
       foreach ( $this->output as $key => $value )
         if ( $key != 'error' && $key != 'details' )
           unset( $this->output[$key] );
 
       if ( ! isset( $this->output['error'] ) )
-        $this->output['error'] = "errors.{$this->status()}";
+        $this->output['error'] = "http_codes.{$this->status()}";
     }
     
   }
