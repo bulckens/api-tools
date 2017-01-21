@@ -220,4 +220,17 @@ class ModelTestSpec extends ObjectBehavior {
     $this->delete()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
   }
 
+
+  // Error codes
+  function it_returns_a_401_error_with_an_invalid_api_secret() {
+    $this->secret( 'generic' )->source( 'test' )->resource( 'api-tools' )->resource( 'forbidden' );
+    $this->get()->status()->shouldBe( 401 );
+    $this->get()->parse()->shouldHaveKey( 'error' );
+  }
+
+  function it_returns_a_404_error_for_a_non_existing_resource() {
+    $this->secret( 'generic' )->source( 'test' )->resource( 'api-tools' )->resource( 'missing' );
+    $this->get()->status()->shouldBe( 404 );
+  }
+
 }
