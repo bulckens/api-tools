@@ -7,6 +7,7 @@ use Bulckens\Helpers\ArrayHelper;
 class Response {
 
   protected $format;
+  protected $status = 200;
   protected $body;
 
   public function __construct( $format ) {
@@ -18,7 +19,17 @@ class Response {
     return $this->format;
   }
 
-  // Returns stired body
+  // Returns stored status
+  public function status( $status = null ) {
+    if ( is_null( $status ) )
+      return $this->status;
+
+    $this->status = $status;
+
+    return $this;
+  }
+
+  // Returns stored body
   public function body( $body = null ) {
     if ( is_null( $body ) )
       return $this->body;

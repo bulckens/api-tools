@@ -25,7 +25,7 @@ class Output {
   // Add output
   public function add( $output ) {
     if ( ! is_array( $output ))
-      throw new InvalidArgumentException( 'Only an array is accepted' );
+      throw new OutputArgumentInvalidException( 'Only an array is accepted' );
 
     $this->output = array_replace_recursive( $this->output, $output );
 
@@ -114,7 +114,7 @@ class Output {
         if ( $view = call_user_func( $method, $this ) )
           return $view;
       } else {
-        throw new RenderMethodNotCallableException( "Render method $method could not be found" );
+        throw new OutputRenderMethodNotCallableException( "Render method $method could not be found" );
       }
     }
 
@@ -160,7 +160,7 @@ class Output {
         return Mime::comment( print_r( $this->output, true ), $this->format );
       break;
       default:
-        throw new UnknownFormatException( "Unknown format {$this->format}" );
+        throw new OutputFormatUnknownException( "Unknown format {$this->format}" );
       break;
     }
   }
@@ -168,6 +168,6 @@ class Output {
 
 
 // Exceptions
-class UnknownFormatException            extends Exception {}
-class RenderMethodNotCallableException  extends Exception {}
-class InvalidArgumentException          extends Exception {}
+class OutputFormatUnknownException            extends Exception {}
+class OutputRenderMethodNotCallableException  extends Exception {}
+class OutputArgumentInvalidException          extends Exception {}

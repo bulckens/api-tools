@@ -48,10 +48,10 @@ class OutputSpec extends ObjectBehavior {
   }
 
   function it_does_not_accept_anything_other_than_an_array_for_add() {
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\InvalidArgumentException' )->duringAdd( 'string' );
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\InvalidArgumentException' )->duringAdd( null );
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\InvalidArgumentException' )->duringAdd( 123 );
-    $this->shouldNotThrow( 'Bulckens\ApiTools\V1\InvalidArgumentException' )->duringAdd([ 'I' => 'can' ]);
+    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputArgumentInvalidException' )->duringAdd( 'string' );
+    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputArgumentInvalidException' )->duringAdd( null );
+    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputArgumentInvalidException' )->duringAdd( 123 );
+    $this->shouldNotThrow( 'Bulckens\ApiTools\V1\OutputArgumentInvalidException' )->duringAdd([ 'I' => 'can' ]);
   }
 
 
@@ -284,7 +284,7 @@ class OutputSpec extends ObjectBehavior {
   function it_should_not_accept_any_other_formats() {
     $this->beConstructedWith( 'png' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\UnknownFormatException' )->duringRender();
+    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputFormatUnknownException' )->duringRender();
   }
 
   function it_should_use_the_alternative_render_method() {
@@ -302,7 +302,7 @@ class OutputSpec extends ObjectBehavior {
 
     $this->beConstructedWith( 'html' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\RenderMethodNotCallableException' )->duringRender();
+    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputRenderMethodNotCallableException' )->duringRender();
 
     Config::file( 'api_tools.yml' );
   }

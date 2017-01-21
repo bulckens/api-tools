@@ -19,6 +19,21 @@ class ResponseSpec extends ObjectBehavior {
   }
 
 
+  // Status
+  function it_returns_the_status() {
+    $this->status( 404 );
+    $this->status()->shouldBe( 404 );
+  }
+
+  function it_sets_the_status() {
+    $this->status( 200 )->status()->shouldBe( 200 );
+  }
+
+  function it_returns_itself_after_setting_the_status() {
+    $this->status( 418 )->shouldBe( $this );
+  }
+
+
   // Body method
   function it_returns_the_body() {
     $this->body( 'Somebody' );

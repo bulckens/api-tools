@@ -9,11 +9,15 @@ use Prophecy\Argument;
 class ApiSpec extends ObjectBehavior {
   
   function it_creates_a_new_request_instance() {
-    $this->request( 'test' )->shouldHaveType( 'Bulckens\\ApiTools\\V1\\Request' );
+    $this::request( 'test', 'generic' )->shouldHaveType( 'Bulckens\\ApiTools\\V1\\Request' );
   }
 
   function it_creates_a_new_request_with_the_given_source() {
-    $this->request( 'test' )->part( 'source' )->shouldBe( 'test' );
+    $this::request( 'test', 'generic' )->source()->shouldBe( 'http://fake.zwartopwit.be' );
+  }
+
+  function it_creates_a_new_request_with_the_given_secret() {
+    $this::request( 'test', 'generic' )->secret()->shouldStartWith( '12345678910111213' );
   }
 
 }

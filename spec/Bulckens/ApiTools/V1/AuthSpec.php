@@ -25,7 +25,7 @@ class AuthSpec extends ObjectBehavior {
   }
 
   function it_fails_when_the_secret_could_not_be_found() {
-    $this::shouldThrow( 'Bulckens\ApiTools\V1\MissingSecretException' )->duringToken( '/tasty/bears.xml', null, 'hihihi' );
+    $this::shouldThrow( 'Bulckens\ApiTools\V1\AuthMissingSecretException' )->duringToken( '/tasty/bears.xml', null, 'hihihi' );
   }
 
 

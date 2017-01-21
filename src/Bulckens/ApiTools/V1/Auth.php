@@ -96,7 +96,7 @@ class Auth {
       return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
 
     } else {
-      throw new MissingSecretException( 'Missing API secret!' );
+      throw new AuthMissingSecretException( 'Missing API secret!' );
     }
   }
 
@@ -108,4 +108,4 @@ class Auth {
 }
 
 // Exceptions
-class MissingSecretException extends Exception {}
+class AuthMissingSecretException extends Exception {}
