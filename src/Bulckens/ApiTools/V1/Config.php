@@ -86,6 +86,11 @@ class Config {
         // detect capistrano installation
         if ( basename( dirname( self::$root ) ) == 'shared' )
           self::$root = dirname( dirname( self::$root ) ) . '/current';
+
+        // detect composer installation
+        else if ( basename( dirname( self::$root ) ) == 'bulckens' && basename( dirname( dirname( self::$root ) ) ) == 'vendor' )
+          self::$root = dirname( dirname( dirname( self::$root ) ) );
+
         else
           self::$root = dirname( self::$root );
 

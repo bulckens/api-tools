@@ -226,6 +226,38 @@ class OutputSpec extends ObjectBehavior {
   }
 
 
+  // Purify method
+  function it_purifies_the_output_when_the_status_is_ok() {
+    $this->beConstructedWith( 'array' );
+    $this->add([
+      'error'    => 'bad'
+    , 'success'  => 'good'
+    , 'details'  => [ 'unimportant' => 'right now' ]
+    , 'resource' => 'which is not there'
+    ]);
+    $this->status( 200 )->purify();
+    $this->render()->shouldHaveKey( 'success' );
+    $this->render()->shouldHaveKey( 'resource' );
+    $this->render()->shouldHaveKey( 'details' );
+    $this->render()->shouldNotHaveKey( 'error' );
+  }
+
+  function it_purifies_the_output_when_the_status_is_not_ok() {
+    $this->beConstructedWith( 'array' );
+    $this->add([
+      'error'    => 'bad'
+    , 'success'  => 'good'
+    , 'details'  => [ 'unimportant' => 'right now' ]
+    , 'resource' => 'which is not there'
+    ]);
+    $this->status( 418 )->purify();
+    $this->render()->shouldHaveKey( 'error' );
+    $this->render()->shouldHaveKey( 'details' );
+    $this->render()->shouldNotHaveKey( 'success' );
+    $this->render()->shouldNotHaveKey( 'resource' );
+  }
+
+
   // Render method
   function it_renders_the_output_as_json() {
     $this->beConstructedWith( 'json' );
@@ -281,13 +313,13 @@ class OutputSpec extends ObjectBehavior {
     $this->render()->shouldStartWith( "/*\nArray" );
   }
 
-  function it_should_not_accept_any_other_formats() {
+  function it_does_not_accept_any_other_formats() {
     $this->beConstructedWith( 'png' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputFormatUnknownException' )->duringRender();
   }
 
-  function it_should_use_the_alternative_render_method() {
+  function it_uses_the_alternative_render_method() {
     Config::file( 'api_tools.render.yml' );
 
     $this->beConstructedWith( 'html' );
@@ -297,7 +329,7 @@ class OutputSpec extends ObjectBehavior {
     Config::file( 'api_tools.yml' );
   }
 
-  function it_should_fail_if_the_defined_render_method_is_not_callable() {
+  function it_fails_if_the_defined_render_method_is_not_callable() {
     Config::file( 'api_tools.render_fail.yml' );
 
     $this->beConstructedWith( 'html' );
@@ -305,6 +337,11 @@ class OutputSpec extends ObjectBehavior {
     $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputRenderMethodNotCallableException' )->duringRender();
 
     Config::file( 'api_tools.yml' );
+  }
+
+  function it_only_outputs_an_error_when_the_status_is_not_ok() {
+    $this->add([ 'fine' => 'young canibals' ])->status( 418 );
+    $this->render()->shouldBe( '{"error":"errors.418"}' );
   }
 
 }

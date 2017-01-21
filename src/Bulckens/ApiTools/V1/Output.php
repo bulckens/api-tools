@@ -106,8 +106,26 @@ class Output {
     return $this;
   }
 
+  // Purify output based on status code
+  public function purify() {
+    if ( $this->ok() ) {
+      unset( $this->output['error'] );
+    } else {
+      foreach ( $this->output as $key => $value )
+        if ( $key != 'error' && $key != 'details' )
+          unset( $this->output[$key] );
+
+      if ( ! isset( $this->output['error'] ) )
+        $this->output['error'] = "errors.{$this->status()}";
+    }
+    
+  }
+
   // Render output to desired format
   public function render() {
+    // make sure only reuired values are rendered
+    $this->purify();
+
     // render output using user defined method
     if ( $method = Config::get( 'methods.render' ) ) {
       if ( is_callable( $method ) ) {
@@ -133,7 +151,7 @@ class Output {
         return print_r( $this->output, true );
       break;
       case 'array':
-        return $this->output;
+        return $this->toArray();
       break;
       case 'html':
       case 'txt':
