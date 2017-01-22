@@ -16,8 +16,12 @@ class ApiSpec extends ObjectBehavior {
     $this::request( 'test', 'generic' )->source()->shouldBe( 'http://fake.zwartopwit.be' );
   }
 
+  function it_creates_a_new_request_with_the_default_secret() {
+    $this::request( 'test' )->secret()->shouldBe( '1234567891011121314151617181920212223242526272829303132333435363' );
+  }
+
   function it_creates_a_new_request_with_the_given_secret() {
-    $this::request( 'test', 'generic' )->secret()->shouldStartWith( '12345678910111213' );
+    $this::request( 'test', 'reverse' )->secret()->shouldBe( '3635343332313039282726252423222120291817161514131211101987654321' );
   }
 
 }
