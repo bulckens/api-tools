@@ -303,19 +303,19 @@ class OutputSpec extends ObjectBehavior {
   function it_renders_the_output_as_json() {
     $this->beConstructedWith( 'json' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
-    $this->render()->shouldBe( '{"candy":{"ken":"pink"},"success":"http_codes.200"}' );
+    $this->render()->shouldBe( '{"candy":{"ken":"pink"},"success":"status.200"}' );
   }
 
   function it_renders_the_output_as_yaml() {
     $this->beConstructedWith( 'yaml' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
-    $this->render()->shouldBe( "candy:\n  ken: pink\nsuccess: http_codes.200\n" );
+    $this->render()->shouldBe( "candy:\n  ken: pink\nsuccess: status.200\n" );
   }
 
   function it_renders_the_output_as_xml() {
     $this->beConstructedWith( 'xml' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
-    $this->render()->shouldBe( "<?xml version=\"1.0\"?>\n<root><candy><ken>pink</ken></candy><success>http_codes.200</success></root>\n" );
+    $this->render()->shouldBe( "<?xml version=\"1.0\"?>\n<root><candy><ken>pink</ken></candy><success>status.200</success></root>\n" );
   }
 
   function it_renders_the_output_as_dump() {
@@ -327,7 +327,7 @@ class OutputSpec extends ObjectBehavior {
   function it_renders_the_output_as_array() {
     $this->beConstructedWith( 'array' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
-    $this->render()->shouldBe( [ 'candy' => [ 'ken' => 'pink' ], 'success' => 'http_codes.200' ] );
+    $this->render()->shouldBe( [ 'candy' => [ 'ken' => 'pink' ], 'success' => 'status.200' ] );
   }
 
   function it_renders_the_output_as_html() {
@@ -382,7 +382,7 @@ class OutputSpec extends ObjectBehavior {
 
   function it_only_outputs_an_error_when_the_status_is_not_ok() {
     $this->add([ 'fine' => 'young canibals' ])->status( 418 );
-    $this->render()->shouldBe( '{"error":"http_codes.418"}' );
+    $this->render()->shouldBe( '{"error":"status.418"}' );
   }
 
 }

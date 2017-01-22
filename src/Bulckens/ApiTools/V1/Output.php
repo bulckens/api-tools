@@ -112,7 +112,7 @@ class Output {
       unset( $this->output['error'] );
 
       if ( ! isset( $this->output['success'] ) )
-        $this->output['success'] = "http_codes.{$this->status()}";
+        $this->output['success'] = "status.{$this->status()}";
 
     } else {
       foreach ( $this->output as $key => $value )
@@ -120,7 +120,7 @@ class Output {
           unset( $this->output[$key] );
 
       if ( ! isset( $this->output['error'] ) )
-        $this->output['error'] = "http_codes.{$this->status()}";
+        $this->output['error'] = "status.{$this->status()}";
     }
     
   }
