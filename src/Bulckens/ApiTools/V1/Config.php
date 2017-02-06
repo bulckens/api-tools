@@ -65,6 +65,9 @@ class Config {
     if ( is_null( $file ) ) {
       $file = self::root( 'config/' . self::$file );
 
+      if ( ! file_exists( $file ) )
+        $file = self::root( 'dev/config/' . self::$file );        
+
       if ( file_exists( $file ) )
         return $file;
 
@@ -82,7 +85,7 @@ class Config {
       $depth = 0;
       
       // find root dir
-      while ( ! file_exists( self::$root . "/config/api_tools.yml" ) && $depth < 20 ) {
+      while ( ! file_exists( self::$root . '/config/' . self::$file ) && ! file_exists( self::$root . '/dev/config/' . self::$file ) && $depth < 20 ) {
         // detect capistrano installation
         if ( basename( dirname( self::$root ) ) == 'shared' )
           self::$root = dirname( dirname( self::$root ) ) . '/current';
