@@ -2,7 +2,7 @@
 
 namespace Bulckens\ApiTools\V1;
 
-use Bulckens\Statistics\Statistics;
+use Bulckens\AppTools\Statistics;
 
 abstract class Adaptor {
 

@@ -13,17 +13,12 @@
         {   "type": "vcs",
             "url": "git@github.com:bulckens/helpers.git",
             "no-api": true
-        },
-        {   "type": "vcs",
-            "url": "git@github.com:bulckens/statistics.git",
-            "no-api": true
         }
     ],
     "require": {
         "symfony/yaml": "^3.2",
         "illuminate/support": "^5.3",
         "bulckens/helpers": "dev-master",
-        "bulckens/statistics": "dev-master",
         "rmccue/requests": "^1.7"
     },
     "dist": {
