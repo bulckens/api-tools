@@ -3,7 +3,7 @@
 namespace spec\Bulckens\ApiTools\V1;
 
 use Bulckens\ApiTools\V1\Output;
-use Bulckens\ApiTools\V1\Config;
+use Bulckens\ApiTools\V1\Api;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -361,23 +361,23 @@ class OutputSpec extends ObjectBehavior {
   }
 
   function it_uses_the_alternative_render_method() {
-    Config::file( 'api_tools.render.yml' );
+    Api::get()->file( 'api.render.yml' );
 
     $this->beConstructedWith( 'html' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->render()->shouldBe( '<html><head><title></title></head><body>Rendered from the outside!</body></html>' );
 
-    Config::file( 'api_tools.yml' );
+    Api::get()->file( 'api.yml' );
   }
 
   function it_fails_if_the_defined_render_method_is_not_callable() {
-    Config::file( 'api_tools.render_fail.yml' );
+    Api::get()->file( 'api.render_fail.yml' );
 
     $this->beConstructedWith( 'html' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputRenderMethodNotCallableException' )->duringRender();
 
-    Config::file( 'api_tools.yml' );
+    Api::get()->file( 'api.yml' );
   }
 
   function it_only_outputs_an_error_when_the_status_is_not_ok() {

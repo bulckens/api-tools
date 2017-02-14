@@ -14,11 +14,22 @@
             "url": "git@github.com:bulckens/helpers.git",
             "no-api": true
         }
+        ,
+        {   "type": "vcs",
+            "url": "git@github.com:bulckens/cli-tools.git",
+            "no-api": true
+        },
+        {   "type": "vcs",
+            "url": "git@github.com:bulckens/app-tools.git",
+            "no-api": true
+        }
     ],
     "require": {
         "symfony/yaml": "^3.2",
         "illuminate/support": "^5.3",
         "bulckens/helpers": "dev-master",
+        "bulckens/cli-tools": "dev-master",
+        "bulckens/app-tools": "dev-master",
         "rmccue/requests": "^1.7"
     },
     "dist": {

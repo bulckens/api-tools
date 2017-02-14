@@ -6,7 +6,7 @@ abstract class Source {
 
   // Get source
   public static function get( $key ) {
-    return Config::get( "sources.$key" );
+    return Api::get()->config( "sources.$key" );
   }
 
 }

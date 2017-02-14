@@ -58,7 +58,7 @@ abstract class Model {
       if ( $source = Source::get( $this->source ) )
         return preg_replace( '/\/$/', '', $source );
 
-      throw new ModelMissingSourceException( 'API source not defined' );
+      throw new ModelMissingSourceException( "API source $this->source not defined" );
     }
 
     $this->source = $source;
@@ -72,7 +72,7 @@ abstract class Model {
       if ( $secret = Secret::get( $this->secret ) )
         return $secret;
 
-      throw new ModelMissingSecretException( 'API secret not defined' );
+      throw new ModelMissingSecretException( "API secret $this->secret not defined" );
     }
 
     $this->secret = $secret;

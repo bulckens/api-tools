@@ -2,12 +2,19 @@
 
 namespace spec\Bulckens\ApiTools\V1;
 
+use Bulckens\AppTools\App;
+use Bulckens\ApiTools\V1\Api;
 use Bulckens\ApiTools\V1\Secret;
 use Bulckens\ApiTools\V1\Auth;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class AuthSpec extends ObjectBehavior {
+
+  function let() {
+    new App( 'dev', __DIR__, 4 );
+    new Api( 'dev' );
+  }
 
   // Token method
   function it_generates_a_token() {

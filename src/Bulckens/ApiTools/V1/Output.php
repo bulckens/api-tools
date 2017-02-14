@@ -131,7 +131,7 @@ class Output {
     $this->purify();
 
     // render output using user defined method
-    if ( $method = Config::get( 'methods.render' ) ) {
+    if ( $method = Api::get()->config( 'methods.render' ) ) {
       if ( is_callable( $method ) ) {
         if ( $view = call_user_func( $method, $this ) )
           return $view;
@@ -173,7 +173,7 @@ class Output {
           if ( is_array( $body ) ) $body = implode( "\n", $body );
 
           // add output status if verbose is set to true
-          if ( Config::get( 'verbose' ) )
+          if ( Api::get()->config( 'verbose' ) )
             $body .= Mime::comment( print_r( $this->output, true ), $this->format );
 
           return $body;

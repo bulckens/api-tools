@@ -2,11 +2,11 @@
 
 namespace spec\Bulckens\ApiTests\V1;
 
-use Bulckens\ApiTests\V1\MimeTest;
+use Bulckens\ApiTests\V1\TestMime;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class MimeTestSpec extends ObjectBehavior {
+class TestMimeSpec extends ObjectBehavior {
 
   // Type method
   function it_returns_the_corresponding_mime_type_for_given_format() {

@@ -2,11 +2,11 @@
 
 namespace Bulckens\ApiTests\V1;
 
-class AppTest {
+class TestApp {
 
   // Parent app environment method
   public static function env() {
-    return 'test';
+    return 'dev';
   }
 
   // Parent app render method

@@ -8,9 +8,9 @@ abstract class Adaptor {
 
   protected $output;
   protected $respond_to = 'all';
-  public $__req;
-  public $__res;
-  public $__args;
+  protected $__req;
+  protected $__res;
+  protected $__args;
 
   // Build an action
   public function action( $action ) {
@@ -29,14 +29,14 @@ abstract class Adaptor {
         
         // call before
         if ( method_exists( $adaptor, 'before' ) )
-          $adaptor->before( $req, $res, $args );
+          $adaptor->before();
 
         // call action
-        $res = $adaptor->$action( $req, $res, $args );
+        $res = $adaptor->$action();
         
         // call after
         if ( method_exists( $adaptor, 'after' ) )
-          $adaptor->after( $req, $res, $args );
+          $adaptor->after();
 
         return $res;
 

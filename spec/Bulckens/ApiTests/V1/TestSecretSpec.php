@@ -2,12 +2,19 @@
 
 namespace spec\Bulckens\ApiTests\V1;
 
-use Bulckens\ApiTests\V1\SecretTest;
+use Bulckens\AppTools\App;
+use Bulckens\ApiTools\V1\Api;
+use Bulckens\ApiTests\V1\TestSecret;
 use Bulckens\ApiTools\V1\Config;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class SecretTestSpec extends ObjectBehavior {
+class TestSecretSpec extends ObjectBehavior {
+
+  function let() {
+    new App( 'dev', __DIR__, 4 );
+    new Api( 'dev' );
+  }
 
   // Get method
   function it_returns_a_secret_for_the_corresponding_given_key() {
@@ -15,15 +22,17 @@ class SecretTestSpec extends ObjectBehavior {
   }
 
   function it_returns_a_secret_for_the_corresponding_given_key_using_the_dynamic_secret_method() {
-    Config::file( 'api_tools.secret.yml' );
+    $api = Api::get();
+    $api->file( 'api.secret.yml' );
     $this::get( 'generic' )->shouldBe( 'fallalifallala' );
-    Config::file( 'api_tools.yml' );
+    $api->file( 'api.yml' );
   }
 
   function it_fails_if_the_defined_secret_method_is_not_callable() {
-    Config::file( 'api_tools.secret_fail.yml' );
+    $api = Api::get();
+    $api->file( 'api.secret_fail.yml' );
     $this::shouldThrow( 'Bulckens\ApiTools\V1\SecretMethodNotCallableException' )->duringGet( 'generic' );
-    Config::file( 'api_tools.yml' );
+    $api->file( 'api.yml' );
   }
 
 

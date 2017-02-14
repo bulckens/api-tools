@@ -9,7 +9,7 @@ abstract class Secret {
   // Get secret
   public static function get( $key ) {
     // retreive secret using user defined method
-    if ( $method = Config::get( 'methods.secret' ) ) {
+    if ( $method = Api::get()->config( 'methods.secret' ) ) {
       if ( is_callable( $method ) )
         return call_user_func( $method, $key );
 
@@ -17,7 +17,7 @@ abstract class Secret {
     }
 
     // retreive secret from config
-    return Config::get( "secrets.$key" );
+    return Api::get()->config( "secrets.$key" );
   }
 
   // Test existence

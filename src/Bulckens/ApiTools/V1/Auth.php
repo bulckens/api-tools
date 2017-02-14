@@ -12,7 +12,7 @@ class Auth {
   // Initialize api middleware
   public function __construct( $options = [] ) {
     $defaults = [
-      'lifespan' => Config::get( 'lifespan' )
+      'lifespan' => Api::get()->config( 'lifespan' )
     , 'secret'   => 'generic'
     ];
     $options  = array_replace( $defaults, $options );
