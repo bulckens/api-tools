@@ -23,10 +23,10 @@ abstract class Adaptor {
       // store request and response
       $adaptor->req( $req )->res( $res )->args( $args );
 
-      if ( $adaptor->args( 'format' ) ) {
-        // prepare output
-        $adaptor->output = new Output( $adaptor->args( 'format' ) );
+      // prepare output
+      $adaptor->output = new Output( $adaptor->args( 'format' ) );
 
+      if ( $adaptor->args( 'format' ) ) {
         // add current route
         $adaptor->output->path( $req->getUri()->getPath() );
         
