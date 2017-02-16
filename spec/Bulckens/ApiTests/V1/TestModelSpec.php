@@ -12,21 +12,21 @@ class TestModelSpec extends ObjectBehavior {
 
   function let() {
     new App( 'dev', __DIR__, 4 );
-    new Api( 'dev' );
+    new Api( 'fake' );
   }
 
   // Resource method
   function it_registers_a_given_uri_part() {
-    $this->source( 'dev' )->resource( 'part' );
+    $this->source( 'fake' )->resource( 'part' );
     $this->path()->shouldBe( '/part' );
   }
   
   function it_returns_itself_after_registering() {
-    $this->source( 'dev' )->resource( 'part' )->shouldBe( $this );
+    $this->source( 'fake' )->resource( 'part' )->shouldBe( $this );
   }
 
   function it_registers_a_given_uri_part_multiple_times() {
-    $this->source( 'dev' )->resource( 'first' );
+    $this->source( 'fake' )->resource( 'first' );
     $this->resource( 'second' );
     $this->resource( 'third' );
     $this->path()->shouldBe( '/first/second/third' );
@@ -53,12 +53,12 @@ class TestModelSpec extends ObjectBehavior {
   }
 
   function it_adds_a_key_value_pair_to_the_get_query_params() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'steam' )->query( 'cloud', 'pink' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'steam' )->query( 'cloud', 'pink' );
     $this->uri( 'json' )->shouldStartWith( '/steam.json?cloud=pink&token=' );
   }
 
   function it_adds_all_key_value_pairs_in_the_given_array_to_the_get_query_params() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'pole' )->query([
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'pole' )->query([
       'drip'     => 'drop'
     , 'drippidy' => 'drop drop'
     ]);
@@ -66,7 +66,7 @@ class TestModelSpec extends ObjectBehavior {
   }
 
   function it_returns_itself_after_adding_query_params() {
-    $this->source( 'dev' )->resource( 'steam' )->query( 'cloud', 'pink' )->shouldBe( $this );
+    $this->source( 'fake' )->resource( 'steam' )->query( 'cloud', 'pink' )->shouldBe( $this );
   }
 
 
@@ -89,13 +89,13 @@ class TestModelSpec extends ObjectBehavior {
   }
 
   function it_returns_itself_after_adding_post_data_params() {
-    $this->source( 'dev' )->resource( 'wind' )->data( 'light', 'yellow' )->shouldBe( $this );
+    $this->source( 'fake' )->resource( 'wind' )->data( 'light', 'yellow' )->shouldBe( $this );
   }
 
 
   // Source method
   function it_returns_the_source_server() {
-    $this->source( 'dev' )->resource( 'path' );
+    $this->source( 'fake' )->resource( 'path' );
     $this->source()->shouldBe( 'http://fake.zwartopwit.be' );
   }
 
@@ -105,17 +105,17 @@ class TestModelSpec extends ObjectBehavior {
   }
 
   function it_sets_the_source_server() {
-    $this->source( 'dev' )->source()->shouldBe( 'http://fake.zwartopwit.be' );
+    $this->source( 'fake' )->source()->shouldBe( 'http://fake.zwartopwit.be' );
   }
 
   function it_sets_the_source_server_after_registering_a_resource() {
-    $this->secret( 'generic' )->resource( 'path' )->source( 'dev' );
+    $this->secret( 'generic' )->resource( 'path' )->source( 'fake' );
     $this->source()->shouldBe( 'http://fake.zwartopwit.be' );
     $this->url()->shouldStartWith( 'http://fake.zwartopwit.be/path.json?token=' );
   }
 
   function it_returns_itself_after_setting_the_source_server() {
-    $this->source( 'dev' )->shouldBe( $this );
+    $this->source( 'fake' )->shouldBe( $this );
   }
 
 
@@ -143,100 +143,100 @@ class TestModelSpec extends ObjectBehavior {
 
   // Uri method
   function it_returns_the_full_uri() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'flyers', 1 )->resource( 'edit' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'flyers', 1 )->resource( 'edit' );
     $this->uri()->shouldStartWith( '/flyers/1/edit.json?token=' );
   }
 
   function it_returns_the_full_uri_with_given_format() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'flyers', 1 )->resource( 'edit' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'flyers', 1 )->resource( 'edit' );
     $this->uri( 'yaml' )->shouldStartWith( '/flyers/1/edit.yaml?token=' );
   }
 
   function it_returns_the_full_uri_with_auth_token() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'flyers' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'flyers' );
     $this->uri()->shouldMatch( '/^\/flyers\.json\?token=[a-z0-9]{75}$/' );
   }
 
 
   // Url method
   function it_returns_the_full_url() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'path' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'path' );
     $this->url()->shouldStartWith( 'http://fake.zwartopwit.be/path.json?token=' );
   }
 
   function it_returns_the_full_url_with_given_format() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'path' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'path' );
     $this->url( 'xml' )->shouldStartWith( 'http://fake.zwartopwit.be/path.xml?token=' );
   }
 
   function it_returns_the_full_url_with_ssl_enabled() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'path' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'path' );
     $this->url( 'xml', true )->shouldStartWith( 'https://fake.zwartopwit.be' );
   }
 
   function it_returns_the_full_url_with_ssl_disabled() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'path' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'path' );
     $this->url( 'xml', false )->shouldStartWith( 'http://fake.zwartopwit.be' );
   }
 
 
   // Get method
   function it_performs_a_get_request() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'flyers' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
     $this->get()->body()->shouldStartWith( '{"body":{"message":"success"' );
   }
 
   function it_returns_a_response_instance_on_performing_a_get_request() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'flyers' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
     $this->get()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
   }
 
 
   // Post method
   function it_performs_a_post_request() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'flyers' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
     $this->post()->body()->shouldStartWith( '{"body":{"message":"success"' );
   }
 
   function it_returns_a_response_instance_on_performing_a_post_request() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'flyers' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
     $this->post()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
   }
 
 
   // Put method
   function it_performs_a_put_request() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'flyers', 1 );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers', 1 );
     $this->put()->body()->shouldStartWith( '{"body":{"message":"success"' );
   }
 
   function it_returns_a_response_instance_on_performing_a_put_request() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'flyers' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
     $this->put()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
   }
 
 
   // Delete method
   function it_performs_a_delete_request() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'flyers', 1 );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers', 1 );
     $this->delete()->body()->shouldStartWith( '{"body":{"message":"success"' );
   }
 
   function it_returns_a_response_instance_on_performing_a_delete_request() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'flyers' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
     $this->delete()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
   }
 
 
   // Error codes
   function it_returns_a_401_error_with_an_invalid_api_secret() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'forbidden' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'forbidden' );
     $this->get()->status()->shouldBe( 401 );
     $this->get()->parse()->shouldHaveKey( 'error' );
   }
 
   function it_returns_a_404_error_for_a_non_existing_resource() {
-    $this->secret( 'generic' )->source( 'dev' )->resource( 'api-tools' )->resource( 'missing' );
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'missing' );
     $this->get()->status()->shouldBe( 404 );
   }
 

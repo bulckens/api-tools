@@ -2,6 +2,8 @@
 
 namespace Bulckens\ApiTools\V1;
 
+use Exception;
+
 abstract class Mime {
 
   protected static $map  = [
@@ -22,6 +24,8 @@ abstract class Mime {
 
     if ( isset( self::$map[$format] ) )
       return self::$map[$format];
+    else
+      throw new MimeTypeMissingException( "Mime type for $format could not be found" ); 
   }
 
   // Comment text string based on format
@@ -41,3 +45,7 @@ abstract class Mime {
   }
 
 }
+
+
+// Exceptions
+class MimeTypeMissingException extends Exception {}

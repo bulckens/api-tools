@@ -12,13 +12,13 @@ class TestSourceSpec extends ObjectBehavior {
 
   function let() {
     new App( 'dev', __DIR__, 4 );
-    new Api( 'dev' );
+    new Api( 'fake' );
   }
 
 
   // Get method
   function it_returns_a_source_url_for_the_corresponding_given_key() {
-    $this::get( 'dev' )->shouldBe( 'http://fake.zwartopwit.be' );
+    $this::get( 'fake' )->shouldBe( 'http://fake.zwartopwit.be' );
   }
 
   function it_returns_null_if_the_corresponding_value_could_not_be_found() {

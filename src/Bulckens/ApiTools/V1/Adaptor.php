@@ -48,6 +48,7 @@ abstract class Adaptor {
     };
   }
 
+
   // Render output
   protected function render( $formats = null ) {
     // get allowed formats
@@ -74,6 +75,13 @@ abstract class Adaptor {
                        ->write( $this->output->render() );
   }
 
+
+  // Get output object
+  public function output() {
+    return $this->output;
+  }
+  
+
   // Set/get request
   protected function req( $req = null ) {
     if ( is_null( $req ) )
@@ -84,6 +92,7 @@ abstract class Adaptor {
     return $this;
   }
 
+
   // Set/get response
   protected function res( $res = null ) {
     if ( is_null( $res ) )
@@ -93,6 +102,7 @@ abstract class Adaptor {
 
     return $this;
   }
+
 
   // Set/get arguments
   protected function args( $args = null ) {

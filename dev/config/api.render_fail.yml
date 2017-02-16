@@ -7,6 +7,6 @@ dev:
     generic: "1234567891011121314151617181920212223242526272829303132333435363"
     reverse: "3635343332313039282726252423222120291817161514131211101987654321"
   sources:
-    dev:     "http://fake.zwartopwit.be"
+    fake:     "http://fake.zwartopwit.be"
   lifespan: 3600
   verbose:  true

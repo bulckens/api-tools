@@ -13,7 +13,7 @@ class AuthSpec extends ObjectBehavior {
 
   function let() {
     new App( 'dev', __DIR__, 4 );
-    new Api( 'dev' );
+    new Api( 'fake' );
   }
 
   // Token method
