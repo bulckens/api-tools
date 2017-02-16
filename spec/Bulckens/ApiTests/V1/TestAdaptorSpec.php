@@ -21,7 +21,7 @@ class TestAdaptorSpec extends ObjectBehavior {
 
   function let() {
     new App( 'dev', __DIR__, 4 );
-    new Api( 'fake' );
+    new Api();
 
     $environment = Environment::mock([
       'REQUEST_URI' => '/fake.json'
