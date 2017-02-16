@@ -138,7 +138,7 @@ abstract class Model {
     , [ 'Accept' => Mime::type( $format ) ]
     , $this->data
     );
-
+    
     return $response->body( $request->body )->status( $request->status_code );
   }
 
