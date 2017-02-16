@@ -16,6 +16,12 @@ class AuthSpec extends ObjectBehavior {
     $app->module( 'api', new Api() );
   }
 
+  // Invoke method
+  function it_is_invokable() {
+    // needs to be written
+  }
+
+
   // Token method
   function it_generates_a_token() {
     $this::token( '/tasty/bears.xml' )->shouldBeString();
