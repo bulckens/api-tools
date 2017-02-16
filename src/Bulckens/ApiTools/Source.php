@@ -1,6 +1,6 @@
 <?php 
 
-namespace Bulckens\ApiTools\V1;
+namespace Bulckens\ApiTools;
 
 abstract class Source {
 

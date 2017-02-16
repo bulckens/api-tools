@@ -1,6 +1,6 @@
 <?php 
 
-namespace Bulckens\ApiTests\V1;
+namespace Bulckens\ApiTests;
 
 class TestApp {
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Bulckens\ApiTests\V1;
+namespace spec\Bulckens\ApiTests;
 
-use Bulckens\ApiTests\V1\TestMime;
+use Bulckens\ApiTests\TestMime;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -18,7 +18,7 @@ class TestMimeSpec extends ObjectBehavior {
   }
 
   function it_fails_when_mime_type_does_not_exist() {
-    $this::shouldThrow( 'Bulckens\ApiTools\V1\MimeTypeMissingException' )->duringType( 'fra' );
+    $this::shouldThrow( 'Bulckens\ApiTools\MimeTypeMissingException' )->duringType( 'fra' );
   }
 
 

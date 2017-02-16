@@ -1,19 +1,19 @@
 <?php
 
-namespace spec\Bulckens\ApiTests\V1;
+namespace spec\Bulckens\ApiTests;
 
 use Bulckens\AppTools\App;
-use Bulckens\ApiTools\V1\Api;
-use Bulckens\ApiTests\V1\TestSecret;
-use Bulckens\ApiTools\V1\Config;
+use Bulckens\ApiTools\Api;
+use Bulckens\ApiTests\TestSecret;
+use Bulckens\ApiTools\Config;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class TestSecretSpec extends ObjectBehavior {
 
   function let() {
-    new App( 'dev', __DIR__, 4 );
-    new Api();
+    $app = new App( 'dev', __DIR__, 3 );
+    $app->module( 'api', new Api() );
   }
 
   // Get method
@@ -31,7 +31,7 @@ class TestSecretSpec extends ObjectBehavior {
   function it_fails_if_the_defined_secret_method_is_not_callable() {
     $api = Api::get();
     $api->file( 'api.secret_fail.yml' );
-    $this::shouldThrow( 'Bulckens\ApiTools\V1\SecretMethodNotCallableException' )->duringGet( 'generic' );
+    $this::shouldThrow( 'Bulckens\ApiTools\SecretMethodNotCallableException' )->duringGet( 'generic' );
     $api->file( 'api.yml' );
   }
 

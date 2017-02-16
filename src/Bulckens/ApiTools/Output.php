@@ -1,6 +1,6 @@
 <?php
 
-namespace Bulckens\ApiTools\V1;
+namespace Bulckens\ApiTools;
 
 use Exception;
 use Bulckens\Helpers\ArrayHelper;

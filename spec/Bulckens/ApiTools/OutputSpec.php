@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Bulckens\ApiTools\V1;
+namespace spec\Bulckens\ApiTools;
 
-use Bulckens\ApiTools\V1\Output;
-use Bulckens\ApiTools\V1\Api;
+use Bulckens\ApiTools\Output;
+use Bulckens\ApiTools\Api;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -48,10 +48,10 @@ class OutputSpec extends ObjectBehavior {
   }
 
   function it_does_not_accept_anything_other_than_an_array_for_add() {
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputArgumentInvalidException' )->duringAdd( 'string' );
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputArgumentInvalidException' )->duringAdd( null );
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputArgumentInvalidException' )->duringAdd( 123 );
-    $this->shouldNotThrow( 'Bulckens\ApiTools\V1\OutputArgumentInvalidException' )->duringAdd([ 'I' => 'can' ]);
+    $this->shouldThrow( 'Bulckens\ApiTools\OutputArgumentInvalidException' )->duringAdd( 'string' );
+    $this->shouldThrow( 'Bulckens\ApiTools\OutputArgumentInvalidException' )->duringAdd( null );
+    $this->shouldThrow( 'Bulckens\ApiTools\OutputArgumentInvalidException' )->duringAdd( 123 );
+    $this->shouldNotThrow( 'Bulckens\ApiTools\OutputArgumentInvalidException' )->duringAdd([ 'I' => 'can' ]);
   }
 
 
@@ -357,27 +357,29 @@ class OutputSpec extends ObjectBehavior {
   function it_does_not_accept_any_other_formats() {
     $this->beConstructedWith( 'png' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputFormatUnknownException' )->duringRender();
+    $this->shouldThrow( 'Bulckens\ApiTools\OutputFormatUnknownException' )->duringRender();
   }
 
   function it_uses_the_alternative_render_method() {
-    Api::get()->file( 'api.render.yml' );
+    $api = Api::get();
+    $api->file( 'api.render.yml' );
 
     $this->beConstructedWith( 'html' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->render()->shouldBe( '<html><head><title></title></head><body>Rendered from the outside!</body></html>' );
 
-    Api::get()->file( 'api.yml' );
+    $api->file( 'api.yml' );
   }
 
   function it_fails_if_the_defined_render_method_is_not_callable() {
-    Api::get()->file( 'api.render_fail.yml' );
+    $api = Api::get();
+    $api->file( 'api.render_fail.yml' );
 
     $this->beConstructedWith( 'html' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\OutputRenderMethodNotCallableException' )->duringRender();
+    $this->shouldThrow( 'Bulckens\ApiTools\OutputRenderMethodNotCallableException' )->duringRender();
 
-    Api::get()->file( 'api.yml' );
+    $api->file( 'api.yml' );
   }
 
   function it_only_outputs_an_error_when_the_status_is_not_ok() {

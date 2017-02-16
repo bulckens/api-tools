@@ -1,18 +1,18 @@
 <?php
 
-namespace spec\Bulckens\ApiTests\V1;
+namespace spec\Bulckens\ApiTests;
 
 use Bulckens\AppTools\App;
-use Bulckens\ApiTools\V1\Api;
-use Bulckens\ApiTests\V1\TestSource;
+use Bulckens\ApiTools\Api;
+use Bulckens\ApiTests\TestSource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class TestSourceSpec extends ObjectBehavior {
 
   function let() {
-    new App( 'dev', __DIR__, 4 );
-    new Api();
+    $app = new App( 'dev', __DIR__, 3 );
+    $app->module( 'api', new Api() );
   }
 
 

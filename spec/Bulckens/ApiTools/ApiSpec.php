@@ -1,21 +1,21 @@
 <?php
 
-namespace spec\Bulckens\ApiTools\V1;
+namespace spec\Bulckens\ApiTools;
 
 use Bulckens\AppTools\App;
-use Bulckens\ApiTools\V1\Api;
+use Bulckens\ApiTools\Api;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ApiSpec extends ObjectBehavior {
 
   function let() {
-    new App( 'dev', __DIR__, 4 );
+    new App( 'dev', __DIR__, 3 );
   }
 
   // Request method
   function it_returns_the_request_instance() {
-    $this->request( 'fake' )->shouldHaveType( 'Bulckens\\ApiTools\\V1\\Request' );
+    $this->request( 'fake' )->shouldHaveType( 'Bulckens\ApiTools\Request' );
   }
 
   function it_creates_a_new_request_with_the_given_source() {

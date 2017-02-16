@@ -1,18 +1,18 @@
 <?php
 
-namespace spec\Bulckens\ApiTests\V1;
+namespace spec\Bulckens\ApiTests;
 
 use Bulckens\AppTools\App;
-use Bulckens\ApiTools\V1\Api;
-use Bulckens\ApiTests\V1\TestModel;
+use Bulckens\ApiTools\Api;
+use Bulckens\ApiTests\TestModel;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class TestModelSpec extends ObjectBehavior {
 
   function let() {
-    new App( 'dev', __DIR__, 4 );
-    new Api();
+    $app = new App( 'dev', __DIR__, 3 );
+    $app->module( 'api', new Api() );
   }
 
   // Resource method
@@ -101,7 +101,7 @@ class TestModelSpec extends ObjectBehavior {
 
   function it_fails_without_a_source_server_key() {
     $this->resource( 'path' );
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\ModelMissingSourceException' )->duringSource();
+    $this->shouldThrow( 'Bulckens\ApiTools\ModelMissingSourceException' )->duringSource();
   }
 
   function it_sets_the_source_server() {
@@ -137,7 +137,7 @@ class TestModelSpec extends ObjectBehavior {
 
   function it_fails_without_a_secret_api_key() {
     $this->resource( 'path' );
-    $this->shouldThrow( 'Bulckens\ApiTools\V1\ModelMissingSecretException' )->duringSecret();
+    $this->shouldThrow( 'Bulckens\ApiTools\ModelMissingSecretException' )->duringSecret();
   }
 
 
@@ -188,7 +188,7 @@ class TestModelSpec extends ObjectBehavior {
 
   function it_returns_a_response_instance_on_performing_a_get_request() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
-    $this->get()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
+    $this->get()->shouldHaveType( 'Bulckens\ApiTools\Response' );
   }
 
 
@@ -200,7 +200,7 @@ class TestModelSpec extends ObjectBehavior {
 
   function it_returns_a_response_instance_on_performing_a_post_request() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
-    $this->post()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
+    $this->post()->shouldHaveType( 'Bulckens\ApiTools\Response' );
   }
 
 
@@ -212,7 +212,7 @@ class TestModelSpec extends ObjectBehavior {
 
   function it_returns_a_response_instance_on_performing_a_put_request() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
-    $this->put()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
+    $this->put()->shouldHaveType( 'Bulckens\ApiTools\Response' );
   }
 
 
@@ -224,7 +224,7 @@ class TestModelSpec extends ObjectBehavior {
 
   function it_returns_a_response_instance_on_performing_a_delete_request() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
-    $this->delete()->shouldHaveType( 'Bulckens\ApiTools\V1\Response' );
+    $this->delete()->shouldHaveType( 'Bulckens\ApiTools\Response' );
   }
 
 

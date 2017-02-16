@@ -1,8 +1,8 @@
 <?php
 
-namespace Bulckens\ApiTests\V1;
+namespace Bulckens\ApiTests;
 
-use Bulckens\ApiTools\V1\Adaptor;
+use Bulckens\ApiTools\Adaptor;
 
 class TestAdaptor extends Adaptor {
 

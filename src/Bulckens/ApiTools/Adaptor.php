@@ -1,7 +1,10 @@
 <?php
 
-namespace Bulckens\ApiTools\V1;
+namespace Bulckens\ApiTools;
 
+use Exception;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Bulckens\AppTools\Statistics;
 
 abstract class Adaptor {
@@ -50,7 +53,7 @@ abstract class Adaptor {
 
 
   // Render output
-  protected function render( $formats = null ) {
+  public function render( $formats = null ) {
     // get allowed formats
     $formats = $formats ?: $this->respond_to;
 
@@ -83,39 +86,53 @@ abstract class Adaptor {
   
 
   // Set/get request
-  protected function req( $req = null ) {
+  public function req( $req = null ) {
     if ( is_null( $req ) )
       return $this->__req;
 
-    $this->__req = $req;
+    if ( $req instanceof Request )
+      $this->__req = $req;
+    else
+      throw new AdaptorRequestInvalidException( 'Expected instance of Slim\Http\Request but got ' . get_class( $req ) );
 
     return $this;
   }
 
 
   // Set/get response
-  protected function res( $res = null ) {
+  public function res( $res = null ) {
     if ( is_null( $res ) )
       return $this->__res;
 
-    $this->__res = $res;
+    if ( $res instanceof Response )
+      $this->__res = $res;
+    else
+      throw new AdaptorResponseInvalidException( 'Expected instance of Slim\Http\Response but got ' . get_class( $res ) );
 
     return $this;
   }
 
 
   // Set/get arguments
-  protected function args( $args = null ) {
+  public function args( $args = null ) {
     if ( is_null( $args ) )
       return $this->__args;
 
-    else if ( is_string( $args ) && isset( $this->__args[$args] ) )
-      return $this->__args[$args];
+    else if ( is_string( $args ) )
+      return isset( $this->__args[$args] ) ? $this->__args[$args] : null;
 
-    else if ( is_array( $args ) )
+    if ( is_array( $args ) )
       $this->__args = $args;
+    else
+      throw new AdaptorArgumentsInvalidException( 'Expected an array of arguments but got ' . get_class( $args ) );
 
     return $this;
   }
   
 }
+
+
+// Exceptions
+class AdaptorRequestInvalidException extends Exception {}
+class AdaptorResponseInvalidException extends Exception {}
+class AdaptorArgumentsInvalidException extends Exception {}

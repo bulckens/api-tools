@@ -1,19 +1,19 @@
 <?php
 
-namespace spec\Bulckens\ApiTools\V1;
+namespace spec\Bulckens\ApiTools;
 
 use Bulckens\AppTools\App;
-use Bulckens\ApiTools\V1\Api;
-use Bulckens\ApiTools\V1\Secret;
-use Bulckens\ApiTools\V1\Auth;
+use Bulckens\ApiTools\Api;
+use Bulckens\ApiTools\Secret;
+use Bulckens\ApiTools\Auth;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class AuthSpec extends ObjectBehavior {
 
   function let() {
-    new App( 'dev', __DIR__, 4 );
-    new Api();
+    $app = new App( 'dev', __DIR__, 3 );
+    $app->module( 'api', new Api() );
   }
 
   // Token method
@@ -32,7 +32,7 @@ class AuthSpec extends ObjectBehavior {
   }
 
   function it_fails_when_the_secret_could_not_be_found() {
-    $this::shouldThrow( 'Bulckens\ApiTools\V1\AuthMissingSecretException' )->duringToken( '/tasty/bears.xml', null, 'hihihi' );
+    $this::shouldThrow( 'Bulckens\ApiTools\AuthMissingSecretException' )->duringToken( '/tasty/bears.xml', null, 'hihihi' );
   }
 
 

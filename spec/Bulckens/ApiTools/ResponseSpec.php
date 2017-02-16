@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Bulckens\ApiTools\V1;
+namespace spec\Bulckens\ApiTools ;
 
-use Bulckens\ApiTools\V1\Response;
+use Bulckens\ApiTools\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
