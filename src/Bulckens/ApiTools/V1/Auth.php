@@ -42,45 +42,34 @@ class Auth {
     if ( is_string( $this->secret_key ) && preg_match( '/^uri\.([a-z0-9\_\-]+)/', $this->secret_key, $match ))
       $this->secret_key = $req->getAttribute( 'route' )->getArgument( $match[1] );
 
-    // verify existance of local config file
-    if ( ! Config::exists() ) {
-      $output->add([ 'error' => 'config.missing' ])
-             ->status( 500 );
+    // verify existance of secret
+    if ( Secret::exists( $this->secret_key ) ) {
+      // ensure an array of secrets
+      $secret_keys = is_array( $this->secret_key ) ? $this->secret_key : [ $this->secret_key ];
+      
+      // build verifications
+      $verifications = array_map( function( $secret_key ) use( $uri, $stamp ) {
+        return self::token( $uri, $stamp, $secret_key );
+      }, $secret_keys );
+
+      // verify token
+      if ( empty( $token ) || ! in_array( $token, $verifications ) )
+        $output->add([ 'error' => 'token.invalid' ])->status( 401 );
+
+      // verify of token is not too old
+      else if ( $age > $this->lifespan )
+        $output->add([ 'error' => 'token.expired' ])->status( 403 );
+
+      // verify if token is not too young (with a 5 second buffer to make up for minor differences)
+      else if ( $stamp > $time + 5 )
+        $output->add([ 'error' => 'token.futuristic' ])->status( 403 );
+
+      // passes
+      else if ( $output->ok() )
+        return $next( $req, $res );
 
     } else {
-      // verify existance of secret
-      if ( Secret::exists( $this->secret_key ) ) {
-        // get token lifespan from config, if defined
-        if ( $lifespan = Config::get( 'lifespan' ) )
-          $this->lifespan = $lifespan * 1000;
-
-        // ensure an array of secrets
-        $secret_keys = is_array( $this->secret_key ) ? $this->secret_key : [ $this->secret_key ];
-        
-        // build verifications
-        $verifications = array_map( function( $secret_key ) use( $uri, $stamp ) {
-          return self::token( $uri, $stamp, $secret_key );
-        }, $secret_keys );
-
-        // verify token
-        if ( empty( $token ) || ! in_array( $token, $verifications ) )
-          $output->add([ 'error' => 'token.invalid' ])->status( 401 );
-
-        // verify of token is not too old
-        else if ( $age > $this->lifespan )
-          $output->add([ 'error' => 'token.expired' ])->status( 403 );
-
-        // verify if token is not too young (with a 5 second buffer to make up for minor differences)
-        else if ( $stamp > $time + 5 )
-          $output->add([ 'error' => 'token.futuristic' ])->status( 403 );
-
-        // passes
-        else if ( $output->ok() )
-          return $next( $req, $res );
-
-      } else {
-        $output->add([ 'error' => 'secret.missing' ])->status( 500 );
-      }     
+      $output->add([ 'error' => 'secret.missing' ])->status( 500 );
     }
 
     // error
