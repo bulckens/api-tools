@@ -3,6 +3,7 @@
 namespace Bulckens\ApiTools;
 
 use Exception;
+use Bulckens\Helpers\TimeHelper as Time;
 use Bulckens\Helpers\ArrayHelper;
 
 class Output {
@@ -55,7 +56,7 @@ class Output {
   // Set expires header
   public function expires( $lifetime = 3600 ) {
     return $this->header( 'Pragma', 'public' )
-                ->header( 'Cache-Control', "maxage=$lifetime" )
+                ->header( 'Cache-Control', 'maxage=' . Time::sec( $lifetime ) )
                 ->header( 'Expires', gmdate( 'D, d M Y H:i:s', time() + $lifetime ) . ' GMT' );
   }
 
