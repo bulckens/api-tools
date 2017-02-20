@@ -18,6 +18,22 @@ class ResponseSpec extends ObjectBehavior {
     $this->format()->shouldBe( 'json' );
   }
 
+  function it_tests_positive_with_the_given_format() {
+    $this->format( 'json' )->shouldBe( true );
+  }
+
+  function it_tests_negative_with_the_wrong_given_format() {
+    $this->format( 'xml' )->shouldBe( false ); 
+  }
+
+  function it_tests_positive_with_the_format_in_a_given_array() {
+    $this->format([ 'xml', 'json' ])->shouldBe( true );
+  }
+
+  function it_tests_negative_with_the_format_not_in_a_given_array() {
+    $this->format([ 'xml', 'yaml' ])->shouldBe( false );
+  }
+
 
   // Status
   function it_returns_the_status() {

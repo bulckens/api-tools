@@ -15,7 +15,13 @@ class Response {
   }
 
   // Returns stored format
-  public function format() {
+  public function format( $format = null ) {
+    if ( is_string( $format ) )
+      return $format == $this->format;
+
+    if ( is_array( $format ) )
+      return in_array( $this->format, $format );
+
     return $this->format;
   }
 
