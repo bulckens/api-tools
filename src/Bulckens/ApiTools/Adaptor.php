@@ -5,6 +5,7 @@ namespace Bulckens\ApiTools;
 use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Bulckens\AppTools\App;
 use Bulckens\AppTools\Statistics;
 
 abstract class Adaptor {
@@ -76,6 +77,12 @@ abstract class Adaptor {
     return $this->res()->withHeader( 'Content-type', $this->output->mime() )
                        ->withStatus( $this->output->status() )
                        ->write( $this->output->render() );
+  }
+
+
+  // Render a given view
+  public function view( $view, $locals = [] ) {
+    return App::get()->view()->render( $view, $locals );
   }
 
 

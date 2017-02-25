@@ -1,6 +1,7 @@
 generic: &generic
   modules:
     - api
+    - view
 
 dev:
   <<: *generic

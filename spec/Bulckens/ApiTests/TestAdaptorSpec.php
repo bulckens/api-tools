@@ -23,6 +23,7 @@ class TestAdaptorSpec extends ObjectBehavior {
   function let() {
     $app = new App( 'dev', __DIR__, 3 );
     $app->module( 'api', new Api() );
+    $app->run();
 
     $environment = Environment::mock([
       'REQUEST_URI' => '/fake.json'
@@ -163,6 +164,16 @@ class TestAdaptorSpec extends ObjectBehavior {
 
   function it_returns_itself_after_storing_arguments() {
     $this->args( $this->args )->shouldBe( $this );
+  }
+
+
+  // View method
+  function it_renders_a_view() {
+    $this->view( 'view.html.twig' )->shouldBe( 'test view' );
+  }
+
+  function it_renders_a_view_with_locals() {
+    $this->view( 'view_with_locals.html.twig', [ 'nice' => 'expensive' ] )->shouldBe( 'Very expensive' );
   }
 
 
