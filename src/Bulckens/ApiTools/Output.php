@@ -8,20 +8,21 @@ use Bulckens\Helpers\ArrayHelper;
 
 class Output {
 
+  use Traits\Status;
+
   protected $output;
   protected $format;
-  protected $status;
   protected $headers;
   protected $options;
   protected $path;
 
   public function __construct( $format, $options = [] ) {
     $this->format  = $format;
-    $this->status  = 200;
     $this->options = $options;
 
     $this->clear();
   }
+
 
   // Add output
   public function add( $output ) {
@@ -33,6 +34,7 @@ class Output {
     return $this;
   }
 
+
   // Clear all output
   public function clear() {
     $this->output  = [];
@@ -41,6 +43,7 @@ class Output {
     return $this;
   }
 
+
   // Add header
   public function header( $key, $value ) {
     array_push( $this->headers, [ $key, $value ]);
@@ -48,10 +51,12 @@ class Output {
     return $this;
   }
 
+
   // Get headers
   public function headers() {
     return $this->headers;
   }
+
 
   // Set expires header
   public function expires( $lifetime = 3600 ) {
@@ -60,42 +65,30 @@ class Output {
                 ->header( 'Expires', gmdate( 'D, d M Y H:i:s', time() + $lifetime ) . ' GMT' );
   }
 
+
   // Return mime type
   public function mime() {
     return Mime::type( $this->format );
   }
 
-  // Return status code
-  public function status( $status = null ) {
-    // act as getter
-    if ( is_null( $status ) )
-      return $this->status;
-
-    // act as setter
-    $this->status = $status;
-
-    return $this;
-  }
-
-  // Check of status code is ok (everything within the 200 and 300 codes)
-  public function ok() {
-    return $this->status < 400;
-  }
 
   // Get current output array
   public function toArray() {
     return $this->output;
   }
 
+
   // Data type tester
   public function is( $format ) {
     return $this->format == $format;
   }
 
+
   // Format getter
   public function format() {
     return $this->format;
   }
+
 
   // Path getter/setter
   public function path( $path = null ) {
@@ -106,6 +99,7 @@ class Output {
 
     return $this;
   }
+
 
   // Purify output based on status code
   public function purify() {
@@ -125,6 +119,7 @@ class Output {
     }
     
   }
+
 
   // Render output to desired format
   public function render() {

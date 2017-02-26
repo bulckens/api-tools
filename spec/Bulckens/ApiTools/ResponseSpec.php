@@ -50,6 +50,20 @@ class ResponseSpec extends ObjectBehavior {
   }
 
 
+  // OK method
+  function it_is_ok_with_a_status_code_under_400() {
+    $this->status( 200 )->ok()->shouldBe( true );
+    $this->status( 302 )->ok()->shouldBe( true );
+    $this->status( 308 )->ok()->shouldBe( true );
+  }
+
+  function it_is_not_ok_with_a_status_code_over_400() {
+    $this->status( 400 )->ok()->shouldBe( false );
+    $this->status( 404 )->ok()->shouldBe( false );
+    $this->status( 500 )->ok()->shouldBe( false );
+  }
+
+
   // Body method
   function it_returns_the_body() {
     $this->body( 'Somebody' );

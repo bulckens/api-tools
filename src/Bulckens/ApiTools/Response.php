@@ -6,8 +6,9 @@ use Bulckens\Helpers\ArrayHelper;
 
 class Response {
 
+  use Traits\Status;
+
   protected $format;
-  protected $status = 200;
   protected $body;
 
   public function __construct( $format ) {
@@ -23,16 +24,6 @@ class Response {
       return in_array( $this->format, $format );
 
     return $this->format;
-  }
-
-  // Returns stored status
-  public function status( $status = null ) {
-    if ( is_null( $status ) )
-      return $this->status;
-
-    $this->status = $status;
-
-    return $this;
   }
 
   // Returns stored body
