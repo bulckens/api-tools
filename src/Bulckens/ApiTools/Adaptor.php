@@ -54,20 +54,29 @@ abstract class Adaptor {
 
 
   // Render output
-  public function render( $formats = null ) {
-    // get allowed formats
-    $formats = $formats ?: $this->respond_to;
+  public function render( $subject = null, $locals = [] ) {
+    if ( is_string( $subject ) ) {
+      // render view
+      $output = App::get()->view()->render( $subject, $locals );
 
-    // make sure to respond to only allowed formats
-    if ( is_array( $formats ) && ! in_array( $this->args( 'format' ), $formats ) )
-      $this->output->clear()
-                   ->add([
-                     'error'   => 'format.not_accepted'
-                   , 'details' => [ 'accepted' => $formats ] ])
-                   ->status( 406 );
+    } else {
+      // get allowed formats
+      $subject = $subject ?: $this->respond_to;
 
-    // add statistics
-    $this->output->add([ 'statistics' => Statistics::toArray() ]);
+      // make sure to respond to only allowed formats
+      if ( is_array( $subject ) && ! in_array( $this->args( 'format' ), $subject ) )
+        $this->output->clear()
+                     ->add([
+                       'error'   => 'format.not_accepted'
+                     , 'details' => [ 'accepted' => $subject ] ])
+                     ->status( 406 );
+
+      // add statistics
+      $this->output->add([ 'statistics' => Statistics::toArray() ]);
+
+      // render output
+      $output = $this->output->render();
+    }
 
     // add headers
     foreach ( $this->output->headers() as $header )
@@ -76,13 +85,7 @@ abstract class Adaptor {
     // render output
     return $this->res()->withHeader( 'Content-type', $this->output->mime() )
                        ->withStatus( $this->output->status() )
-                       ->write( $this->output->render() );
-  }
-
-
-  // Render a given view
-  public function view( $view, $locals = [] ) {
-    return App::get()->view()->render( $view, $locals );
+                       ->write( $output );
   }
 
 

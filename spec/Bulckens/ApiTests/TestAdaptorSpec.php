@@ -105,6 +105,20 @@ class TestAdaptorSpec extends ObjectBehavior {
     $this->output()->status()->shouldBe( 406 );
   }
 
+  function it_renders_a_view() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $response = $this->render( 'view.html.twig' );
+    $response->shouldHaveType( 'Slim\Http\Response' );
+  }
+
+  function it_renders_a_view_with_locals() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $response = $this->render( 'view_with_locals.html.twig', [ 'nice' => 'expensive' ] );
+    $response->shouldHaveType( 'Slim\Http\Response' );
+  }
+
 
   // Output method
   function it_returns_the_output_object() {
@@ -165,18 +179,6 @@ class TestAdaptorSpec extends ObjectBehavior {
   function it_returns_itself_after_storing_arguments() {
     $this->args( $this->args )->shouldBe( $this );
   }
-
-
-  // View method
-  function it_renders_a_view() {
-    $this->view( 'view.html.twig' )->shouldBe( 'test view' );
-  }
-
-  function it_renders_a_view_with_locals() {
-    $this->view( 'view_with_locals.html.twig', [ 'nice' => 'expensive' ] )->shouldBe( 'Very expensive' );
-  }
-
-
 
 }
 
