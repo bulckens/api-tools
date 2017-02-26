@@ -26,6 +26,18 @@ class Sort {
   }
 
 
+  // Test if order is ascending
+  public function asc( $fallback = 'asc' ) {
+    return $this->way( $fallback ) == 'asc';
+  }
+
+
+  // Test if order is descending
+  public function desc( $fallback = 'desc' ) {
+    return $this->way( $fallback ) == 'desc';
+  }
+
+
   // Get delimiter
   public static function delimiter() {
     return Api::get()->config( 'sort.delimiter', '-' );

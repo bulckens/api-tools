@@ -70,6 +70,30 @@ class SortSpec extends ObjectBehavior {
   }
 
 
+  // Asc method
+  function it_tests_positive_for_ascending_order() {
+    $this->beConstructedWith( 'fairy-asc' );
+    $this->asc()->shouldBe( true );
+  }
+
+  function it_tests_negative_for_ascending_order_when_fallback_is_descending() {
+    $this->beConstructedWith( 'fairy' );
+    $this->asc( 'desc' )->shouldBe( false );
+  }
+
+
+  // Desc method
+  function it_tests_positive_for_descending_order() {
+    $this->beConstructedWith( 'fairy-desc' );
+    $this->desc()->shouldBe( true );
+  }
+
+  function it_tests_negative_for_descending_order_when_fallback_is_ascending() {
+    $this->beConstructedWith( 'fairy' );
+    $this->desc( 'asc' )->shouldBe( false );
+  }
+
+
   // Delimieter method (static)
   function it_returns_the_default_delimiter() {
     $this::delimiter()->shouldBe( '-' );
