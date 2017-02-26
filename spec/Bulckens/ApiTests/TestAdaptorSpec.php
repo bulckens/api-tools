@@ -82,6 +82,11 @@ class TestAdaptorSpec extends ObjectBehavior {
     $this->output()->path()->shouldBe( '/fake.json' );
   }
 
+  function it_uses_the_custom_defined_format() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [] )->getStatusCode()->shouldBe( 200 );
+  }
+
 
   // Render method
   function it_returns_a_response_object_on_render() {
@@ -165,6 +170,11 @@ class TestAdaptorSpec extends ObjectBehavior {
     $this->args([ 'first' => 'second', 'third' => 'fourth' ]);
     $this->args( 'first' )->shouldBe( 'second' );
     $this->args( 'third' )->shouldBe( 'fourth' );
+  }
+
+  function it_returns_a_single_argument_with_fallback() {
+    $this->args([ 'first' => 'second', 'third' => 'fourth' ]);
+    $this->args( 'fifth', 'sixth' )->shouldBe( 'sixth' );
   }
 
   function it_returns_null_for_a_non_existing_argument_key() {

@@ -1,0 +1,8 @@
+generic: &generic
+  debug: true
+  root:  dev/routes
+
+dev:
+  # default format
+  format: "html"
+  <<: *generic

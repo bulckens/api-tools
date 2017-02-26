@@ -2,6 +2,7 @@ generic: &generic
   modules:
     - api
     - view
+    - router
 
 dev:
   <<: *generic

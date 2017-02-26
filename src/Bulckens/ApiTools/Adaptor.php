@@ -24,10 +24,13 @@ abstract class Adaptor {
       // store request and response
       $adaptor->req( $req )->res( $res )->args( $args );
 
-      // prepare output
-      $adaptor->output = new Output( $adaptor->args( 'format' ) );
+      // get format with fallback
+      $format = $adaptor->args( 'format', App::get()->router()->config( 'format' ) );
 
-      if ( $adaptor->args( 'format' ) ) {
+      // prepare output
+      $adaptor->output = new Output( $format );
+
+      if ( $format ) {
         // add current route
         $adaptor->output->path( $req->getUri()->getPath() );
         
@@ -43,10 +46,10 @@ abstract class Adaptor {
           $adaptor->after();
 
         return $res;
-
-      } else {
-        $adaptor->output->add([ 'error' => 'format.missing' ])->status( 406 );
       }
+
+      // add missing format error
+      $adaptor->output->add([ 'error' => 'format.missing' ])->status( 406 );
 
       return $adaptor->render();
     };
@@ -124,12 +127,12 @@ abstract class Adaptor {
 
 
   // Set/get arguments
-  public function args( $args = null ) {
+  public function args( $args = null, $fallback = null ) {
     if ( is_null( $args ) )
       return $this->__args;
 
     else if ( is_string( $args ) )
-      return isset( $this->__args[$args] ) ? $this->__args[$args] : null;
+      return isset( $this->__args[$args] ) ? $this->__args[$args] : $fallback;
 
     if ( is_array( $args ) )
       $this->__args = $args;
