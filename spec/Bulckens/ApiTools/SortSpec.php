@@ -70,6 +70,14 @@ class SortSpec extends ObjectBehavior {
   }
 
 
+
+  // Get method
+  function it_generates_a_sort_order_key_from_an_instance() {
+    $this->get()->shouldBe( 'fairy-desc' );
+  }
+
+
+
   // Asc method
   function it_tests_positive_for_ascending_order() {
     $this->beConstructedWith( 'fairy-asc' );

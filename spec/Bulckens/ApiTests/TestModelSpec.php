@@ -4,6 +4,7 @@ namespace spec\Bulckens\ApiTests;
 
 use Bulckens\AppTools\App;
 use Bulckens\ApiTools\Api;
+use Bulckens\ApiTools\Sort;
 use Bulckens\ApiTests\TestModel;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -67,6 +68,18 @@ class TestModelSpec extends ObjectBehavior {
 
   function it_returns_itself_after_adding_query_params() {
     $this->source( 'fake' )->resource( 'steam' )->query( 'cloud', 'pink' )->shouldBe( $this );
+  }
+
+
+  // Order method
+  function it_adds_a_sort_order_key_value_pair_to_the_query() {
+    $this->order( 'fee', 'desc' );
+    $this->query()->shouldHaveKeyWithValue( 'order', 'fee-desc' );
+  }
+
+  function it_adds_the_values_form_a_sort_instance_to_the_query() {
+    $this->order( new Sort( 'idx-asc' ) );
+    $this->query()->shouldHaveKeyWithValue( 'order', 'idx-asc' );
   }
 
 

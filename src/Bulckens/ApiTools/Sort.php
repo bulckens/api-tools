@@ -26,6 +26,12 @@ class Sort {
   }
 
 
+  // Generate sort order key
+  public function get() {
+    return self::order( $this->key(), $this->way() );
+  }
+
+
   // Test if order is ascending
   public function asc( $fallback = 'asc' ) {
     return $this->way( $fallback ) == 'asc';

@@ -23,6 +23,7 @@ abstract class Model {
     return $this;
   }
 
+
   // Add get parameter
   public function query( $key = null, $value = null ) {
     if ( is_null( $key ) )
@@ -34,6 +35,20 @@ abstract class Model {
 
     return $this;
   }
+
+
+  // Add order values to query
+  public function order( $key, $value = null ) {
+    // get delimiter
+    $delimiter = Sort::delimiter();
+
+    if ( $key instanceof Sort )
+      return $this->query( 'order', $key->get() );
+
+    if ( $value )
+      return $this->query( 'order', "$key$delimiter$value" );
+  }
+
 
   // Add post data
   public function data( $key = null, $value = null ) {
@@ -47,10 +62,12 @@ abstract class Model {
     return $this;
   }
 
+
   // Build path with format
   public function path( $format = null ) {
     return is_null( $format ) ? "/$this->path" : "/$this->path.$format";
   }
+
 
   // Get server with optional path
   public function source( $source = null ) {
@@ -66,6 +83,7 @@ abstract class Model {
     return $this;
   }
 
+
   // Set/get the secret
   public function secret( $secret = null ) {
     if ( is_null( $secret ) ) {
@@ -80,6 +98,7 @@ abstract class Model {
     return $this;
   }
 
+
   // Get full uri; path with get params
   public function uri( $format = 'json' ) {
     $path = $this->path( $format );
@@ -89,6 +108,7 @@ abstract class Model {
 
     return "$path?" . http_build_query( $this->query );
   }
+
 
   // Get full url; server with path
   public function url( $format = 'json', $ssl = null ) {
@@ -106,25 +126,30 @@ abstract class Model {
     return $source . $this->uri( $format );
   }
 
+
   // Perform GET request
   public function get( $format = 'json', $ssl = null ) {
     return $this->perform( 'get', $format );
   }
+
 
   // Perform POST request
   public function post( $format = 'json', $ssl = null ) {
     return $this->perform( 'post', $format );
   }
 
+
   // Perform PUT request
   public function put( $format = 'json', $ssl = null ) {
     return $this->perform( 'put', $format );
   }
 
+
   // Perform DELETE request
   public function delete( $format = 'json', $ssl = null ) {
     return $this->perform( 'delete', $format );
   }
+
 
   // Perform request
   protected function perform( $method, $format = 'json', $ssl = null ) {
