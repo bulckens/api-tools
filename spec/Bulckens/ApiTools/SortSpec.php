@@ -36,7 +36,12 @@ class SortSpec extends ObjectBehavior {
 
   function it_returns_the_fallback_sort_order_key_when_none_is_given() {
     $this->beConstructedWith( null );
-    $this->key( 'id' )->shouldBe( 'id' );
+    $this->key( 'fee' )->shouldBe( 'fee' );
+  }
+
+  function it_returns_the_fallback_sort_order_key_when_a_blank_string_is_given() {
+    $this->beConstructedWith( '' );
+    $this->key( 'lee' )->shouldBe( 'lee' );
   }
 
   function it_does_not_return_the_fallback_sort_order_key_when_one_is_given() {
