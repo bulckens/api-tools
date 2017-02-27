@@ -39,14 +39,13 @@ abstract class Model {
 
   // Add order values to query
   public function order( $key, $value = null ) {
-    // get delimiter
-    $delimiter = Sort::delimiter();
-
     if ( $key instanceof Sort )
       return $this->query( 'order', $key->get() );
 
     if ( $value )
-      return $this->query( 'order', "$key$delimiter$value" );
+      return $this->query( 'order', Sort::order( $key, $value ) );
+
+    return $this;
   }
 
 
