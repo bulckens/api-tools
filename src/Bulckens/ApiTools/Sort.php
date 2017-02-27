@@ -7,10 +7,16 @@ class Sort {
   protected $key;
   protected $way;
 
-  public function __construct( $order ) {
-    $parts = explode( self::delimiter(), $order );
-    $this->key = $parts[0];
-    $this->way = isset( $parts[1] ) ? $parts[1] : null;
+  public function __construct( $key, $way = null ) {
+    if ( is_null( $way ) ) {
+      $parts = explode( self::delimiter(), $key );
+      $this->key = $parts[0];
+      $this->way = isset( $parts[1] ) ? $parts[1] : null;
+
+    } else {
+      $this->key = $key;
+      $this->way = $way;
+    }
   }
 
 

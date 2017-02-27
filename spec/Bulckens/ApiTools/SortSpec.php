@@ -13,6 +13,20 @@ class SortSpec extends ObjectBehavior {
     Api::get()->file( 'api.yml' );
     $this->beConstructedWith( 'fairy-desc' );
   }
+
+
+  // Initialization
+  function it_accepts_a_delimited_string() {
+    $this->beConstructedWith( 'aap-desc' );
+    $this->key()->shouldBe( 'aap' );
+    $this->way()->shouldBe( 'desc' );
+  }
+
+  function it_accepts_a_key_value_pair() {
+    $this->beConstructedWith( 'noot', 'desc' );
+    $this->key()->shouldBe( 'noot' );
+    $this->way()->shouldBe( 'desc' );
+  }
   
 
   // Key method
