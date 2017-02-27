@@ -299,6 +299,7 @@ class OutputSpec extends ObjectBehavior {
     $this->render()->shouldHaveKeyWithValue( 'error', 'bad.bad.girl' );
   }
 
+
   // Render method
   function it_renders_the_output_as_json() {
     $this->beConstructedWith( 'json' );

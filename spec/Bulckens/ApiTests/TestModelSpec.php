@@ -82,6 +82,12 @@ class TestModelSpec extends ObjectBehavior {
     $this->query()->shouldHaveKeyWithValue( 'order', 'idx-asc' );
   }
 
+  function it_adds_the_values_form_a_sort_instance_to_the_uri() {
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'ordereable' );
+    $this->order( new Sort( 'idx-asc' ) );
+    $this->uri( 'json' )->shouldStartWith( '/ordereable.json?order=idx-asc&token=' );
+  }
+
 
   // Data method
   function it_returns_data_as_array() {
