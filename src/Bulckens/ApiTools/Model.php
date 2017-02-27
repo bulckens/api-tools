@@ -35,19 +35,16 @@ abstract class Model {
 
     return $this;
   }
-
+  
 
   // Add order values to query
   public function order( $key, $value = null ) {
-    if ( $key instanceof Sort )
-      return $this->query( 'order', $key->get() );
+    if ( ! $key instanceof Sort )
+      $key = new Sort( $key, $value );
 
-    if ( $value )
-      return $this->query( 'order', Sort::order( $key, $value ) );
-
-    return $this;
+    return $this->query( 'order', $key->get() );
   }
-
+  
 
   // Add post data
   public function data( $key = null, $value = null ) {
