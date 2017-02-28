@@ -8,6 +8,7 @@ use Slim\Http\Response;
 use Slim\Http\Environment;
 use Bulckens\AppTools\App;
 use Bulckens\ApiTools\Api;
+use Bulckens\ApiTools\Output;
 use Bulckens\ApiTests\TestAdaptor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -36,6 +37,10 @@ class TestAdaptorSpec extends ObjectBehavior {
   // Action method
   function it_returns_a_closure_for_slim() {
     $this->action( 'index' )->shouldBeCallable();
+  }
+
+  function it_returns_an_instance_of_action() {
+    $this->action( 'index' )->shouldHaveType( 'Bulckens\ApiTools\Action' );
   }
 
   function it_returns_a_slim_response_when_called() {
@@ -87,8 +92,17 @@ class TestAdaptorSpec extends ObjectBehavior {
     $action( $this->req, $this->res, [] )->getStatusCode()->shouldBe( 200 );
   }
 
+  function it_fails_with_a_non_existent_action() {
+    $action = $this->action( 'shalala' );
+    $action->shouldThrow( 'Bulckens\ApiTools\ActionMissingException' )->during__invoke( $this->req, $this->res, $this->args );
+  }
+
 
   // Render method
+  function it_returns_an_action() {
+    $this->action( 'index' )->shouldHaveType( 'Bulckens\ApiTools\Action' );
+  }
+
   function it_returns_a_response_object_on_render() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args );
@@ -129,6 +143,12 @@ class TestAdaptorSpec extends ObjectBehavior {
   function it_returns_the_output_object() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args );
+    $this->output()->shouldHaveType( 'Bulckens\ApiTools\Output' );
+  }
+
+  function it_sets_a_new_output_object() {
+    $this->output()->shouldBe( null );
+    $this->output( new Output( 'json' ) );
     $this->output()->shouldHaveType( 'Bulckens\ApiTools\Output' );
   }
 

@@ -17,42 +17,8 @@ abstract class Adaptor {
   protected $__args;
 
   // Build an action
-  public function action( $action ) {
-    $adaptor = $this;
-    
-    return function( $req, $res, $args ) use( $action, $adaptor ) {
-      // store request and response
-      $adaptor->req( $req )->res( $res )->args( $args );
-
-      // get format with fallback
-      $format = $adaptor->args( 'format', App::get()->router()->config( 'format' ) );
-
-      // prepare output
-      $adaptor->output = new Output( $format );
-
-      if ( $format ) {
-        // add current route
-        $adaptor->output->path( $req->getUri()->getPath() );
-        
-        // call before
-        if ( method_exists( $adaptor, 'before' ) )
-          $adaptor->before();
-
-        // call action
-        $res = $adaptor->$action();
-        
-        // call after
-        if ( method_exists( $adaptor, 'after' ) )
-          $adaptor->after();
-
-        return $res;
-      }
-
-      // add missing format error
-      $adaptor->output->add([ 'error' => 'format.missing' ])->status( 406 );
-
-      return $adaptor->render();
-    };
+  public function action( $name ) {
+    return new Action( $name, $this );
   }
 
 
@@ -93,8 +59,13 @@ abstract class Adaptor {
 
 
   // Get output object
-  public function output() {
-    return $this->output;
+  public function output( $format = null ) {
+    if ( is_null( $format ) )
+      return $this->output;
+
+    $this->output = new Output( $format );
+
+    return $this;
   }
   
 
