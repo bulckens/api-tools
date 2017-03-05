@@ -10,4 +10,4 @@ dev:
   sources:
     fake:     "http://fake.zwartopwit.be"
   lifespan: 3600
-  verbose:  true
+  verbose:  false

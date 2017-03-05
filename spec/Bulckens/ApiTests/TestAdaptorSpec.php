@@ -116,6 +116,13 @@ class TestAdaptorSpec extends ObjectBehavior {
     $this->output()->toArray()->shouldHaveKey( 'statistics' );
   }
 
+  function it_adds_request_details_for_output_on_render() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $this->render();
+    $this->output()->toArray()->shouldHaveKey( 'request' );
+  }
+
   function it_only_renders_allowed_formats() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args );
@@ -133,10 +140,61 @@ class TestAdaptorSpec extends ObjectBehavior {
 
   function it_renders_a_view_with_locals() {
     $action = $this->action( 'index' );
-    $action( $this->req, $this->res, $this->args );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
     $response = $this->render( 'view_with_locals.html.twig', [ 'nice' => 'expensive' ] );
     $response->shouldHaveType( 'Slim\Http\Response' );
+    $response->getBody()->__toString()->shouldBe( 'Very expensive' );
   }
+
+  function it_renders_a_view_with_extra_statistics_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $response = $this->render( 'Used time: {{ statistics.used_time }}' );
+    $response->getBody()->__toString()->shouldMatch( '/^Used time\:\s\d+ms$/' );
+  }
+
+  function it_renders_a_view_with_extra_request_uri_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $response = $this->render( 'Request uri: {{ request.uri }}' );
+    $response->getBody()->__toString()->shouldStartWith( 'Request uri: http://localhost/fake.json' );
+  }
+
+  function it_renders_a_view_with_extra_request_path_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $response = $this->render( 'Request path: {{ request.path }}' );
+    $response->getBody()->__toString()->shouldStartWith( 'Request path: /fake.json' );
+  }
+
+  function it_renders_a_view_with_extra_request_scheme_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $response = $this->render( 'Request scheme: {{ request.scheme }}' );
+    $response->getBody()->__toString()->shouldStartWith( 'Request scheme: http' );
+  }
+
+  function it_renders_a_view_with_extra_request_host_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $response = $this->render( 'Request host: {{ request.host }}' );
+    $response->getBody()->__toString()->shouldStartWith( 'Request host: localhost' );
+  }
+
+  function it_renders_a_view_with_extra_request_port_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $response = $this->render( 'Request port: {{ request.port }}' );
+    $response->getBody()->__toString()->shouldStartWith( 'Request port: ' );
+  }
+
+  function it_renders_a_view_with_extra_request_base_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $response = $this->render( 'Request base: {{ request.base }}' );
+    $response->getBody()->__toString()->shouldStartWith( 'Request base: http://localhost' );
+  }
+
 
 
   // Output method
@@ -209,6 +267,35 @@ class TestAdaptorSpec extends ObjectBehavior {
   function it_returns_itself_after_storing_arguments() {
     $this->args( $this->args )->shouldBe( $this );
   }
+
+
+  // Info method
+  function it_returns_an_array_with_request_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $info = $this->information();
+    $info['request']->shouldBeArray();
+    $info['request']['uri']->shouldBeString();
+    $info['request']['base']->shouldBeString();
+    $info['request']['scheme']->shouldBeString();
+    $info['request']['host']->shouldBeString();
+    $info['request']['port']->shouldBeNull();
+    $info['request']['path']->shouldBeString();
+  }
+
+  function it_returns_an_array_with_statistics() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $info = $this->information();
+    $info['statistics']->shouldBeArray();
+    $info['statistics']['start_time']->shouldBeDouble();
+    $info['statistics']['used_time']->shouldMatch( '/\d+ms/' );
+    $info['statistics']['start_memory']->shouldBeString();
+    $info['statistics']['end_memory']->shouldBeString();
+    $info['statistics']['used_memory']->shouldBeString();
+  }
+
+
 
 }
 

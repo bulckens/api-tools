@@ -10,6 +10,8 @@ use Prophecy\Argument;
 class OutputSpec extends ObjectBehavior {
 
   function let() {
+    $api = new Api();
+    $api->file( 'api.yml' );
     $this->beConstructedWith( 'json' );
   }
 
@@ -332,24 +334,32 @@ class OutputSpec extends ObjectBehavior {
   }
 
   function it_renders_the_output_as_html() {
+    $api = new Api();
+    $api->file( 'api.verbose.yml' );
     $this->beConstructedWith( 'html' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->render()->shouldStartWith( "<!--\nArray" );
   }
 
   function it_renders_the_output_as_txt() {
+    $api = new Api();
+    $api->file( 'api.verbose.yml' );
     $this->beConstructedWith( 'txt' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->render()->shouldStartWith( "Array\n" );
   }
 
   function it_renders_the_output_as_css() {
+    $api = new Api();
+    $api->file( 'api.verbose.yml' );
     $this->beConstructedWith( 'css' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->render()->shouldStartWith( "/*\nArray" );
   }
 
   function it_renders_the_output_as_js() {
+    $api = new Api();
+    $api->file( 'api.verbose.yml' );
     $this->beConstructedWith( 'js' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->render()->shouldStartWith( "/*\nArray" );
@@ -362,25 +372,19 @@ class OutputSpec extends ObjectBehavior {
   }
 
   function it_uses_the_alternative_render_method() {
-    $api = Api::get();
+    $api = new Api();
     $api->file( 'api.render.yml' );
-
     $this->beConstructedWith( 'html' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->render()->shouldBe( '<html><head><title></title></head><body>Rendered from the outside!</body></html>' );
-
-    $api->file( 'api.yml' );
   }
 
   function it_fails_if_the_defined_render_method_is_not_callable() {
-    $api = Api::get();
+    $api = new Api();
     $api->file( 'api.render_fail.yml' );
-
     $this->beConstructedWith( 'html' );
     $this->add([ 'candy' => [ 'ken' => 'pink' ] ]);
     $this->shouldThrow( 'Bulckens\ApiTools\OutputRenderMethodNotCallableException' )->duringRender();
-
-    $api->file( 'api.yml' );
   }
 
   function it_only_outputs_an_error_when_the_status_is_not_ok() {

@@ -167,15 +167,12 @@ class Output {
 
           // stringify body
           if ( is_array( $body ) ) $body = implode( "\n", $body );
-
-          // add output status if verbose is set to true
-          if ( Api::get()->config( 'verbose' ) )
-            $body .= Mime::comment( print_r( $this->output, true ), $this->format );
-
+          
           return $body;
         }
 
-        return Mime::comment( print_r( $this->output, true ), $this->format );
+        if ( Api::get()->config( 'verbose' ) )
+          return Mime::comment( print_r( $this->output, true ), $this->format );
       break;
       default:
         throw new OutputFormatUnknownException( "Unknown format {$this->format}" );

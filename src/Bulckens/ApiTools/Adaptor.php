@@ -6,7 +6,6 @@ use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Bulckens\AppTools\App;
-use Bulckens\AppTools\Statistics;
 
 abstract class Adaptor {
 
@@ -17,14 +16,17 @@ abstract class Adaptor {
   protected $__args;
 
   // Build an action
-  public function action( $name ) {
+  final public function action( $name ) {
     return new Action( $name, $this );
   }
 
 
   // Render output
-  public function render( $subject = null, $locals = [] ) {
+  final public function render( $subject = null, $locals = [] ) {
     if ( is_string( $subject ) ) {
+      // merge info in locals
+      $locals = array_replace( $this->information(), $locals );
+
       // render view
       $output = App::get()->view()->render( $subject, $locals );
 
@@ -40,8 +42,8 @@ abstract class Adaptor {
                      , 'details' => [ 'accepted' => $subject ] ])
                      ->status( 406 );
 
-      // add statistics
-      $this->output->add([ 'statistics' => Statistics::toArray() ]);
+      // add additional info
+      $this->output->add( $this->information() );
 
       // render output
       $output = $this->output->render();
@@ -59,7 +61,7 @@ abstract class Adaptor {
 
 
   // Get output object
-  public function output( $format = null ) {
+  final public function output( $format = null ) {
     if ( is_null( $format ) )
       return $this->output;
 
@@ -70,7 +72,7 @@ abstract class Adaptor {
   
 
   // Set/get request
-  public function req( $req = null ) {
+  final public function req( $req = null ) {
     if ( is_null( $req ) )
       return $this->__req;
 
@@ -84,7 +86,7 @@ abstract class Adaptor {
 
 
   // Set/get response
-  public function res( $res = null ) {
+  final public function res( $res = null ) {
     if ( is_null( $res ) )
       return $this->__res;
 
@@ -98,7 +100,7 @@ abstract class Adaptor {
 
 
   // Set/get arguments
-  public function args( $args = null, $fallback = null ) {
+  final public function args( $args = null, $fallback = null ) {
     if ( is_null( $args ) )
       return $this->__args;
 
@@ -111,6 +113,26 @@ abstract class Adaptor {
       throw new AdaptorArgumentsInvalidException( 'Expected an array of arguments but got ' . get_class( $args ) );
 
     return $this;
+  }
+
+
+  // Get request information
+  final public function information() {
+    // get current uri info
+     $uri = $this->req()->getUri();
+
+     // addition app and request info
+     return [
+       'statistics' => App::get()->statistics()->toArray()
+     , 'request' => [
+         'uri'    => $uri->__toString()
+       , 'base'   => $uri->getBaseUrl()
+       , 'scheme' => $uri->getScheme()
+       , 'host'   => $uri->getHost()
+       , 'port'   => $uri->getPort()
+       , 'path'   => $uri->getPath()
+       ] 
+     ];
   }
   
 }
