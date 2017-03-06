@@ -93,8 +93,7 @@ class TestAdaptorSpec extends ObjectBehavior {
   }
 
   function it_fails_with_a_non_existent_action() {
-    $action = $this->action( 'shalala' );
-    $action->shouldThrow( 'Bulckens\ApiTools\ActionMissingException' )->during__invoke( $this->req, $this->res, $this->args );
+    $this->shouldThrow( 'Bulckens\ApiTools\AdaptorActionMissingException' )->duringAction( 'shalala' );
   }
 
 

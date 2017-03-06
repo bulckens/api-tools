@@ -17,7 +17,10 @@ abstract class Adaptor {
 
   // Build an action
   final public function action( $name ) {
-    return new Action( $name, $this );
+    if ( method_exists( $this, $name ) )
+      return new Action( $name, $this );
+
+    throw new AdaptorActionMissingException( self::class . "::$name is not a method" );
   }
 
 
@@ -139,6 +142,7 @@ abstract class Adaptor {
 
 
 // Exceptions
+class AdaptorActionMissingException extends Exception {}
 class AdaptorRequestInvalidException extends Exception {}
 class AdaptorResponseInvalidException extends Exception {}
 class AdaptorArgumentsInvalidException extends Exception {}
