@@ -126,8 +126,7 @@ abstract class Adaptor {
      return [
        'statistics' => App::get()->statistics()->toArray()
      , 'request' => [
-         'uri'    => $uri->__toString()
-       , 'base'   => $uri->getBaseUrl()
+         'base'   => $uri->getBaseUrl()
        , 'scheme' => $uri->getScheme()
        , 'host'   => $uri->getHost()
        , 'port'   => $uri->getPort()

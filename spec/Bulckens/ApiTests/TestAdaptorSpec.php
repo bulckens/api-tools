@@ -152,13 +152,6 @@ class TestAdaptorSpec extends ObjectBehavior {
     $response->getBody()->__toString()->shouldMatch( '/^Used time\:\s\d+ms$/' );
   }
 
-  function it_renders_a_view_with_extra_request_uri_information() {
-    $action = $this->action( 'index' );
-    $action( $this->req, $this->res, [ 'format' => 'html' ] );
-    $response = $this->render( 'Request uri: {{ request.uri }}' );
-    $response->getBody()->__toString()->shouldStartWith( 'Request uri: http://localhost/fake.json' );
-  }
-
   function it_renders_a_view_with_extra_request_path_information() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, [ 'format' => 'html' ] );
@@ -274,7 +267,6 @@ class TestAdaptorSpec extends ObjectBehavior {
     $action( $this->req, $this->res, [ 'format' => 'html' ] );
     $info = $this->information();
     $info['request']->shouldBeArray();
-    $info['request']['uri']->shouldBeString();
     $info['request']['base']->shouldBeString();
     $info['request']['scheme']->shouldBeString();
     $info['request']['host']->shouldBeString();
