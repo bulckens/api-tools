@@ -104,16 +104,24 @@ class Output {
   // Purify output based on status code
   public function purify() {
     if ( $this->ok() ) {
+      // remove error key
       unset( $this->output['error'] );
 
+      // ensure success key
       if ( ! isset( $this->output['success'] ) )
         $this->output['success'] = "status.{$this->status()}";
 
     } else {
+      // get pure keys
+      $keys = Api::get()->config( 'output.keys', [] );
+      $pure = array_merge( $keys, [ 'error', 'details' ] );
+
+      // remove impure keys
       foreach ( $this->output as $key => $value )
-        if ( $key != 'error' && $key != 'details' && $key != 'current' )
+        if ( ! in_array( $key, $pure ) )
           unset( $this->output[$key] );
 
+      // ensure error key
       if ( ! isset( $this->output['error'] ) )
         $this->output['error'] = "status.{$this->status()}";
     }

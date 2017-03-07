@@ -236,13 +236,11 @@ class OutputSpec extends ObjectBehavior {
     , 'success'  => 'good'
     , 'details'  => [ 'unimportant' => 'right now' ]
     , 'resource' => 'which is not there'
-    , 'current'  => [ 'item' => 'should always be here' ]
     ]);
     $this->status( 200 )->purify();
     $this->render()->shouldHaveKey( 'success' );
     $this->render()->shouldHaveKey( 'resource' );
     $this->render()->shouldHaveKey( 'details' );
-    $this->render()->shouldHaveKey( 'current' );
     $this->render()->shouldNotHaveKey( 'error' );
   }
 
@@ -274,14 +272,29 @@ class OutputSpec extends ObjectBehavior {
     , 'success'  => 'good'
     , 'details'  => [ 'unimportant' => 'right now' ]
     , 'resource' => 'which is not there'
-    , 'current'  => [ 'item' => 'should always be here' ]
     ]);
     $this->status( 418 )->purify();
     $this->render()->shouldHaveKey( 'error' );
     $this->render()->shouldHaveKey( 'details' );
-    $this->render()->shouldHaveKey( 'current' );
     $this->render()->shouldNotHaveKey( 'success' );
     $this->render()->shouldNotHaveKey( 'resource' );
+  }
+
+  function it_does_not_remove_keys_that_are_defined_as_pure() {
+    $api = new Api();
+    $api->file( 'api.pure_keys.yml' );
+    $this->beConstructedWith( 'array' );
+    $this->add([
+      'error'    => 'bad'
+    , 'details'  => [ 'unimportant' => 'right now' ]
+    , 'pure'     => 'I always need to be here'
+    , 'sane'     => 'me too!'
+    ]);
+    $this->status( 418 )->purify();
+    $this->render()->shouldHaveKey( 'error' );
+    $this->render()->shouldHaveKey( 'details' );
+    $this->render()->shouldHaveKey( 'pure' );
+    $this->render()->shouldHaveKey( 'sane' );
   }
 
   function it_ensures_the_output_has_an_error_key_when_none_given() {
