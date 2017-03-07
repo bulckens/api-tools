@@ -27,7 +27,7 @@ class Action {
 
     // get format with fallback
     $format = $this->adaptor->args( 'format', App::get()->router()->config( 'format' ) );
-
+    
     // prepare output
     $this->adaptor->output( $format );
 
