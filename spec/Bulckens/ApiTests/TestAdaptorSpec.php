@@ -43,6 +43,10 @@ class TestAdaptorSpec extends ObjectBehavior {
     $this->action( 'index' )->shouldHaveType( 'Bulckens\ApiTools\Action' );
   }
 
+  function it_does_not_return_an_instance_of_action_if_no_corresponding_method_is_defined() {
+    $this->action( 'mastaba' )->shouldBeNull();
+  }
+
   function it_returns_a_slim_response_when_called() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args )->shouldHaveType( 'Slim\Http\Response' );
