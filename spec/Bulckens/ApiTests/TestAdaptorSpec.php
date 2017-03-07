@@ -92,10 +92,6 @@ class TestAdaptorSpec extends ObjectBehavior {
     $action( $this->req, $this->res, [] )->getStatusCode()->shouldBe( 200 );
   }
 
-  function it_fails_with_a_non_existent_action() {
-    $this->shouldThrow( 'Bulckens\ApiTools\AdaptorActionMissingException' )->duringAction( 'shalala' );
-  }
-
 
   // Render method
   function it_returns_an_action() {
