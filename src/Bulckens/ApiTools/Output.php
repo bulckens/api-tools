@@ -111,7 +111,7 @@ class Output {
 
     } else {
       foreach ( $this->output as $key => $value )
-        if ( $key != 'error' && $key != 'details' )
+        if ( $key != 'error' && $key != 'details' && $key != 'current' )
           unset( $this->output[$key] );
 
       if ( ! isset( $this->output['error'] ) )

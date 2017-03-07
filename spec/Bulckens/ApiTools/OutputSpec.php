@@ -236,11 +236,13 @@ class OutputSpec extends ObjectBehavior {
     , 'success'  => 'good'
     , 'details'  => [ 'unimportant' => 'right now' ]
     , 'resource' => 'which is not there'
+    , 'current'  => [ 'item' => 'should always be here' ]
     ]);
     $this->status( 200 )->purify();
     $this->render()->shouldHaveKey( 'success' );
     $this->render()->shouldHaveKey( 'resource' );
     $this->render()->shouldHaveKey( 'details' );
+    $this->render()->shouldHaveKey( 'current' );
     $this->render()->shouldNotHaveKey( 'error' );
   }
 
@@ -272,10 +274,12 @@ class OutputSpec extends ObjectBehavior {
     , 'success'  => 'good'
     , 'details'  => [ 'unimportant' => 'right now' ]
     , 'resource' => 'which is not there'
+    , 'current'  => [ 'item' => 'should always be here' ]
     ]);
     $this->status( 418 )->purify();
     $this->render()->shouldHaveKey( 'error' );
     $this->render()->shouldHaveKey( 'details' );
+    $this->render()->shouldHaveKey( 'current' );
     $this->render()->shouldNotHaveKey( 'success' );
     $this->render()->shouldNotHaveKey( 'resource' );
   }
