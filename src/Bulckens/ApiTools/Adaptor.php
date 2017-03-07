@@ -17,10 +17,10 @@ abstract class Adaptor {
 
   // Build an action
   final public function action( $name ) {
-    if ( method_exists( $this, $name ) )
-      return new Action( $name, $this );
+    // if ( method_exists( $this, $name ) )
+    return new Action( $name, $this );
 
-    throw new AdaptorActionMissingException( self::class . "::$name is not a method" );
+    // throw new AdaptorActionMissingException( self::class . "::$name is not a method" );
   }
 
 
