@@ -37,14 +37,14 @@ class Action {
       
       // call before
       if ( method_exists( $this->adaptor, 'before' ) )
-        $this->adaptor->before();
+        $this->adaptor->before( $this->name );
 
       // call action
       $res = $this->adaptor->$action();
       
       // call after
       if ( method_exists( $this->adaptor, 'after' ) )
-        $this->adaptor->after();
+        $this->adaptor->after( $this->name );
 
       return $res;
     }

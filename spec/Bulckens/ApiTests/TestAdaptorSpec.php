@@ -187,6 +187,18 @@ class TestAdaptorSpec extends ObjectBehavior {
     $response->getBody()->__toString()->shouldStartWith( 'Request base: http://localhost' );
   }
 
+  function it_calls_a_before_action() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $this->beforeAction()->shouldBe( 'index' );
+  }
+
+  function it_calls_a_after_action() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $this->afterAction()->shouldBe( 'index' );
+  }
+
 
 
   // Output method
