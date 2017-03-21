@@ -9,11 +9,13 @@ class Response {
   use Traits\Status;
 
   protected $format;
+  protected $cache;
   protected $body;
 
   public function __construct( $format ) {
     $this->format = $format;
   }
+
 
   // Returns stored format
   public function format( $format = null ) {
@@ -26,6 +28,7 @@ class Response {
     return $this->format;
   }
 
+
   // Returns stored body
   public function body( $body = null ) {
     if ( is_null( $body ) )
@@ -36,22 +39,35 @@ class Response {
     return $this;
   }
 
+
   // Parse body
   public function parse() {
-    switch ( $this->format ) {
-      case 'json':
-        return ArrayHelper::fromJson( $this->body );
-      break;
-      case 'xml':
-        return ArrayHelper::fromXml( $this->body );
-      break;
-      case 'yaml':
-        return ArrayHelper::fromYaml( $this->body );
-      break;
-      default:
-        return $this->body;
-      break;
+    // cache parsed body
+    if ( is_null( $this->cache ) ) {
+      switch ( $this->format ) {
+        case 'json':
+          $this->cache = ArrayHelper::fromJson( $this->body );
+        break;
+        case 'xml':
+          $this->cache = ArrayHelper::fromXml( $this->body );
+        break;
+        case 'yaml':
+          $this->cache = ArrayHelper::fromYaml( $this->body );
+        break;
+        default:
+          $this->cache = $this->body;
+        break;
+      }
     }
+    
+    return $this->cache;
+  }
+
+
+  // Get attribute from parsed body
+  public function attr( $key ) {
+    if ( isset( $this->parse()[$key] ) )
+      return $this->parse()[$key];
   }
 
 }

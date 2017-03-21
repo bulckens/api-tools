@@ -107,4 +107,23 @@ class ResponseSpec extends ObjectBehavior {
     $this->parse()->shouldBe( '<html><head><title></title></head><body></body></html>' );
   }
 
+
+  // Attr method
+  function it_returns_a_specific_attribute_from_the_parsed_body() {
+    $this->body( '{"be":"smart","feel":"good"}' );
+    $this->attr( 'be' )->shouldBe( 'smart' );
+    $this->attr( 'feel' )->shouldBe( 'good' );
+  }
+
+  function it_returns_a_null_if_the_attribute_does_not_exist() {
+    $this->body( '{"feel":"good"}' );
+    $this->attr( 'be' )->shouldBe( null );
+  }
+
+  function it_returns_a_nothing_if_the_parsed_body_is_not_an_array() {
+    $this->beConstructedWith( 'html' );
+    $this->body( '<html><head><title></title></head><body></body></html>' );
+    $this->attr( 'title' )->shouldBe( null );
+  }
+
 }
