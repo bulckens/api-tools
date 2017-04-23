@@ -35,6 +35,13 @@ class TestSecretSpec extends ObjectBehavior {
     $api->file( 'api.yml' );
   }
 
+  function it_falls_back_to_a_static_api_key_when_none_is_found_using_the_secret_method() {
+    $api = Api::get();
+    $api->file( 'api.secret.yml' );
+    $this::get( 'reverse' )->shouldStartWith( '36353433323130392' );
+    $api->file( 'api.yml' );
+  }
+
 
   // Exists method
   function it_tests_positive_for_existance_of_a_key() {

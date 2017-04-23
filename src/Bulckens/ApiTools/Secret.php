@@ -10,10 +10,11 @@ abstract class Secret {
   public static function get( $key ) {
     // retreive secret using user defined method
     if ( $method = Api::get()->config( 'methods.secret' ) ) {
-      if ( is_callable( $method ) )
-        return call_user_func( $method, $key );
-
-      throw new SecretMethodNotCallableException( "Secret method $method not callable" );
+      if ( ! is_callable( $method ) )
+        throw new SecretMethodNotCallableException( "Secret method $method not callable" );
+      
+      if ( $secret = call_user_func( $method, $key ) )
+        return $secret;
     }
 
     // retreive secret from config

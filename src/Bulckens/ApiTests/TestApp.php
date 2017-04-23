@@ -20,7 +20,11 @@ class TestApp {
 
   // Parent app secret retreiver method
   public static function secret( $key ) {
-    return 'fallalifallala';
+    switch ( $key ) {
+      case 'generic':
+        return 'fallalifallala';
+      break;
+    }
   }
 
 }
