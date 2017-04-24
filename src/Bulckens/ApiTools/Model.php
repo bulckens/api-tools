@@ -100,7 +100,8 @@ abstract class Model {
     $path = $this->path( $format );
     
     // add token
-    $this->query( 'token', Auth::token( $path, null, $this->secret ) );
+    $token = new Token( $path, $this->secret );
+    $this->query( 'token', $token->get() );
 
     return "$path?" . http_build_query( $this->query );
   }

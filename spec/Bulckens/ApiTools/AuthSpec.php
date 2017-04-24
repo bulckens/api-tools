@@ -2,6 +2,9 @@
 
 namespace spec\Bulckens\ApiTools;
 
+use Slim\Http\Request;
+use Slim\Http\Response;
+use Slim\Http\Environment;
 use Bulckens\AppTools\App;
 use Bulckens\ApiTools\Api;
 use Bulckens\ApiTools\Secret;
@@ -11,40 +14,32 @@ use Prophecy\Argument;
 
 class AuthSpec extends ObjectBehavior {
 
+  protected $req;
+  protected $res;
+  protected $args = [
+    'format' => 'json'
+  ];
+
   function let() {
     $app = new App( 'dev', __DIR__, 3 );
     $app->module( 'api', new Api() );
-  }
+    $app->run();
 
-  // Invoke method
-  function it_is_invokable() {
-    // needs to be written
-  }
-
-
-  // Token method
-  function it_generates_a_token() {
-    $this::token( '/tasty/bears.xml' )->shouldBeString();
-    $this::token( '/tasty/bears.xml' )->shouldMatch( '/^[a-z0-9]{75}$/' );
-  }
-
-  function it_generates_token_accoring_to_algorithm() {
-    $uri    = '/tasty/bears.xml';
-    $stamp  = round( microtime( 1 ) * 1000 );
-    $secret = Secret::get( 'generic' );
-    $token  = hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
-
-    $this::token( $uri, $stamp )->shouldBe( $token );
-  }
-
-  function it_fails_when_the_secret_could_not_be_found() {
-    $this::shouldThrow( 'Bulckens\ApiTools\AuthMissingSecretException' )->duringToken( '/tasty/bears.xml', null, 'hihihi' );
+    $environment = Environment::mock([
+      'REQUEST_URI' => '/fake.json'
+    ]);
+    $this->req = Request::createFromEnvironment( $environment );
+    $this->res = new Response( 200 );
   }
 
 
-  // Stamp method
-  function it_generates_a_timestamp() {
-    $this::stamp()->shouldBeDouble();
+  // Verify method
+  function it_verifies_the_validity_of_a_string_token_in_a_request() {
+    // $this->beConstructedWith([ 'secret' => 'generic' ]);
+    // $this
+    //   ->__invoke( $this->req, $this->res, function() { return function() { return 'result'; }; })
+    //   ->__toString()
+    //   ->shouldStartWith( 'lala' );
   }
   
 }

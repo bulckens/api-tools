@@ -69,29 +69,16 @@ class Auth {
         return $next( $req, $res );
 
     } else {
-      $output->add([ 'error' => 'secret.missing' ])->status( 500 );
+      $output->add([
+        'error'   => 'secret.missing'
+      , 'details' => [ 'secret' => $this->secret_key ]
+      ])->status( 403 );
     }
 
     // error
     return $res->withHeader( 'Content-type', $output->mime() )
                ->withStatus( $output->status() )
                ->write( $output->render() );
-  }
-
-  // Build authentication token
-  public static function token( $uri, $stamp = null, $secret_key = 'generic' ) {
-    if ( $secret = Secret::get( $secret_key ) ) {
-      $stamp = $stamp ?: self::stamp();
-      return hash( 'sha256', implode( '---', [ $secret, $stamp, $uri ] ) ) . dechex( $stamp );
-
-    } else {
-      throw new AuthMissingSecretException( 'Missing API secret!' );
-    }
-  }
-
-  // Get current timestamp
-  public static function stamp() {
-    return round( microtime( 1 ) * 1000 );
   }
 
 }
