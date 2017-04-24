@@ -34,6 +34,7 @@ class Token {
     $parts = [ $this->secret, $this->stamp, $this->uri ];
     return hash( 'sha256', implode( '---', $parts ) ) . dechex( $this->stamp );
   }
+  
 
   // Validate a token agains the current given parameters
   public function validate( $token ) {
