@@ -24,6 +24,9 @@ class TestApp {
       case 'generic':
         return 'fallalifallala';
       break;
+      case 'mastaba':
+        return 'jhBw45b534Jb53';
+      break;
     }
   }
 

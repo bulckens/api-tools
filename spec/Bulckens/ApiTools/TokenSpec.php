@@ -100,4 +100,13 @@ class TokenSpec extends ObjectBehavior {
     $this->validate( $token->get() )->shouldBe( false );
   }
 
+
+  // Parse static meethod
+  function it_parses_a_given_token_into_token_and_timestamp() {
+    $stamp = intval( TimeHelper::ms() );
+    $token = new Token( '/fake.json', 'generic', $stamp );
+    $this->beConstructedWith( '/fake.json', 'generic', $stamp );
+    $this::timestamp( $token->get() )->shouldBe( $stamp );
+  }
+
 }

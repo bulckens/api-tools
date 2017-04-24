@@ -39,7 +39,7 @@ class Token {
   public function validate( $token ) {
     // use the token's stamp if none was explicitly given
     if ( $this->stampless )
-      $this->stamp = hexdec( substr( $token, 64 ) );
+      $this->stamp = self::timestamp( $token );
 
     return $token === $this->get();
   }
@@ -60,6 +60,12 @@ class Token {
   // Given or generated timestamp
   public function stamp() {
     return $this->stamp;
+  }
+
+
+  // Parse timestamp from given token
+  public static function timestamp( $token ) {
+    return hexdec( substr( $token, 64 ) );
   }
 
 }
