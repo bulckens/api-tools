@@ -3,6 +3,7 @@
 namespace Bulckens\ApiTools;
 
 use Exception;
+use Bulckens\AppTools\Mime;
 
 abstract class Model {
 

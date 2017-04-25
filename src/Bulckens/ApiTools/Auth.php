@@ -147,9 +147,9 @@ class Auth {
 }
 
 // Exceptions
-class AuthMissingTokenException extends Exception {}
-class AuthMissingSecretException extends Exception {}
-class AuthSecretNotDefinedInUriException extends Exception {}
+class AuthMissingTokenException            extends Exception {}
+class AuthMissingSecretException           extends Exception {}
+class AuthSecretNotDefinedInUriException   extends Exception {}
 class AuthTokenVerificationFailedException extends Exception {}
-class AuthTokenExpiredException extends Exception {}
-class AuthTokenFuturisticException extends Exception {}
+class AuthTokenExpiredException            extends Exception {}
+class AuthTokenFuturisticException         extends Exception {}

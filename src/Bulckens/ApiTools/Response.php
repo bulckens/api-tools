@@ -6,7 +6,7 @@ use Bulckens\Helpers\ArrayHelper;
 
 class Response {
 
-  use Traits\Status;
+  use Bulckens\AppTools\Traits\Status;
 
   protected $format;
   protected $cache;

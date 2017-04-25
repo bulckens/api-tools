@@ -6,6 +6,7 @@ use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Bulckens\AppTools\App;
+use Bulckens\AppTools\Output;
 
 abstract class Adaptor {
 
