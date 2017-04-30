@@ -3,10 +3,11 @@
 namespace Bulckens\ApiTools;
 
 use Bulckens\Helpers\ArrayHelper;
+use Bulckens\AppTools\Traits\Status;
 
 class Response {
 
-  use Bulckens\AppTools\Traits\Status;
+  use Status;
 
   protected $format;
   protected $cache;

@@ -4,6 +4,7 @@ namespace Bulckens\ApiTools;
 
 use Exception;
 use Bulckens\Helpers\TimeHelper;
+use Bulckens\AppTools\Output;
 
 class Auth {
 

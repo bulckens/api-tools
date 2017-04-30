@@ -226,7 +226,7 @@ class AuthSpec extends ObjectBehavior {
   function it_returns_the_output_object() {
     $token = new Token( '/mastaba/fake.json', 'generic' );
     $this->validate( $this->req->withQueryParams([ 'token' => $token->get() ]) );
-    $this->output()->shouldHaveType( 'Bulckens\ApiTools\Output' );
+    $this->output()->shouldHaveType( 'Bulckens\AppTools\Output' );
   }
   
 }

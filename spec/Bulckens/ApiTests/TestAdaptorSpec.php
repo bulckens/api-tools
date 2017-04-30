@@ -7,8 +7,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\Environment;
 use Bulckens\AppTools\App;
+use Bulckens\AppTools\Output;
 use Bulckens\ApiTools\Api;
-use Bulckens\ApiTools\Output;
 use Bulckens\ApiTests\TestAdaptor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -81,7 +81,7 @@ class TestAdaptorSpec extends ObjectBehavior {
   function it_creates_an_output_object_with_given_format_on_action() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args );
-    $this->output()->shouldHaveType( 'Bulckens\ApiTools\Output' );
+    $this->output()->shouldHaveType( 'Bulckens\AppTools\Output' );
     $this->output()->format()->shouldBe( 'json' );
   }
 
@@ -205,13 +205,13 @@ class TestAdaptorSpec extends ObjectBehavior {
   function it_returns_the_output_object() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args );
-    $this->output()->shouldHaveType( 'Bulckens\ApiTools\Output' );
+    $this->output()->shouldHaveType( 'Bulckens\AppTools\Output' );
   }
 
   function it_sets_a_new_output_object() {
     $this->output()->shouldBe( null );
     $this->output( new Output( 'json' ) );
-    $this->output()->shouldHaveType( 'Bulckens\ApiTools\Output' );
+    $this->output()->shouldHaveType( 'Bulckens\AppTools\Output' );
   }
 
 
