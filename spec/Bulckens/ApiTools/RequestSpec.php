@@ -21,7 +21,7 @@ class RequestSpec extends ObjectBehavior {
   }
 
   function it_adds_the_api_v1_namespace_to_the_path() {
-    $this->path()->shouldBe( '/api/v1' );
+    $this->path()->shouldBe( '/' );
   }
 
 }

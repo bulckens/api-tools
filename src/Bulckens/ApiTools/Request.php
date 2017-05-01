@@ -6,7 +6,7 @@ class Request extends Model {
 
   // Initialize new instance
   public function __construct( $source, $secret = 'generic' ) {
-    $this->secret( $secret )->source( $source )->resource( 'api', 'v1' );
+    $this->secret( $secret )->source( $source );
   }
 
 }
