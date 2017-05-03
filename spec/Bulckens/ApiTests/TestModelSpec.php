@@ -66,6 +66,15 @@ class TestModelSpec extends ObjectBehavior {
     $this->uri( 'xml' )->shouldStartWith( '/pole.xml?drip=drop&drippidy=drop+drop&token=' );
   }
 
+  function it_adds_all_key_value_pairs_in_the_given_array_to_the_get_query_params_without_a_token() {
+    $this->source( 'fake' )->resource( 'pole' )->query([
+      'drip'     => 'drop'
+    , 'drippidy' => 'drop drop'
+    ]);
+    $this->uri( 'xml' )->shouldBe( '/pole.xml?drip=drop&drippidy=drop+drop' );
+  }
+
+
   function it_returns_itself_after_adding_query_params() {
     $this->source( 'fake' )->resource( 'steam' )->query( 'cloud', 'pink' )->shouldBe( $this );
   }
@@ -154,8 +163,12 @@ class TestModelSpec extends ObjectBehavior {
     $this->secret( 'generic' )->shouldBe( $this );
   }
 
+  function it_returns_nothing_if_no_secret_is_defined() {
+    $this->secret()->shouldBe( null );
+  }
+
   function it_fails_without_a_secret_api_key() {
-    $this->resource( 'path' );
+    $this->secret( 'missing' )->resource( 'path' );
     $this->shouldThrow( 'Bulckens\ApiTools\ModelMissingSecretException' )->duringSecret();
   }
 
@@ -174,6 +187,11 @@ class TestModelSpec extends ObjectBehavior {
   function it_returns_the_full_uri_with_auth_token() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'flyers' );
     $this->uri()->shouldMatch( '/^\/flyers\.json\?token=[a-z0-9]{75}$/' );
+  }
+
+  function it_returns_the_uri_without_a_token_if_no_secret_is_given() {
+    $this->source( 'fake' )->resource( 'flyers' );
+    $this->uri()->shouldMatch( '/^\/flyers\.json$/' );
   }
 
 
@@ -195,7 +213,12 @@ class TestModelSpec extends ObjectBehavior {
 
   function it_returns_the_full_url_with_ssl_disabled() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'path' );
-    $this->url( 'xml', false )->shouldStartWith( 'http://fake.zwartopwit.be' );
+    $this->url( 'xml', false )->shouldStartWith( 'http://fake.zwartopwit.be/path.xml?token' );
+  }
+
+  function it_returns_the_full_url_without_a_token() {
+    $this->source( 'fake' )->resource( 'path' );
+    $this->url( 'xml', false )->shouldBe( 'http://fake.zwartopwit.be/path.xml' );
   }
 
 

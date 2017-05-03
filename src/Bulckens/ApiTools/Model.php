@@ -84,6 +84,8 @@ abstract class Model {
   // Set/get the secret
   public function secret( $secret = null ) {
     if ( is_null( $secret ) ) {
+      if ( is_null( $this->secret ) ) return;
+      
       if ( $secret = Secret::get( $this->secret ) )
         return $secret;
 
@@ -101,10 +103,12 @@ abstract class Model {
     $path = $this->path( $format );
     
     // add token
-    $token = new Token( $path, $this->secret );
-    $this->query( 'token', $token->get() );
+    if ( $this->secret ) {
+      $token = new Token( $path, $this->secret );
+      $this->query( 'token', $token->get() );
+    }
 
-    return "$path?" . http_build_query( $this->query );
+    return empty( $this->query ) ? $path : "$path?" . http_build_query( $this->query );
   }
 
 
