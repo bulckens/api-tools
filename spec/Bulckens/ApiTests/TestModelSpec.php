@@ -16,6 +16,7 @@ class TestModelSpec extends ObjectBehavior {
     $app->module( 'api', new Api() );
   }
 
+
   // Resource method
   function it_registers_a_given_uri_part() {
     $this->source( 'fake' )->resource( 'part' );
@@ -219,6 +220,28 @@ class TestModelSpec extends ObjectBehavior {
   function it_returns_the_full_url_without_a_token() {
     $this->source( 'fake' )->resource( 'path' );
     $this->url( 'xml', false )->shouldBe( 'http://fake.zwartopwit.be/path.xml' );
+  }
+
+
+  // Perform method
+  function it_returns_a_response_with_a_status() {
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
+    $response = $this->get();
+    $response->status()->shouldBe( 200 );
+  }
+
+  function it_returns_a_response_with_a_body() {
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
+    $response = $this->get();
+    $response->body()->shouldBe( '{"body":{"message":"success","flyers":[{"name":"A4"},{"name":"A5"},{"name":"A6"}]}}' );
+  }
+
+  function it_returns_a_response_with_a_headers() {
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
+    $headers = $this->get()->headers();
+    $headers->shouldBeArray();
+    $headers['server']->shouldContain( 'Apache' );
+    $headers['content-type']->shouldContain( 'application/json' );
   }
 
 

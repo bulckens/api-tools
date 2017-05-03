@@ -166,7 +166,10 @@ abstract class Model {
     , $this->data
     );
     
-    return $response->body( $request->body )->status( $request->status_code );
+    return $response
+      ->body( $request->body )
+      ->status( $request->status_code )
+      ->headers( $request->headers->getIterator()->getArrayCopy() );
   }
 
 }

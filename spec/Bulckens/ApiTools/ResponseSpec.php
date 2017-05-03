@@ -35,7 +35,7 @@ class ResponseSpec extends ObjectBehavior {
   }
 
 
-  // Status
+  // Status method
   function it_returns_the_status() {
     $this->status( 404 );
     $this->status()->shouldBe( 404 );
@@ -47,6 +47,29 @@ class ResponseSpec extends ObjectBehavior {
 
   function it_returns_itself_after_setting_the_status() {
     $this->status( 418 )->shouldBe( $this );
+  }
+
+
+  // Headers method
+  function it_returns_the_headers() {
+    $this->headers([ 'Expires' => 'Wed, 03 May 2017 14:16:34 GMT' ]);
+    $headers = $this->headers();
+    $headers->shouldBeArray();
+    $headers->shouldHaveKeyWithValue( 'Expires', 'Wed, 03 May 2017 14:16:34 GMT' );
+  }
+
+  function it_returns_a_single_header() {
+    $this->headers([ 'Expires' => 'Wed, 03 May 2017 14:16:34 GMT' ]);
+    $this->headers( 'Expires' )->shouldBe( 'Wed, 03 May 2017 14:16:34 GMT' );
+  }
+
+  function it_sets_the_headers() {
+    $this->headers([ 'Expires' => 'Wed, 03 May 2017 14:16:34 GMT' ]);
+    $this->headers()->shouldBeArray();
+  }
+
+  function it_returns_itself_after_setting_the_headers() {
+    $this->headers([ 'Expires' => 'Wed, 03 May 2017 14:16:34 GMT' ])->shouldBe( $this );
   }
 
 

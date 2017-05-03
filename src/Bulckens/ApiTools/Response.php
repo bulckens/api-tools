@@ -9,6 +9,7 @@ class Response {
 
   use Status;
 
+  protected $headers;
   protected $format;
   protected $cache;
   protected $body;
@@ -27,6 +28,20 @@ class Response {
       return in_array( $this->format, $format );
 
     return $this->format;
+  }
+
+
+  // Set/get headers
+  public function headers( $headers = null ) {
+    if ( is_null( $headers ) )
+      return $this->headers;
+
+    if ( is_string( $headers ) )
+      return isset( $this->headers[$headers] ) ? $this->headers[$headers] : null;
+
+    $this->headers = $headers;
+
+    return $this;
   }
 
 
