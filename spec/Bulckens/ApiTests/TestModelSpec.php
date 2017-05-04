@@ -233,13 +233,14 @@ class TestModelSpec extends ObjectBehavior {
   function it_returns_a_response_with_a_body() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
     $response = $this->get();
-    $response->body()->shouldBe( '{"body":{"message":"success","flyers":[{"name":"A4"},{"name":"A5"},{"name":"A6"}]}}' );
+    $response->body()->shouldStartWith( '{"body":{"message":"success","flyers":[{"name":"A4"},{"name":"A5"},{"name":"A6"}]},"success":"status.200"}' );
+    $response->body()->shouldEndWith( '{"body":{"message":"success","flyers":[{"name":"A4"},{"name":"A5"},{"name":"A6"}]},"success":"status.200"}' );
   }
 
   function it_returns_a_response_with_a_headers() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'api-tools' )->resource( 'flyers' );
     $headers = $this->get()->headers();
-    $headers->shouldBeArray();
+    $headers->shouldHaveType( 'Requests_Response_Headers' );
     $headers['server']->shouldContain( 'Apache' );
     $headers['content-type']->shouldContain( 'application/json' );
   }

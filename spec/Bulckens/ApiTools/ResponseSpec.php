@@ -65,7 +65,7 @@ class ResponseSpec extends ObjectBehavior {
 
   function it_sets_the_headers() {
     $this->headers([ 'Expires' => 'Wed, 03 May 2017 14:16:34 GMT' ]);
-    $this->headers()->shouldBeArray();
+    $this->headers()->shouldHaveCount( 1 );
   }
 
   function it_returns_itself_after_setting_the_headers() {

@@ -169,7 +169,7 @@ abstract class Model {
     return $response
       ->body( $request->body )
       ->status( $request->status_code )
-      ->headers( $request->headers->getIterator()->getArrayCopy() );
+      ->headers( $request->headers );
   }
 
 }
