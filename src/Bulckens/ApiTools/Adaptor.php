@@ -24,7 +24,7 @@ abstract class Adaptor {
 
 
   // Render output
-  final public function render( $subject = null, $locals = [] ) {
+  public function render( $subject = null, $locals = [] ) {
     if ( is_string( $subject ) ) {
       // merge info in locals
       $locals = array_replace( $this->information(), $locals );
@@ -41,7 +41,8 @@ abstract class Adaptor {
         $this->output->clear()
                      ->add([
                        'error'   => 'format.not_accepted'
-                     , 'details' => [ 'accepted' => $subject ] ])
+                     , 'details' => [ 'accepted' => $subject ]
+                     ])
                      ->status( 406 );
 
       // add additional info
