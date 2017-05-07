@@ -71,7 +71,7 @@ class TokenSpec extends ObjectBehavior {
   }
 
 
-  // Verify method
+  // Validate method
   function it_verifies_the_validity_of_a_token() {
     $stamp = TimeHelper::ms();
     $token = new Token( '/fake.json', 'generic', $stamp );
@@ -101,7 +101,7 @@ class TokenSpec extends ObjectBehavior {
   }
 
 
-  // Parse static meethod
+  // Timestamp static method
   function it_parses_a_given_token_into_token_and_timestamp() {
     $stamp = intval( TimeHelper::ms() );
     $token = new Token( '/fake.json', 'generic', $stamp );
