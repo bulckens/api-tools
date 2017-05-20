@@ -22,7 +22,7 @@ class TokenSpec extends ObjectBehavior {
   // Initialization
   function it_fails_when_no_secret_could_be_found() {
     $this
-      ->shouldThrow( 'Bulckens\ApiTools\TokenSecretMissingException' )
+      ->shouldThrow( 'Bulckens\AppTools\Traits\TokenishSecretMissingException' )
       ->during__construct( '/trouble.json', 'phish' );
   }
 

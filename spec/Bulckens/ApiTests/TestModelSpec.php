@@ -221,7 +221,7 @@ class TestModelSpec extends ObjectBehavior {
     $this->source( 'fake' )->resource( 'path' );
     $this->url( 'xml', false )->shouldBe( 'http://fake.zwartopwit.be/path.xml' );
   }
-
+  
 
   // Perform method
   function it_returns_a_response_with_a_status() {

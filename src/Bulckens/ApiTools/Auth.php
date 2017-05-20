@@ -131,7 +131,7 @@ class Auth {
     if ( $age > $this->lifespan )
       throw new AuthTokenExpiredException( 'The provided token is no longer valid' );
 
-    else if ( $stamp > $time + 5 )
+    else if ( $stamp > $time + 5000 )
       throw new AuthTokenFuturisticException( 'The provided token is from the future' );
       
 
