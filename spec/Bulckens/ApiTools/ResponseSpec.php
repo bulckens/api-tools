@@ -138,6 +138,16 @@ class ResponseSpec extends ObjectBehavior {
     $this->attr( 'feel' )->shouldBe( 'good' );
   }
 
+  function it_returns_a_nested_attribute_from_the_parsed_body() {
+    $this->body( '{"one":{"in":{"another":"two"}}}' );
+    $this->attr( 'one.in.another' )->shouldBe( 'two' );
+  }
+
+  function it_returns_null_if_a_nested_attribute_does_not_exist() {
+    $this->body( '{"one":{"in":{"another":"two"}}}' );
+    $this->attr( 'no.one.in.there' )->shouldBe( null );
+  }
+
   function it_returns_a_null_if_the_attribute_does_not_exist() {
     $this->body( '{"feel":"good"}' );
     $this->attr( 'be' )->shouldBe( null );

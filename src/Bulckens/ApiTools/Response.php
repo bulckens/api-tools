@@ -81,9 +81,19 @@ class Response {
 
 
   // Get attribute from parsed body
-  public function attr( $key ) {
-    if ( isset( $this->parse()[$key] ) )
-      return $this->parse()[$key];
+  public function attr( $key, $default = null ) {
+    // prepare path iteration
+    $parts = explode( '.', $key );
+    $value = $this->parse();
+
+    // find value for path
+    foreach ( $parts as $part ) {
+      if ( isset( $value[$part] ) )
+        $value = $value[$part];
+      else return $default;
+    }
+
+    return $value;
   }
 
 }
