@@ -143,6 +143,28 @@ class ResponseSpec extends ObjectBehavior {
     $this->attr( 'one.in.another' )->shouldBe( 'two' );
   }
 
+  function it_returns_an_array_of_mapped_attributes_from_a_collection() {
+    $this->body( '{"collection":[{"id":3,"name":"three"},{"id":13,"name":"thirteen"}]}' );
+    $collection = $this->attr( 'collection.@id' );
+    $collection->shouldHaveCount( 2 );
+    $collection->shouldContain( 3 );
+    $collection->shouldContain( 13 );
+  }
+
+  function it_returns_a_single_item_from_a_collection() {
+    $this->body( '{"collection":[{"id":3,"name":"three"},{"id":5,"name":"five"},{"id":13,"name":"thirteen"}]}' );
+    $collection = $this->attr( 'collection.#1' );
+    $collection->shouldHaveKeyWithValue( 'id', 5 );
+    $collection->shouldHaveKeyWithValue( 'name', 'five' );
+  }
+
+  function it_returns_the_last_item_from_a_collection() {
+    $this->body( '{"collection":[{"id":3,"name":"three"},{"id":13,"name":"thirteen"}]}' );
+    $collection = $this->attr( 'collection.#n' );
+    $collection->shouldHaveKeyWithValue( 'id' , 13 );
+    $collection->shouldHaveKeyWithValue( 'name' , 'thirteen' );
+  }
+
   function it_returns_null_if_a_nested_attribute_does_not_exist() {
     $this->body( '{"one":{"in":{"another":"two"}}}' );
     $this->attr( 'no.one.in.there' )->shouldBe( null );

@@ -88,8 +88,23 @@ class Response {
 
     // find value for path
     foreach ( $parts as $part ) {
+      // simply get value
       if ( isset( $value[$part] ) )
         $value = $value[$part];
+
+      // get the last item of a collection
+      elseif ( is_array( $value ) && $part == '#n' )
+        $value = end( $value );
+
+      // get an item at a given position in a collection
+      elseif ( is_array( $value ) && preg_match( '/^#(\d+)$/', $part, $m ) && isset( $value[$m[1]] ) )
+        $value = $value[$m[1]];
+
+      // collect attribute values
+      elseif ( is_array( $value ) && preg_match( '/^@([a-zA-Z0-9_-]+)$/', $part, $m ) )
+        $value = array_map( function( $v ) use( $m ) { return $v[$m[1]]; }, $value );
+
+      // return absolute fallback value
       else return $default;
     }
 
