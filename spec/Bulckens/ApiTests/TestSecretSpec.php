@@ -23,23 +23,23 @@ class TestSecretSpec extends ObjectBehavior {
 
   function it_returns_a_secret_for_the_corresponding_given_key_using_the_dynamic_secret_method() {
     $api = Api::get();
-    $api->file( 'api.secret.yml' );
+    $api->configFile( 'api.secret.yml' );
     $this::get( 'generic' )->shouldBe( 'fallalifallala' );
-    $api->file( 'api.yml' );
+    $api->configFile( 'api.yml' );
   }
 
   function it_fails_if_the_defined_secret_method_is_not_callable() {
     $api = Api::get();
-    $api->file( 'api.secret_fail.yml' );
+    $api->configFile( 'api.secret_fail.yml' );
     $this::shouldThrow( 'Bulckens\ApiTools\SecretMethodNotCallableException' )->duringGet( 'generic' );
-    $api->file( 'api.yml' );
+    $api->configFile( 'api.yml' );
   }
-
+  
   function it_falls_back_to_a_static_api_key_when_none_is_found_using_the_secret_method() {
     $api = Api::get();
-    $api->file( 'api.secret.yml' );
+    $api->configFile( 'api.secret.yml' );
     $this::get( 'reverse' )->shouldStartWith( '36353433323130392' );
-    $api->file( 'api.yml' );
+    $api->configFile( 'api.yml' );
   }
 
 

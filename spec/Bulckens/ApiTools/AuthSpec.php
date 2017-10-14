@@ -37,7 +37,7 @@ class AuthSpec extends ObjectBehavior {
   }
 
   function letGo() {
-    Api::get()->file( 'api.yml' );
+    Api::get()->configFile( 'api.yml' );
   }
 
 
@@ -62,7 +62,7 @@ class AuthSpec extends ObjectBehavior {
   }
 
   function it_indicates_a_secret_missing_from_the_uri() {
-    Api::get()->file( 'api.secret.yml' );
+    Api::get()->configFile( 'api.secret.yml' );
 
     $token = new Token( '/mastaba/fake.json', 'generic' );
     $this->beConstructedWith([ 'secret' => 'uri.doctor_who' ]);
@@ -124,7 +124,7 @@ class AuthSpec extends ObjectBehavior {
   }
 
   function it_verifies_the_validity_of_a_secret_in_a_request_using_a_dynamic_method() {
-    Api::get()->file( 'api.secret.yml' );
+    Api::get()->configFile( 'api.secret.yml' );
 
     $this->beConstructedWith([ 'secret' => 'generic' ]);
     $token = new Token( '/mastaba/fake.json', 'generic' );
@@ -134,7 +134,7 @@ class AuthSpec extends ObjectBehavior {
   }
 
   function it_verifies_the_validity_of_a_uri_secret_in_a_request() {
-    Api::get()->file( 'api.secret.yml' );
+    Api::get()->configFile( 'api.secret.yml' );
 
     $this->req->getAttribute( 'route' )->setArgument( 'entity', 'mastaba' );
 
@@ -163,7 +163,7 @@ class AuthSpec extends ObjectBehavior {
   }
 
   function it_fails_if_the_secret_key_could_not_be_found_dynamically() {
-    Api::get()->file( 'api.secret.yml' );
+    Api::get()->configFile( 'api.secret.yml' );
 
     $token = new Token( '/mastaba/fake.json', 'reverse' );
     $this->beConstructedWith([ 'secret' => 'dynamo' ]);
@@ -173,7 +173,7 @@ class AuthSpec extends ObjectBehavior {
   }
 
   function it_fails_if_the_uri_secret_is_missing_from_the_uri() {
-    Api::get()->file( 'api.secret.yml' );
+    Api::get()->configFile( 'api.secret.yml' );
 
     $token = new Token( '/mastaba/fake.json', 'generic' );
     $this->beConstructedWith([ 'secret' => 'uri.doctor_who' ]);

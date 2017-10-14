@@ -306,4 +306,23 @@ class TestModelSpec extends ObjectBehavior {
     $this->get()->status()->shouldBe( 404 );
   }
 
+
+  // Rewind method
+  function it_rewinds_the_request_object() {
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'path' );
+    $this->url( 'xml' )->shouldStartWith( 'http://fake.zwartopwit.be/path.xml?token' );
+    $this->rewind();
+    $this->url( 'xml' )->shouldStartWith( 'http://fake.zwartopwit.be/.xml?token' );
+  }
+
+  function it_maintains_the_source_and_secret_after_rewinding() {
+    $this->secret( 'generic' )->source( 'fake' )->resource( 'path' )->rewind();
+    $this->source()->shouldBe( 'http://fake.zwartopwit.be' );
+    $this->secret()->shouldStartWith( '12345678910111213' );
+  }
+
+  function it_returns_itself_after_rewinding() {
+    $this->rewind()->shouldBe( $this );
+  }
+
 }

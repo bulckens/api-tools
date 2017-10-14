@@ -10,7 +10,7 @@ use Prophecy\Argument;
 class SortSpec extends ObjectBehavior {
 
   function let() {
-    Api::get()->file( 'api.yml' );
+    Api::get()->configFile( 'api.yml' );
     $this->beConstructedWith( 'fairy-desc' );
   }
 
@@ -50,7 +50,7 @@ class SortSpec extends ObjectBehavior {
   }
 
   function it_returns_the_sort_order_key_with_custom_delimiter() {
-    Api::get()->file( 'api.delimiter.yml' );
+    Api::get()->configFile( 'api.delimiter.yml' );
     $this->beConstructedWith( 'updated_at#desc' );
     $this->key( 'id' )->shouldBe( 'updated_at' );
   }
@@ -77,13 +77,13 @@ class SortSpec extends ObjectBehavior {
   }
 
   function it_returns_the_sort_order_direction_with_custom_delimiter() {
-    Api::get()->file( 'api.delimiter.yml' );
+    Api::get()->configFile( 'api.delimiter.yml' );
     $this->beConstructedWith( 'name#asc' );
     $this->way()->shouldBe( 'asc' );
   }
 
   function it_returns_the_configured_sort_order_direction() {
-    Api::get()->file( 'api.sort_order.yml' );
+    Api::get()->configFile( 'api.sort_order.yml' );
     $this->beConstructedWith( 'field' );
     $this->way()->shouldBe( 'desc' );
   }
@@ -127,7 +127,7 @@ class SortSpec extends ObjectBehavior {
   }
 
   function it_returns_the_custom_delimiter() {
-    Api::get()->file( 'api.delimiter.yml' );
+    Api::get()->configFile( 'api.delimiter.yml' );
     $this::delimiter()->shouldBe( '#' );
   }
 
@@ -138,7 +138,7 @@ class SortSpec extends ObjectBehavior {
   }
 
   function it_generates_a_sort_order_key_with_custom_delimiter() {
-    Api::get()->file( 'api.delimiter.yml' );
+    Api::get()->configFile( 'api.delimiter.yml' );
     $this::order( 'id', 'desc' )->shouldBe( 'id#desc' );
   }
 

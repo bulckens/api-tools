@@ -47,24 +47,24 @@ class ApiSpec extends ObjectBehavior {
 
   // File method
   function it_builds_config_file_name_from_class() {
-    $this->file()->shouldBe( 'api.yml' );
+    $this->configFile()->shouldBe( 'api.yml' );
   }
 
   function it_defines_a_custom_config_file() {
-    $this->file( 'api.custom.yml' );
-    $this->file()->shouldBe( 'api.custom.yml' );
+    $this->configFile( 'api.custom.yml' );
+    $this->configFile()->shouldBe( 'api.custom.yml' );
     $this->config( 'custom' )->shouldBe( 'wichtig' );
   }
 
   function it_unsets_the_custom_config_file_with_null_given() {
-    $this->file( 'api.custom.yml' );
-    $this->file()->shouldBe( 'api.custom.yml' );
-    $this->file( null );
-    $this->file()->shouldBe( 'api.yml' );
+    $this->configFile( 'api.custom.yml' );
+    $this->configFile()->shouldBe( 'api.custom.yml' );
+    $this->configFile( null );
+    $this->configFile()->shouldBe( 'api.yml' );
   }
 
   function it_returns_itself_after_defining_a_custom_config_file() {
-    $this->file( 'api.custom.yml' )->shouldBe( $this );
+    $this->configFile( 'api.custom.yml' )->shouldBe( $this );
   }
 
 

@@ -12,7 +12,7 @@ abstract class Model {
   protected $secret;
   protected $source;
   protected $path;
-
+ 
   // Add resource
   public function resource( $resource, $id = null ) {
     // prepare prefix
@@ -170,6 +170,16 @@ abstract class Model {
       ->body( $request->body )
       ->status( $request->status_code )
       ->headers( $request->headers );
+  }
+
+
+  // Reset state of current object
+  public function rewind() {
+    $this->data = [];
+    $this->query = [];
+    $this->path = null;
+
+    return $this;
   }
 
 }
