@@ -5,6 +5,7 @@ namespace Bulckens\ApiTools;
 use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Bulckens\Helpers\UploadHelper;
 use Bulckens\AppTools\App;
 use Bulckens\AppTools\Output;
 
@@ -18,8 +19,9 @@ abstract class Adaptor {
 
   // Build an action
   final public function action( $name ) {
-    if ( method_exists( $this, $name ) )
+    if ( method_exists( $this, $name ) ) {
       return new Action( $name, $this );
+    }
   }
 
 
@@ -37,36 +39,42 @@ abstract class Adaptor {
       $subject = $subject ?: $this->respond_to;
 
       // make sure to respond to only allowed formats
-      if ( is_array( $subject ) && ! in_array( $this->args( 'format' ), $subject ) )
-        $this->output->clear()
-                     ->add([
-                       'error'   => 'format.not_accepted'
-                     , 'details' => [ 'accepted' => $subject ]
-                     ])
-                     ->status( 406 );
+      if ( is_array( $subject ) && ! in_array( $this->args( 'format' ), $subject ) ) {
+        $this
+          ->output
+          ->clear()
+          ->add([
+            'error'   => 'format.not_accepted'
+          , 'details' => [ 'accepted' => $subject ]
+          ])
+          ->status( 406 );
+      }
 
       // add additional info
-      $this->output->add( $this->information() );
+      if ( Api::get()->config( 'verbose' ) ) {
+        $this->output->add( $this->information() );
+      }
 
       // render output
       $output = $this->output->render();
     }
 
     // add headers
-    foreach ( $this->output->headers() as $header )
+    foreach ( $this->output->headers() as $header ) {
       $this->__res = $this->__res->withHeader( $header[0], $header[1] );
+    }
 
     // render output
-    return $this->res()->withHeader( 'Content-type', $this->output->mime() )
-                       ->withStatus( $this->output->status() )
-                       ->write( $output );
+    return $this
+      ->res()->withHeader( 'Content-type', $this->output->mime() )
+      ->withStatus( $this->output->status() )
+      ->write( $output );
   }
 
 
   // Get output object
   final public function output( $format = null ) {
-    if ( is_null( $format ) )
-      return $this->output;
+    if ( is_null( $format ) ) return $this->output;
 
     $this->output = new Output( $format );
 
@@ -76,13 +84,13 @@ abstract class Adaptor {
 
   // Set/get request
   final public function req( $req = null ) {
-    if ( is_null( $req ) )
-      return $this->__req;
+    if ( is_null( $req ) ) return $this->__req;
 
-    if ( $req instanceof Request )
+    if ( $req instanceof Request ) {
       $this->__req = $req;
-    else
+    } else {
       throw new AdaptorRequestInvalidException( 'Expected instance of Slim\Http\Request but got ' . get_class( $req ) );
+    }
 
     return $this;
   }
@@ -90,13 +98,13 @@ abstract class Adaptor {
 
   // Set/get response
   final public function res( $res = null ) {
-    if ( is_null( $res ) )
-      return $this->__res;
+    if ( is_null( $res ) ) return $this->__res;
 
-    if ( $res instanceof Response )
+    if ( $res instanceof Response ) {
       $this->__res = $res;
-    else
+    } else {
       throw new AdaptorResponseInvalidException( 'Expected instance of Slim\Http\Response but got ' . get_class( $res ) );
+    }
 
     return $this;
   }
@@ -104,18 +112,26 @@ abstract class Adaptor {
 
   // Set/get arguments
   final public function args( $args = null, $fallback = null ) {
-    if ( is_null( $args ) )
+    if ( is_null( $args ) ) {
       return $this->__args;
 
-    else if ( is_string( $args ) )
+    } else if ( is_string( $args ) ) {
       return isset( $this->__args[$args] ) ? $this->__args[$args] : $fallback;
+    }
 
-    if ( is_array( $args ) )
+    if ( is_array( $args ) ) {
       $this->__args = $args;
-    else
+    } else {
       throw new AdaptorArgumentsInvalidException( 'Expected an array of arguments but got ' . get_class( $args ) );
+    }
 
     return $this;
+  }
+
+
+  // Get parameters combined with file post data
+  final public function params() {
+    return array_replace_recursive( $this->req()->getParams(), UploadHelper::files() );
   }
 
 

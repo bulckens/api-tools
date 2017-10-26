@@ -26,11 +26,7 @@ class TestAdaptorSpec extends ObjectBehavior {
     $app->module( 'api', new Api() );
     $app->run();
 
-    $environment = Environment::mock([
-      'REQUEST_URI' => '/fake.json'
-    ]);
-    $this->req = Request::createFromEnvironment( $environment );
-    $this->res = new Response( 200 );
+    $this->mockSlimEnvironment();
   }
   
 
@@ -108,14 +104,30 @@ class TestAdaptorSpec extends ObjectBehavior {
     $this->render()->shouldHaveType( 'Slim\Http\Response' );
   }
 
-  function it_adds_statistic_for_output_on_render() {
+  function it_does_not_add_statistics_for_output_on_render() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $this->render();
+    $this->output()->toArray()->shouldNotHaveKey( 'statistics' );
+  }
+
+  function it_adds_statistic_for_output_on_render_in_verbose_mode() {
+    Api::get()->configFile( 'api_verbose.yml' );
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args );
     $this->render();
     $this->output()->toArray()->shouldHaveKey( 'statistics' );
   }
 
-  function it_adds_request_details_for_output_on_render() {
+  function it_does_not_add_request_details_for_output_on_render() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $this->render();
+    $this->output()->toArray()->shouldNotHaveKey( 'request' );
+  }
+
+  function it_adds_request_details_for_output_on_render_in_verbose_mode() {
+    Api::get()->configFile( 'api_verbose.yml' );
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args );
     $this->render();
@@ -273,6 +285,139 @@ class TestAdaptorSpec extends ObjectBehavior {
   }
 
 
+  // Parames method
+  function it_returns_the_get_and_post_params_as_an_array() {
+    $this->mockSlimEnvironment([
+      'data' => [
+        'some' => 'param'
+      , 'another' => 'parameter'
+      ]
+    ]);
+
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $this->params()->shouldBeArray();
+    $this->params()->shouldHaveKeyWithValue( 'some', 'param' );
+    $this->params()->shouldHaveKeyWithValue( 'another', 'parameter' );
+  }
+
+  function it_includes_uploaded_files_in_the_get_and_post_params_array() {
+    global $_FILES;
+    $_FILES = [ 'pages' => [
+      'name' => [
+        '1' => [
+          'thumb' => 'thumbnail.png'
+        , 'image' => 'imaginative.jpg'
+        ]
+      , '2' => [
+          'elements' => [
+            '3' => [
+              'thumb' => 'duimnagel.png'
+            ]
+          ]
+        ]
+      ]
+    , 'type' => [
+        '1' => [
+          'thumb' => 'image/png'
+        , 'image' => 'image/jpeg'
+        ]
+      , '2' => [
+          'elements' => [
+            '3' => [
+              'thumb' => 'image/png'
+            ]
+          ]
+        ]
+      ]
+    , 'tmp_name' => [
+        '1' => [
+          'thumb' => '/tmp/uploads/gfGV545hgGvJHJbHJB545456'
+        , 'image' => '/tmp/uploads/hsukKlO45Ijfd955hfFFUjgf'
+        ]
+      , '2' => [
+          'elements' => [
+            '3' => [
+              'thumb' => '/tmp/uploads/uuhFHVvghGHhj54235GVCgh5'
+            ]
+          ]
+        ]
+      ]
+    , 'error' => [
+        '1' => [
+          'thumb' => UPLOAD_ERR_OK
+        , 'image' => UPLOAD_ERR_OK
+        ]
+      , '2' => [
+          'elements' => [
+            '3' => [
+              'thumb' => UPLOAD_ERR_OK
+            ]
+          ]
+        ]
+      ]
+    , 'size' => [
+        '1' => [
+          'thumb' => 84253
+        , 'image' => 3513165464
+        ]
+      , '2' => [
+          'elements' => [
+            '3' => [
+              'thumb' => 98456
+            ]
+          ]
+        ]
+      ]
+    ]];
+
+    $this->mockSlimEnvironment([
+      'data' => [
+        'pages' => [
+          '1' => [
+            'title' => 'Magnificent meralboda'
+          , 'description' => 'The magnificent meralboda came to our wedding'
+          ]
+        , '2' => [
+            'title' => 'Forsight ferlando'
+          , 'description' => 'Incomprehencible defying declarations'
+          , 'elements' => [
+              '3' => [
+                'type' => 'tulipan'
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]);
+
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $params = $this->params();
+    $params['pages']['1']['title']->shouldBe( 'Magnificent meralboda' );
+    $params['pages']['1']['description']->shouldBe( 'The magnificent meralboda came to our wedding' );
+    $params['pages']['1']->shouldHaveKey( 'thumb' );
+    $params['pages']['1']['thumb']->shouldHaveKeyWithValue( 'name', 'thumbnail.png' );
+    $params['pages']['1']['thumb']->shouldHaveKeyWithValue( 'type', 'image/png' );
+    $params['pages']['1']['thumb']->shouldHaveKeyWithValue( 'tmp_name', '/tmp/uploads/gfGV545hgGvJHJbHJB545456' );
+    $params['pages']['1']['thumb']->shouldHaveKeyWithValue( 'error', UPLOAD_ERR_OK );
+    $params['pages']['1']['thumb']->shouldHaveKeyWithValue( 'size', 84253 );
+    $params['pages']['1']['image']->shouldHaveKeyWithValue( 'name', 'imaginative.jpg' );
+    $params['pages']['1']['image']->shouldHaveKeyWithValue( 'type', 'image/jpeg' );
+    $params['pages']['1']['image']->shouldHaveKeyWithValue( 'tmp_name', '/tmp/uploads/hsukKlO45Ijfd955hfFFUjgf' );
+    $params['pages']['1']['image']->shouldHaveKeyWithValue( 'error', UPLOAD_ERR_OK );
+    $params['pages']['1']['image']->shouldHaveKeyWithValue( 'size', 3513165464 );
+    $params['pages']['2']['title']->shouldBe( 'Forsight ferlando' );
+    $params['pages']['2']['description']->shouldBe( 'Incomprehencible defying declarations' );
+    $params['pages']['2']['elements']['3']['type']->shouldBe( 'tulipan' );
+    $params['pages']['2']['elements']['3']['thumb']->shouldHaveKeyWithValue( 'name', 'duimnagel.png' );
+    $params['pages']['2']['elements']['3']['thumb']->shouldHaveKeyWithValue( 'type', 'image/png' );
+    $params['pages']['2']['elements']['3']['thumb']->shouldHaveKeyWithValue( 'tmp_name', '/tmp/uploads/uuhFHVvghGHhj54235GVCgh5' );
+    $params['pages']['2']['elements']['3']['thumb']->shouldHaveKeyWithValue( 'error', UPLOAD_ERR_OK );
+    $params['pages']['2']['elements']['3']['thumb']->shouldHaveKeyWithValue( 'size', 98456 );    
+  }
+
+
   // Info method
   function it_returns_an_array_with_request_information() {
     $action = $this->action( 'index' );
@@ -298,6 +443,17 @@ class TestAdaptorSpec extends ObjectBehavior {
     $info['statistics']['used_memory']->shouldBeString();
   }
 
+
+  // Helpers
+  protected function mockSlimEnvironment( $o = [] ) {
+    $environment = Environment::mock([
+      'REQUEST_METHOD' => ( isset( $o['method'] ) ? $o['method'] : 'GET' )
+    , 'REQUEST_URI' => '/fake.json'
+    , 'QUERY_STRING' => http_build_query( isset( $o['data'] ) ? $o['data'] : [] )
+    ]);
+    $this->req = Request::createFromEnvironment( $environment );
+    $this->res = new Response( 200 );
+  }
 
 
 }
