@@ -12,6 +12,7 @@ use Bulckens\AppTools\Output;
 abstract class Adaptor {
 
   protected $output;
+  protected $wrapper;
   protected $respond_to = 'all';
   protected $__req;
   protected $__res;
@@ -62,6 +63,11 @@ abstract class Adaptor {
     // add headers
     foreach ( $this->output->headers() as $header ) {
       $this->__res = $this->__res->withHeader( $header[0], $header[1] );
+    }
+
+    // return wrapped output
+    if ( is_string( $wrapper = $this->wrapper ) ) {
+      return new $wrapper( $output );
     }
 
     // render output
@@ -132,6 +138,13 @@ abstract class Adaptor {
   // Get parameters combined with file post data
   final public function params() {
     return array_replace_recursive( $this->req()->getParams(), UploadHelper::files() );
+  }
+
+
+  // Set output wrapper
+  final public function wrapper( $wrapper ) {
+    $this->wrapper = $wrapper;
+    return $this;
   }
 
 

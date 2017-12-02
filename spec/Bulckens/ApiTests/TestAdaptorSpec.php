@@ -48,6 +48,12 @@ class TestAdaptorSpec extends ObjectBehavior {
     $action( $this->req, $this->res, $this->args )->shouldHaveType( 'Slim\Http\Response' );
   }
 
+  function it_returns_a_custom_wrapper_when_called() {
+    $this->wrapper( 'Bulckens\ApiTests\TestWrapper' );
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args )->shouldHaveType( 'Bulckens\ApiTests\TestWrapper' );
+  }
+
   function it_returns_http_code_200_when_called() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args )->getStatusCode()->shouldBe( 200 );

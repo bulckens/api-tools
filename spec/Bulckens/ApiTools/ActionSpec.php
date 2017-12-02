@@ -17,6 +17,6 @@ class ActionSpec extends ObjectBehavior {
   }
 
 
-  // Tested through TestAdaptorSpec.php
+  // Further tested through TestAdaptorSpec.php
 
 }
