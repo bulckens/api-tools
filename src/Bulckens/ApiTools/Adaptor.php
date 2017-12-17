@@ -30,7 +30,7 @@ abstract class Adaptor {
   public function render( $subject = null, $locals = [] ) {
     if ( is_string( $subject ) ) {
       // merge info in locals
-      $locals = array_replace( $this->information(), $locals );
+      $locals = array_replace( $this->information(), $this->output()->toArray(), $locals );
 
       // render view
       $output = App::get()->view()->render( $subject, $locals );

@@ -205,6 +205,13 @@ class TestAdaptorSpec extends ObjectBehavior {
     $response->getBody()->__toString()->shouldStartWith( 'Request base: http://localhost' );
   }
 
+  function it_renders_a_view_with_extra_output_information() {
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, [ 'format' => 'html' ] );
+    $response = $this->render( 'Additional: {{ fiddl }}' );
+    $response->getBody()->__toString()->shouldStartWith( 'Additional: zamora' );
+  }
+
   function it_calls_a_before_action() {
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, $this->args );
