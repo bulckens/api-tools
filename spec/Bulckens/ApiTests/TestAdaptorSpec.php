@@ -298,7 +298,7 @@ class TestAdaptorSpec extends ObjectBehavior {
   }
 
 
-  // Parames method
+  // Params method
   function it_returns_the_get_and_post_params_as_an_array() {
     $this->mockSlimEnvironment([
       'data' => [
@@ -312,6 +312,33 @@ class TestAdaptorSpec extends ObjectBehavior {
     $this->params()->shouldBeArray();
     $this->params()->shouldHaveKeyWithValue( 'some', 'param' );
     $this->params()->shouldHaveKeyWithValue( 'another', 'parameter' );
+  }
+
+  function it_returns_a_single_get_or_post_parameter() {
+    $this->mockSlimEnvironment([
+      'data' => [
+        'some' => 'param'
+      , 'another' => 'parameter'
+      ]
+    ]);
+
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $this->params( 'some' )->shouldBe( 'param' );
+    $this->params( 'another' )->shouldBe( 'parameter' );
+  }
+
+  function it_returns_nothing_if_a_given_parameter_could_not_be_found() {
+    $this->mockSlimEnvironment([
+      'data' => [
+        'some' => 'param'
+      , 'another' => 'parameter'
+      ]
+    ]);
+
+    $action = $this->action( 'index' );
+    $action( $this->req, $this->res, $this->args );
+    $this->params( 'nonexistant' )->shouldBe( null  );
   }
 
   function it_includes_uploaded_files_in_the_get_and_post_params_array() {

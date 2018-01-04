@@ -12,6 +12,7 @@ use Bulckens\AppTools\Output;
 abstract class Adaptor {
 
   protected $output;
+  protected $params;
   protected $wrapper;
   protected $respond_to = 'all';
   protected $__req;
@@ -136,8 +137,17 @@ abstract class Adaptor {
 
 
   // Get parameters combined with file post data
-  final public function params() {
-    return array_replace_recursive( $this->req()->getParams(), UploadHelper::files() );
+  final public function params( $key = null ) {
+    // cache params
+    if ( ! isset( $this->params ) ) {
+      $this->params = array_replace_recursive( $this->req()->getParams(), UploadHelper::files() );
+    }
+
+    // return the whole array of params if no key is given
+    if ( is_null( $key ) ) return $this->params;
+
+    // return the param for the given key if it exists
+    if ( isset( $this->params[$key] ) ) return $this->params[$key];
   }
 
 
