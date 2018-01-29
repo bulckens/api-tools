@@ -137,7 +137,7 @@ abstract class Adaptor {
 
 
   // Get parameters combined with file post data
-  final public function params( $key = null ) {
+  public function params( $key = null ) {
     // cache params
     if ( ! isset( $this->params ) ) {
       $this->params = array_replace_recursive( $this->req()->getParams(), UploadHelper::files() );
