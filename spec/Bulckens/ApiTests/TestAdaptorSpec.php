@@ -460,6 +460,13 @@ class TestAdaptorSpec extends ObjectBehavior {
 
   // Info method
   function it_returns_an_array_with_request_information() {
+    $this->mockSlimEnvironment([
+      'data' => [
+        'some' => 'param'
+      , 'another' => 'parameter'
+      ]
+    ]);
+
     $action = $this->action( 'index' );
     $action( $this->req, $this->res, [ 'format' => 'html' ] );
     $info = $this->information();
@@ -469,6 +476,7 @@ class TestAdaptorSpec extends ObjectBehavior {
     $info['request']['host']->shouldBeString();
     $info['request']['port']->shouldBeNull();
     $info['request']['path']->shouldBeString();
+    $info['request']['params']->shouldBeArray();
   }
 
   function it_returns_an_array_with_statistics() {

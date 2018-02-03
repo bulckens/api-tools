@@ -167,11 +167,12 @@ abstract class Adaptor {
      return [
        'statistics' => App::get()->statistics()->toArray()
      , 'request' => [
-         'base'   => $uri->getBaseUrl()
+         'base' => $uri->getBaseUrl()
        , 'scheme' => $uri->getScheme()
-       , 'host'   => $uri->getHost()
-       , 'port'   => $uri->getPort()
-       , 'path'   => $uri->getPath()
+       , 'host' => $uri->getHost()
+       , 'port' => $uri->getPort()
+       , 'path' => $uri->getPath()
+       , 'params' => $this->req()->getParams()
        ] 
      ];
   }
