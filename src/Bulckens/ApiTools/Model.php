@@ -18,8 +18,11 @@ abstract class Model {
     // prepare prefix
     $prefix = empty( $this->path ) ? '' : '/';
 
+    // remove leading slahes from resource
+    $resource = preg_replace( '/^\//', '', $resource );
+
     // add new resource
-    $this->path .= $prefix . implode( '/', array_filter( [ $resource, $id ] ) );
+    $this->path .= $prefix . implode( '/', array_filter([ $resource, $id ]));
 
     return $this;
   }
@@ -27,12 +30,13 @@ abstract class Model {
 
   // Add get parameter
   public function query( $key = null, $value = null ) {
-    if ( is_null( $key ) )
+    if ( is_null( $key ) ) {
       return $this->query;
-    else if ( is_array( $key ) )
+    } else if ( is_array( $key ) ) {
       foreach ( $key as $k => $v ) $this->query[$k] = $v;
-    else
+    } else {
       $this->query[$key] = $value;
+    }
 
     return $this;
   }
@@ -40,8 +44,9 @@ abstract class Model {
 
   // Add order values to query
   public function order( $key, $value = null ) {
-    if ( ! $key instanceof Sort )
+    if ( ! $key instanceof Sort ) {
       $key = new Sort( $key, $value );
+    }
 
     return $this->query( 'order', $key->get() );
   }
@@ -49,12 +54,13 @@ abstract class Model {
 
   // Add post data
   public function data( $key = null, $value = null ) {
-    if ( is_null( $key ) )
+    if ( is_null( $key ) ) {
       return $this->data;
-    else if ( is_array( $key ) )
+    } else if ( is_array( $key ) ) {
       foreach ( $key as $k => $v ) $this->data[$k] = $v;
-    else
+    } else {
       $this->data[$key] = $value;
+    }
 
     return $this;
   }
@@ -69,8 +75,9 @@ abstract class Model {
   // Get server with optional path
   public function source( $source = null ) {
     if ( is_null( $source ) ) {
-      if ( $source = Source::get( $this->source ) )
+      if ( $source = Source::get( $this->source ) ) {
         return preg_replace( '/\/$/', '', $source );
+      }
 
       throw new ModelMissingSourceException( "API source $this->source not defined" );
     }
@@ -83,11 +90,12 @@ abstract class Model {
 
   // Set/get the secret
   public function secret( $secret = null ) {
-    if ( is_null( $secret ) ) {
-      if ( is_null( $this->secret ) ) return;
+    if ( is_null( $secret )) {
+      if ( is_null( $this->secret )) return;
       
-      if ( $secret = Secret::get( $this->secret ) )
+      if ( $secret = Secret::get( $this->secret )) {
         return $secret;
+      }
 
       throw new ModelMissingSecretException( "API secret $this->secret not defined" );
     }

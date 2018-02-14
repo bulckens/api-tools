@@ -42,6 +42,10 @@ class TestModelSpec extends ObjectBehavior {
     $this->resource( 'api', 'v1' )->resource( 'flyers' )->path()->shouldBe( '/api/v1/flyers' );
   }
 
+  function it_returns_a_resource_instance_with_without_given_leading_slashes() {
+    $this->resource( 'api', 'v1' )->resource( '/flyers' )->path()->shouldBe( '/api/v1/flyers' );
+  }
+
   function it_returns_itself_after_setting_the_resource() {
     $this->resource( 'api', 'v1' )->shouldBe( $this );
   }
