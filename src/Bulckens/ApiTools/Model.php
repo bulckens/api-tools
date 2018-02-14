@@ -104,7 +104,7 @@ abstract class Model {
     
     // add token
     if ( $this->secret ) {
-      $token = new Token( $path, $this->secret );
+      $token = $this->buildToken( $path );
       $this->query( 'token', $token->get() );
     }
 
@@ -153,6 +153,16 @@ abstract class Model {
   }
 
 
+  // Reset state of current object
+  public function rewind() {
+    $this->data = [];
+    $this->query = [];
+    $this->path = null;
+
+    return $this;
+  }
+
+
   // Perform request
   protected function perform( $method, $format = 'json', $ssl = null ) {
     // build new response
@@ -173,13 +183,9 @@ abstract class Model {
   }
 
 
-  // Reset state of current object
-  public function rewind() {
-    $this->data = [];
-    $this->query = [];
-    $this->path = null;
-
-    return $this;
+  // Build token for format
+  protected function buildToken( $path ) {
+    return new Token( $path, $this->secret );
   }
 
 }

@@ -21,7 +21,7 @@ class Token {
     $this->stamp = $stamp ?: TimeHelper::ms();
     
     // find secret
-    $this->secret = Secret::get( $secret );
+    $this->secret = $this->fetchSecret( $secret );
 
     // make sure the given secret exists
     $this->verify( $secret );
@@ -37,6 +37,12 @@ class Token {
   // URI getter
   public function uri() {
     return $this->uri;
+  }
+
+
+  // Fetch secret
+  protected function fetchSecret( $secret ) {
+    return Secret::get( $secret );
   }
 
 }
