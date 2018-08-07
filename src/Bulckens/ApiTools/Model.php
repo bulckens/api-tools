@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Bulckens\ApiTools;
 
@@ -9,10 +9,11 @@ abstract class Model {
 
   protected $data  = [];
   protected $query = [];
+  protected $options = [];
   protected $secret;
   protected $source;
   protected $path;
- 
+
   // Add resource
   public function resource( $resource, $id = null ) {
     // prepare prefix
@@ -40,7 +41,7 @@ abstract class Model {
 
     return $this;
   }
-  
+
 
   // Add order values to query
   public function order( $key, $value = null ) {
@@ -50,7 +51,7 @@ abstract class Model {
 
     return $this->query( 'order', $key->get() );
   }
-  
+
 
   // Add post data
   public function data( $key = null, $value = null ) {
@@ -60,6 +61,20 @@ abstract class Model {
       foreach ( $key as $k => $v ) $this->data[$k] = $v;
     } else {
       $this->data[$key] = $value;
+    }
+
+    return $this;
+  }
+
+
+  // Add request options
+  public function options( $key = null, $value = null ) {
+    if ( is_null( $key ) ) {
+      return $this->options;
+    } else if ( is_array( $key ) ) {
+      foreach ( $key as $k => $v ) $this->options[$k] = $v;
+    } else {
+      $this->options[$key] = $value;
     }
 
     return $this;
@@ -92,7 +107,7 @@ abstract class Model {
   public function secret( $secret = null ) {
     if ( is_null( $secret )) {
       if ( is_null( $this->secret )) return;
-      
+
       if ( $secret = Secret::get( $this->secret )) {
         return $secret;
       }
@@ -109,7 +124,7 @@ abstract class Model {
   // Get full uri; path with get params
   public function uri( $format = 'json' ) {
     $path = $this->path( $format );
-    
+
     // add token
     if ( $this->secret ) {
       $token = $this->buildToken( $path );
@@ -124,7 +139,7 @@ abstract class Model {
   public function url( $format = 'json', $ssl = null ) {
     // get source url
     $source = $this->source();
-    
+
     // force https
     if ( $ssl === true )
       $source = preg_replace( '/^http:/', 'https:', $source );
@@ -165,6 +180,7 @@ abstract class Model {
   public function rewind() {
     $this->data = [];
     $this->query = [];
+    $this->options = [];
     $this->path = null;
 
     return $this;
@@ -182,8 +198,9 @@ abstract class Model {
     , $this->url( $format, $ssl )
     , [ 'Accept' => Mime::type( $format ) ]
     , $this->data
+    , $this->options
     );
-    
+
     return $response
       ->body( $request->body )
       ->status( $request->status_code )

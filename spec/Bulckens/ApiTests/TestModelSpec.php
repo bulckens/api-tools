@@ -22,7 +22,7 @@ class TestModelSpec extends ObjectBehavior {
     $this->source( 'fake' )->resource( 'part' );
     $this->path()->shouldBe( '/part' );
   }
-  
+
   function it_returns_itself_after_registering() {
     $this->source( 'fake' )->resource( 'part' )->shouldBe( $this );
   }
@@ -126,6 +126,29 @@ class TestModelSpec extends ObjectBehavior {
   }
 
 
+  // Options method
+  function it_returns_options_as_an_array() {
+    $this->options( 'timeout', 10 );
+    $this->options()->shouldBeArray();
+    $this->options()->shouldHaveKey( 'timeout' );
+  }
+
+  function it_adds_a_key_value_pair_to_the_request_options() {
+    $this->options( 'timeout', 20 );
+    $this->options()->shouldHaveKeyWithValue( 'timeout', 20 );
+  }
+
+  function it_adds_all_key_value_pairs_in_the_given_array_to_the_request_options() {
+    $this->options([ 'timeout' => 15, 'connect_timeout'  => 5 ]);
+    $this->options()->shouldHaveKeyWithValue( 'timeout', 15 );
+    $this->options()->shouldHaveKeyWithValue( 'connect_timeout', 5 );
+  }
+
+  function it_returns_itself_after_adding_request_options() {
+    $this->options( 'timeout', 100 )->shouldBe( $this );
+  }
+
+
   // Source method
   function it_returns_the_source_server() {
     $this->source( 'fake' )->resource( 'path' );
@@ -225,7 +248,7 @@ class TestModelSpec extends ObjectBehavior {
     $this->source( 'fake' )->resource( 'path' );
     $this->url( 'xml', false )->shouldBe( 'http://fake.zwartopwit.be/path.xml' );
   }
-  
+
 
   // Perform method
   function it_returns_a_response_with_a_status() {
@@ -315,7 +338,13 @@ class TestModelSpec extends ObjectBehavior {
   function it_rewinds_the_request_object() {
     $this->secret( 'generic' )->source( 'fake' )->resource( 'path' );
     $this->url( 'xml' )->shouldStartWith( 'http://fake.zwartopwit.be/path.xml?token' );
+    $this->data( 'light', 'yellow' );
+    $this->query( 'size', 'A4' );
+    $this->options( 'timeout', 20 );
     $this->rewind();
+    $this->data()->shouldHaveCount( 0 );
+    $this->query()->shouldHaveCount( 0 );
+    $this->options()->shouldHaveCount( 0 );
     $this->url( 'xml' )->shouldStartWith( 'http://fake.zwartopwit.be/.xml?token' );
   }
 
