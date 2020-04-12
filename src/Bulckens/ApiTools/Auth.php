@@ -87,7 +87,7 @@ class Auth {
     $this->output = new Output( $format );
 
     // get token and timestamp from request
-    $token = $req->getParam( 'token' );
+    $token = $this->getToken( $req );
     
     if ( empty( $token ) )
       throw new AuthMissingTokenException( 'Expected a token but none is given' );
@@ -143,6 +143,17 @@ class Auth {
   // Return output object
   public function output() {
     return $this->output;
+  }
+
+
+  // Get authentication token from header or parameter
+  protected function getToken( $req ) {
+    if ( $token = $req->getHeader( 'Authorization' ))
+      $token = preg_replace( '/^Bearer /', '', current( $token ) );
+    else
+      $token = $req->getParam( 'token' );
+    
+    return $token;
   }
 
 }

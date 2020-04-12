@@ -106,6 +106,16 @@ class AuthSpec extends ObjectBehavior {
     $this->output()->toArray()->shouldHaveKeyWithValue( 'error', 'token.futuristic' );
   }
 
+  function it_accepts_a_token_bearer() {
+    $token = (new Token( '/mastaba/fake.json', 'generic' ))->get();
+    $this->beConstructedWith([ 'secret' => 'generic' ]);
+    
+    $req = $this->req->withHeader( 'Authorization', "Bearer $token" );
+    $this->__invoke( $req, $this->res, function() {});
+    $this->output()->toArray()->shouldNotHaveKeyWithValue( 'error', 'token.missing' );
+    $this->output()->toArray()->shouldNotHaveKey( 'error' );
+  }
+
 
   // Validate method
   function it_verifies_the_validity_of_a_string_secret_in_a_request() {
