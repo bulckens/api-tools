@@ -27,9 +27,9 @@
     "require": {
         "symfony/yaml": "^3.2",
         "illuminate/support": "^5.3",
-        "bulckens/helpers": "dev-master",
-        "bulckens/cli-tools": "dev-master",
-        "bulckens/app-tools": "dev-master",
+        "bulckens/helpers": "^0.7.5",
+        "bulckens/cli-tools": "^0.2.6",
+        "bulckens/app-tools": "^2.3.9",
         "rmccue/requests": "^1.7"
     },
     "dist": {
