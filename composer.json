@@ -2,39 +2,20 @@
     "name": "bulckens/api-tools",
     "description": "Api authentication and output tools",
     "type": "library",
-    "license": "Proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "wout",
-            "email": "wout@mick-wout.com"
-        }
-    ],
-    "repositories": [
-        {   "type": "vcs",
-            "url": "git@github.com:bulckens/helpers.git",
-            "no-api": true
-        }
-        ,
-        {   "type": "vcs",
-            "url": "git@github.com:bulckens/cli-tools.git",
-            "no-api": true
-        },
-        {   "type": "vcs",
-            "url": "git@github.com:bulckens/app-tools.git",
-            "no-api": true
+            "email": "w@zwartopwit.be"
         }
     ],
     "require": {
-        "symfony/yaml": "^3.2",
-        "illuminate/support": "^5.3",
-        "bulckens/helpers": "^0.7.5",
-        "bulckens/cli-tools": "^0.2.6",
-        "bulckens/app-tools": "^2.3.9",
+        "symfony/yaml": "^5.1",
+        "illuminate/support": "^6.11",
+        "bulckens/helpers": "^0.8",
+        "bulckens/cli-tools": "^0.3",
+        "bulckens/app-tools": "^3.0",
         "rmccue/requests": "^1.7"
-    },
-    "dist": {
-        "url": "git@github.com:bulckens/api-tools.git",
-        "type": "git"
     },
     "autoload": {
         "psr-0": {
